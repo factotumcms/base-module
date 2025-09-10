@@ -8,19 +8,18 @@ use Wave8\Factotum\Base\Dto\UserDto;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Types\BaseSetting;
 use Wave8\Factotum\Base\Types\BaseSettingGroup;
-use Wave8\Factotum\Base\Types\SettingType;
 
 class AuthService implements AuthServiceContract
 {
     private SettingService $settingService;
 
-    function __construct(
+    public function __construct(
         SettingService $settingService,
-    )
-    {
+    ) {
         $this->settingService = $settingService;
 
     }
+
     /**
      * @throws \Exception
      */

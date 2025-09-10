@@ -9,6 +9,7 @@ abstract class BaseSetting
     use ConstantsList;
 
     const string AUTH_IDENTIFIER = 'auth_identifier';
+
     const string THUMB_SIZE_WIDTH = 'thumb_size_width';
 
     const string THUMB_SIZE_HEIGHT = 'thumb_size_height';
