@@ -28,7 +28,8 @@ class ModuleInstall extends Command
 
     public function __construct(
         UserService $userService,
-        SettingService $settingService
+        SettingService $settingService,
+
     ) {
         $this->userService = $userService;
         $this->settingService = $settingService;
@@ -55,9 +56,11 @@ class ModuleInstall extends Command
      */
     public function handle()
     {
-        //        if(!$this->confirm('This command will initialize the Factotum Base Module. Do you wish to continue?')) {
-        //            return;
-        //        }
+        if (! $this->confirm('This command will initialize the Factotum Base Module. Do you wish to continue?')) {
+            $this->alert('Aborted!');
+
+            return;
+        }
 
         $this->info('--- Factotum Base Module installation started ---');
 
@@ -67,6 +70,7 @@ class ModuleInstall extends Command
         $this->seedData();
 
         $this->info('--- Factotum Base Module installation finished ---');
+
     }
 
     /**
