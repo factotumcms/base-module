@@ -41,7 +41,7 @@ class SettingService implements EntityServiceContract, SettingServiceContract
     {
         try {
 
-            return Cache::rememberForever('system_settings', function() {
+            return Cache::rememberForever('system_settings', function () {
                 return Setting::where('type', SettingType::SYSTEM)->get();
             });
 

@@ -16,9 +16,9 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', SettingType::getValues());
-            $table->enum('data_type', SettingDataType::getValues());
-            $table->enum('group', BaseSettingGroup::getValues());
+            $table->enum('type', SettingType::getValues()->toArray());
+            $table->enum('data_type', SettingDataType::getValues()->toArray());
+            $table->enum('group', BaseSettingGroup::getValues()->toArray());
             $table->string('key');
             $table->text('value')->nullable();
             $table->timestamps();
