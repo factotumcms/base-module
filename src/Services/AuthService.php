@@ -17,7 +17,6 @@ class AuthService implements AuthServiceContract
         SettingService $settingService,
     ) {
         $this->settingService = $settingService;
-
     }
 
     /**
@@ -27,7 +26,7 @@ class AuthService implements AuthServiceContract
     {
         try {
 
-            $identifier = $this->settingService->getSettingValue(
+            $identifier = $this->settingService->getSystemSettingValue(
                 key: BaseSetting::AUTH_IDENTIFIER,
                 group: BaseSettingGroup::AUTH,
             );

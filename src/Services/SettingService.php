@@ -3,12 +3,12 @@
 namespace Wave8\Factotum\Base\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\EntityService as EntityServiceContract;
 use Wave8\Factotum\Base\Contracts\SettingService as SettingServiceContract;
 use Wave8\Factotum\Base\Dto\SettingDto;
 use Wave8\Factotum\Base\Models\Setting;
-use Wave8\Factotum\Base\Resources\SettingResource;
 use Wave8\Factotum\Base\Types\BaseSettingGroup;
 use Wave8\Factotum\Base\Types\SettingDataType;
 use Wave8\Factotum\Base\Types\SettingType;
@@ -40,26 +40,28 @@ class SettingService implements EntityServiceContract, SettingServiceContract
     public function getSystemSettings(): Collection
     {
         try {
-            $settings = Setting::where('type', SettingType::SYSTEM)->get()
-                ->get()->map(function ($item) {
-                    return SettingResource::from($item->toArray());
-                });
+
+            return Cache::rememberForever('system_settings', function() {
+                return Setting::where('type', SettingType::SYSTEM)->get();
+            });
+
         } catch (\Exception $e) {
             throw $e;
         }
 
-        return $settings;
     }
 
-    public function getSettingValue(string $key, string $type = SettingType::SYSTEM, string $group = BaseSettingGroup::MEDIA): mixed
+    /**
+     * @throws \Exception
+     */
+    public function getSystemSettingValue(string $key, string $group = BaseSettingGroup::MEDIA): mixed
     {
-        // todo:: get all cached settings as collection and get the searched value,
-        $setting = Setting::where('key', $key)
-            ->where('type', $type)
+        $setting = $this->getSystemSettings()
+            ->where('key', $key)
             ->where('group', $group)
             ->first();
 
-        return $setting ? $this->castSettingValue($setting) : null;
+        return $setting ? $this->castSettingValue(setting: $setting) : null;
     }
 
     private function castSettingValue(Setting $setting): mixed
