@@ -53,6 +53,7 @@ class SettingService implements EntityServiceContract, SettingServiceContract
 
     public function getSettingValue(string $key, string $type = SettingType::SYSTEM, string $group = BaseSettingGroup::MEDIA): mixed
     {
+        //todo:: get all cached settings as collection and get the searched value,
         $setting = Setting::where('key', $key)
             ->where('type', $type)
             ->where('group', $group)

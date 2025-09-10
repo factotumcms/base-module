@@ -97,6 +97,7 @@ class ModuleInstall extends Command
             data: new UserDto(
                 email: config('factotum-base-config.admin_default_email'),
                 password: config('factotum-base-config.admin_default_password'),
+                username: 'agencydev',
             )
         );
 
@@ -108,6 +109,16 @@ class ModuleInstall extends Command
 
         // Create settings
         $this->info('Creating default settings..');
+        $this->settingService->create(
+            data: new SettingDto(
+                type: SettingType::SYSTEM,
+                data_type: SettingDataType::STRING,
+                group: BaseSettingGroup::AUTH,
+                key: BaseSetting::AUTH_IDENTIFIER,
+                value: 'email',
+            )
+        );
+
         $this->settingService->create(
             data: new SettingDto(
                 type: SettingType::SYSTEM,
