@@ -1,0 +1,44 @@
+{
+    "name": "wave8/factotum-base",
+    "type": "library",
+    "description": "Factotum V8 - Base Module",
+    "license": "proprietary",
+    "minimum-stability": "stable",
+    "prefer-stable": false,
+    "authors": [
+        {
+            "name": "8wave Srl",
+            "email": "info@8wave.it"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "laravel/framework": "^12.0",
+        "laravel/tinker": "^2.10.1",
+        "laravel/sanctum": "^4.2",
+        "spatie/laravel-permission": "^6.21",
+        "spatie/laravel-data": "^4.17"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wave8\\Factotum\\Base\\": "src/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wave8\\Factotum\\Base\\Providers\\ModuleServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
+}
