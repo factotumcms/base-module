@@ -5,15 +5,15 @@ namespace Wave8\Factotum\Base\Services;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\EntityService as EntityServiceContract;
-use Wave8\Factotum\Base\Contracts\SettingService as SettingServiceContract;
+use Wave8\Factotum\Base\Contracts\Services\CrudService as CrudServiceContract;
+use Wave8\Factotum\Base\Contracts\Services\SettingService as SettingServiceContract;
 use Wave8\Factotum\Base\Dto\SettingDto;
 use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Types\BaseSettingGroup;
 use Wave8\Factotum\Base\Types\SettingDataType;
 use Wave8\Factotum\Base\Types\SettingType;
 
-class SettingService implements EntityServiceContract, SettingServiceContract
+class SettingService implements CrudServiceContract, SettingServiceContract
 {
     /**
      * @throws \Exception
@@ -74,5 +74,10 @@ class SettingService implements EntityServiceContract, SettingServiceContract
             SettingDataType::STRING => (string) $setting->value,
             default => $setting->value,
         };
+    }
+
+    public function getAll()
+    {
+        // TODO: Implement getAll() method.
     }
 }

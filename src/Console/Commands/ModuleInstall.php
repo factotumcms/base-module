@@ -5,8 +5,8 @@ namespace Wave8\Factotum\Base\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
-use Wave8\Factotum\Base\Contracts\SettingService;
-use Wave8\Factotum\Base\Contracts\UserService;
+use Wave8\Factotum\Base\Contracts\Services\SettingService;
+use Wave8\Factotum\Base\Contracts\Services\UserService;
 use Wave8\Factotum\Base\Dto\SettingDto;
 use Wave8\Factotum\Base\Dto\UserDto;
 use Wave8\Factotum\Base\Models\Permission;
@@ -66,7 +66,7 @@ class ModuleInstall extends Command
 
         $this->runVendorPublish();
         $this->runMigration();
-        $this->cleanLaravelStubs();
+        //        $this->cleanLaravelStubs(); remove this and use a laravel app starter kit instead
         $this->seedData();
 
         $this->info('--- Factotum Base Module installation finished ---');
@@ -124,6 +124,7 @@ class ModuleInstall extends Command
         foreach (BaseRole::getValues()->filter(fn ($el) => $el !== BaseRole::ADMIN) as $role) {
             Role::create(['name' => $role]);
         }
+
         $adminRole = Role::create(['name' => BaseRole::ADMIN]);
         $adminUser->assignRole(BaseRole::ADMIN);
 

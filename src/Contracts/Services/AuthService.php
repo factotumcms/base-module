@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Contracts;
+namespace Wave8\Factotum\Base\Contracts\Services;
 
 use Wave8\Factotum\Base\Dto\UserDto;
 use Wave8\Factotum\Base\Models\User;

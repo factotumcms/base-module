@@ -3,12 +3,12 @@
 namespace Wave8\Factotum\Base\Services;
 
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\EntityService as EntityServiceContract;
-use Wave8\Factotum\Base\Contracts\UserService as UserServiceContract;
+use Wave8\Factotum\Base\Contracts\Services\CrudService as CrudServiceContract;
+use Wave8\Factotum\Base\Contracts\Services\UserService as UserServiceContract;
 use Wave8\Factotum\Base\Dto\UserDto;
 use Wave8\Factotum\Base\Models\User;
 
-class UserService implements EntityServiceContract, UserServiceContract
+class UserService implements CrudServiceContract, UserServiceContract
 {
     /**
      * @throws \Exception
@@ -27,5 +27,10 @@ class UserService implements EntityServiceContract, UserServiceContract
         }
 
         return $user;
+    }
+
+    public function getAll()
+    {
+        return User::with(['roles.permissions'])->get();
     }
 }
