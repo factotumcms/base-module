@@ -3,13 +3,14 @@
 namespace Wave8\Factotum\Base\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Wave8\Factotum\Base\Contracts\Services\AuthService as AuthServiceContract;
+use Wave8\Factotum\Base\Contracts\Services\AuthServiceInterface;
 use Wave8\Factotum\Base\Dto\UserDto;
+use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Models\User;
-use Wave8\Factotum\Base\Types\BaseSetting;
-use Wave8\Factotum\Base\Types\BaseSettingGroup;
+use Wave8\Factotum\Base\Types\SettingGroupType;
+use Wave8\Factotum\Base\Types\SettingType;
 
-class AuthService implements AuthServiceContract
+class AuthService implements AuthServiceInterface
 {
     private SettingService $settingService;
 
@@ -27,8 +28,8 @@ class AuthService implements AuthServiceContract
         try {
 
             $identifier = $this->settingService->getSystemSettingValue(
-                key: BaseSetting::AUTH_IDENTIFIER,
-                group: BaseSettingGroup::AUTH,
+                key: SettingType::AUTH_IDENTIFIER,
+                group: SettingGroupType::AUTH,
             );
 
             if (! Auth::attempt($data->only($identifier, 'password')->toArray())) {

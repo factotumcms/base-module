@@ -2,13 +2,15 @@
 
 namespace Wave8\Factotum\Base\Types;
 
-use Wave8\Factotum\Base\Traits\ConstantsList;
+use Wave8\Factotum\Base\Traits\ListCases;
 
-abstract class SettingType
+enum SettingType: string
 {
-    use ConstantsList;
+    use ListCases;
 
-    const string USER = 'user';
-
-    const string SYSTEM = 'system';
+    case AUTH_IDENTIFIER = 'auth_identifier';
+    case THUMB_SIZE_WIDTH = 'thumb_size_width';
+    case THUMB_SIZE_HEIGHT = 'thumb_size_height';
+    case THUMB_QUALITY = 'thumb_quality';
+    case RESIZE_QUALITY = 'resize_quality';
 }

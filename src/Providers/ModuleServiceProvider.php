@@ -15,6 +15,8 @@ class ModuleServiceProvider extends LaravelServiceProvider
         $this->app->register(RouteServiceProvider::class);
 
         $this->registerCommands();
+
+        $this->loadTranslationsFrom(__DIR__.'/../../lang');
     }
 
     public function boot(): void

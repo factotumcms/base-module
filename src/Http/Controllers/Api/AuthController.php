@@ -3,15 +3,15 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use Wave8\Factotum\Base\Contracts\Services\AuthService;
+use Wave8\Factotum\Base\Contracts\Services\AuthServiceInterface;
 use Wave8\Factotum\Base\Dto\UserDto;
 use Wave8\Factotum\Base\Http\Requests\Api\Auth\LoginRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\Auth\LoginResponse;
 
-class AuthController extends Controller
+final readonly class AuthController
 {
     public function __construct(
-        private readonly AuthService $authService
+        private AuthServiceInterface $authService
     ) {}
 
     /**

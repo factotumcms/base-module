@@ -4,12 +4,10 @@ namespace Wave8\Factotum\Base\Traits;
 
 use Illuminate\Support\Collection;
 
-trait ConstantsList
+trait ListCases
 {
     public static function getValues(): Collection
     {
-        $reflection = new \ReflectionClass(self::class);
-
-        return collect($reflection->getConstants());
+        return collect(self::cases())->map(fn ($case) => $case->value);
     }
 }

@@ -5,15 +5,15 @@ namespace Wave8\Factotum\Base\Services;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Services\CrudService as CrudServiceContract;
-use Wave8\Factotum\Base\Contracts\Services\SettingService as SettingServiceContract;
+use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\SettingDto;
 use Wave8\Factotum\Base\Models\Setting;
-use Wave8\Factotum\Base\Types\BaseSettingGroup;
 use Wave8\Factotum\Base\Types\SettingDataType;
+use Wave8\Factotum\Base\Types\SettingGroupType;
 use Wave8\Factotum\Base\Types\SettingType;
+use Wave8\Factotum\Base\Types\SettingTypeType;
 
-class SettingService implements CrudServiceContract, SettingServiceContract
+class SettingService implements SettingServiceInterface
 {
     /**
      * @throws \Exception
@@ -42,7 +42,7 @@ class SettingService implements CrudServiceContract, SettingServiceContract
         try {
 
             return Cache::rememberForever('system_settings', function () {
-                return Setting::where('type', SettingType::SYSTEM)->get();
+                return Setting::where('type', SettingTypeType::SYSTEM)->get();
             });
 
         } catch (\Exception $e) {
@@ -54,7 +54,7 @@ class SettingService implements CrudServiceContract, SettingServiceContract
     /**
      * @throws \Exception
      */
-    public function getSystemSettingValue(string $key, string $group = BaseSettingGroup::MEDIA): mixed
+    public function getSystemSettingValue(SettingType $key, SettingGroupType $group = SettingGroupType::MEDIA): mixed
     {
         $setting = $this->getSystemSettings()
             ->where('key', $key)
@@ -79,5 +79,25 @@ class SettingService implements CrudServiceContract, SettingServiceContract
     public function getAll()
     {
         // TODO: Implement getAll() method.
+    }
+
+    public function read(int $id): ?object
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update(int $id, SettingDto|Data $data): object
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete(int $id): bool
+    {
+        // TODO: Implement delete() method.
+    }
+
+    public function all(): array
+    {
+        // TODO: Implement all() method.
     }
 }

@@ -2,13 +2,14 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Services\CrudService as CrudServiceContract;
-use Wave8\Factotum\Base\Contracts\Services\UserService as UserServiceContract;
+use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
+use Wave8\Factotum\Base\Dto\SettingDto;
 use Wave8\Factotum\Base\Dto\UserDto;
 use Wave8\Factotum\Base\Models\User;
 
-class UserService implements CrudServiceContract, UserServiceContract
+class UserService implements UserServiceInterface
 {
     /**
      * @throws \Exception
@@ -29,8 +30,23 @@ class UserService implements CrudServiceContract, UserServiceContract
         return $user;
     }
 
-    public function getAll()
+    public function getAll(): Collection
     {
-        return User::with(['roles.permissions'])->get();
+        return User::all();
+    }
+
+    public function read(int $id): ?object
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update(int $id, SettingDto|Data $data): object
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete(int $id): bool
+    {
+        // TODO: Implement delete() method.
     }
 }

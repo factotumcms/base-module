@@ -4,31 +4,30 @@ namespace Wave8\Factotum\Base\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Cache;
-use Wave8\Factotum\Base\Contracts\Services\SettingService;
-use Wave8\Factotum\Base\Contracts\Services\UserService;
+use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
 use Wave8\Factotum\Base\Dto\SettingDto;
 use Wave8\Factotum\Base\Dto\UserDto;
 use Wave8\Factotum\Base\Models\Permission;
 use Wave8\Factotum\Base\Models\Role;
-use Wave8\Factotum\Base\Types\BasePermission;
-use Wave8\Factotum\Base\Types\BaseRole;
-use Wave8\Factotum\Base\Types\BaseSetting;
-use Wave8\Factotum\Base\Types\BaseSettingGroup;
+use Wave8\Factotum\Base\Types\PermissionType;
+use Wave8\Factotum\Base\Types\RoleType;
 use Wave8\Factotum\Base\Types\SettingDataType;
+use Wave8\Factotum\Base\Types\SettingGroupType;
 use Wave8\Factotum\Base\Types\SettingType;
+use Wave8\Factotum\Base\Types\SettingTypeType;
 
 class ModuleInstall extends Command
 {
-    private UserService $userService;
+    private UserServiceInterface $userService;
 
-    private SettingService $settingService;
+    private SettingServiceInterface $settingService;
 
     private int $processStep = 1;
 
     public function __construct(
-        UserService $userService,
-        SettingService $settingService,
+        UserServiceInterface $userService,
+        SettingServiceInterface $settingService,
 
     ) {
         $this->userService = $userService;
@@ -64,28 +63,11 @@ class ModuleInstall extends Command
 
         $this->info('--- Factotum Base Module installation started ---');
 
-        $this->runVendorPublish();
         $this->runMigration();
-        //        $this->cleanLaravelStubs(); remove this and use a laravel app starter kit instead
         $this->seedData();
 
         $this->info('--- Factotum Base Module installation finished ---');
 
-    }
-
-    /**
-     * Run the vendor:publish command to publish module assets.
-     */
-    private function runVendorPublish(): void
-    {
-        Cache::clear();
-
-        // Publish the module configurations
-        $this->info("{$this->processStep}) - Publishing configuration files..");
-        Artisan::call('vendor:publish', ['--tag' => 'factotum-base-config', '--force' => true]);
-        Artisan::call('vendor:publish', ['--tag' => 'factotum-base-lang', '--force' => true]);
-
-        $this->processStep++;
     }
 
     private function runMigration(): void
@@ -97,39 +79,30 @@ class ModuleInstall extends Command
         $this->processStep++;
     }
 
-    private function cleanLaravelStubs(): void
-    {
-        // Remove default plain Laravel stubs
-        $this->info("{$this->processStep}) - Cleaning default stubs..");
-        if (is_file(app_path('Models/User.php'))) {
-            unlink(app_path('Models/User.php'));
-        }
-
-        $this->processStep++;
-    }
-
     private function seedData(): void
     {
         // Create a default admin user
         $this->info("{$this->processStep}) - Creating default admin user..");
         $adminUser = $this->userService->create(
-            data: new UserDto(
-                email: config('factotum-base-config.admin_default_email'),
-                password: config('factotum-base-config.admin_default_password'),
-                username: 'agencydev',
+            data: UserDto::make(
+                email: config('factotum_base_config.admin_default_email'),
+                password: config('factotum_base_config.admin_default_password'),
+                first_name: 'Agency',
+                last_name: 'Dev',
+                username: config('factotum_base_config.admin_default_username'),
             )
         );
 
         // Create roles
-        foreach (BaseRole::getValues()->filter(fn ($el) => $el !== BaseRole::ADMIN) as $role) {
+        foreach (RoleType::getValues()->filter(fn ($el) => RoleType::from($el) !== RoleType::ADMIN) as $role) {
             Role::create(['name' => $role]);
         }
 
-        $adminRole = Role::create(['name' => BaseRole::ADMIN]);
-        $adminUser->assignRole(BaseRole::ADMIN);
+        $adminRole = Role::create(['name' => RoleType::ADMIN]);
+        $adminUser->assignRole(RoleType::ADMIN);
 
         // Create permissions and assign to admin
-        foreach (BasePermission::getValues() as $permission) {
+        foreach (PermissionType::getValues() as $permission) {
             $perm = Permission::create(['name' => $permission]);
             $adminRole->givePermissionTo($perm);
         }
@@ -139,20 +112,20 @@ class ModuleInstall extends Command
         $this->info("{$this->processStep}) - Creating default settings..");
         $this->settingService->create(
             data: new SettingDto(
-                type: SettingType::SYSTEM,
+                type: SettingTypeType::SYSTEM,
                 data_type: SettingDataType::STRING,
-                group: BaseSettingGroup::AUTH,
-                key: BaseSetting::AUTH_IDENTIFIER,
+                group: SettingGroupType::AUTH,
+                key: SettingType::AUTH_IDENTIFIER,
                 value: 'email',
             )
         );
 
         $this->settingService->create(
             data: new SettingDto(
-                type: SettingType::SYSTEM,
+                type: SettingTypeType::SYSTEM,
                 data_type: SettingDataType::INTEGER,
-                group: BaseSettingGroup::MEDIA,
-                key: BaseSetting::THUMB_SIZE_WIDTH,
+                group: SettingGroupType::MEDIA,
+                key: SettingType::THUMB_SIZE_WIDTH,
                 value: 50,
             )
         );
