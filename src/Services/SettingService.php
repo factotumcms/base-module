@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
-use Wave8\Factotum\Base\Dto\SettingDto;
+use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Types\SettingDataType;
 use Wave8\Factotum\Base\Types\SettingGroupType;
@@ -18,7 +18,7 @@ class SettingService implements SettingServiceInterface
     /**
      * @throws \Exception
      */
-    public function create(SettingDto|Data $data): Model
+    public function create(CreateSettingDto|Data $data): Model
     {
         try {
             $setting = new Setting(

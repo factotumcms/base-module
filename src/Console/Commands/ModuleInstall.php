@@ -6,8 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
-use Wave8\Factotum\Base\Dto\SettingDto;
-use Wave8\Factotum\Base\Dto\UserDto;
+use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dto\User\CreateUserDto;
 use Wave8\Factotum\Base\Models\Permission;
 use Wave8\Factotum\Base\Models\Role;
 use Wave8\Factotum\Base\Types\PermissionType;
@@ -84,7 +84,7 @@ class ModuleInstall extends Command
         // Create a default admin user
         $this->info("{$this->processStep}) - Creating default admin user..");
         $adminUser = $this->userService->create(
-            data: UserDto::make(
+            data: CreateUserDto::make(
                 email: config('factotum_base_config.admin_default_email'),
                 password: config('factotum_base_config.admin_default_password'),
                 first_name: 'Agency',
@@ -111,7 +111,7 @@ class ModuleInstall extends Command
         $this->processStep++;
         $this->info("{$this->processStep}) - Creating default settings..");
         $this->settingService->create(
-            data: new SettingDto(
+            data: CreateSettingDto::make(
                 type: SettingTypeType::SYSTEM,
                 data_type: SettingDataType::STRING,
                 group: SettingGroupType::AUTH,
@@ -121,7 +121,7 @@ class ModuleInstall extends Command
         );
 
         $this->settingService->create(
-            data: new SettingDto(
+            data: CreateSettingDto::make(
                 type: SettingTypeType::SYSTEM,
                 data_type: SettingDataType::INTEGER,
                 group: SettingGroupType::MEDIA,

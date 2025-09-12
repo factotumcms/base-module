@@ -5,8 +5,10 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
-use Wave8\Factotum\Base\Dto\UserDto;
+use Wave8\Factotum\Base\Dto\User\CreateUserDto;
+use Wave8\Factotum\Base\Dto\User\UpdateUserDto;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
+use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\UserResource;
 
@@ -16,10 +18,19 @@ readonly class UserController
         private UserServiceInterface $userService,
     ) {}
 
-    public function create(CreateUserRequest $request): JsonResponse
+    public function index(): JsonResponse
+    {
+        $users = $this->userService->getAll();
+
+        return ApiResponse::createSuccessful(
+            message: 'Users retrieved successfully',
+            data: $users->map(fn ($el) => UserResource::from($el))
+        );
+    }
+    public function store(CreateUserRequest $request): JsonResponse
     {
         $user = $this->userService->create(
-            UserDto::from($request->all())
+            data: CreateUserDto::from($request->all())
         );
 
         return ApiResponse::createSuccessful(
@@ -28,28 +39,35 @@ readonly class UserController
         );
     }
 
-    public function read(int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        return ApiResponse::createSuccessful('Not implemented yet');
-    }
-
-    public function update(int $id, FormRequest $request): JsonResponse
-    {
-        return ApiResponse::createSuccessful('Not implemented yet');
-    }
-
-    public function delete(int $id): JsonResponse
-    {
-        return ApiResponse::createSuccessful('Not implemented yet');
-    }
-
-    public function all(): JsonResponse
-    {
-        $users = $this->userService->getAll();
-
+        $user = $this->userService->read(
+            id: $id
+        );
         return ApiResponse::createSuccessful(
-            message: 'Users retrieved successfully',
-            data: $users
+            message: '',
+            data: UserResource::from($user)
         );
     }
+
+    public function update(int $id, UpdateUserRequest $request): JsonResponse
+    {
+        $user = $this->userService->update(
+            id: $id,
+            data: UpdateUserDto::from($request->all())
+        );
+
+        return ApiResponse::createSuccessful(
+            message: '',
+            data: UserResource::from($user)
+        );
+    }
+
+
+    public function destroy(int $id): JsonResponse
+    {
+        return ApiResponse::createSuccessful('Not implemented yet');
+    }
+
+
 }
