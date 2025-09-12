@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Services;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
@@ -18,7 +18,7 @@ class SettingService implements SettingServiceInterface
     /**
      * @throws \Exception
      */
-    public function create(SettingDto|Data $data): Setting
+    public function create(SettingDto|Data $data): Model
     {
         try {
             $setting = new Setting(
@@ -37,7 +37,7 @@ class SettingService implements SettingServiceInterface
     /**
      * @throws \Exception
      */
-    public function getSystemSettings(): Collection
+    public function getSystemSettings(): \Illuminate\Database\Eloquent\Collection
     {
         try {
 
@@ -76,17 +76,12 @@ class SettingService implements SettingServiceInterface
         };
     }
 
-    public function getAll()
-    {
-        // TODO: Implement getAll() method.
-    }
-
-    public function read(int $id): ?object
+    public function read(int $id): ?Model
     {
         // TODO: Implement read() method.
     }
 
-    public function update(int $id, SettingDto|Data $data): object
+    public function update(int $id, Data $data): Model
     {
         // TODO: Implement update() method.
     }
@@ -96,8 +91,8 @@ class SettingService implements SettingServiceInterface
         // TODO: Implement delete() method.
     }
 
-    public function all(): array
+    public function getAll(): \Illuminate\Database\Eloquent\Collection
     {
-        // TODO: Implement all() method.
+        // TODO: Implement getAll() method.
     }
 }

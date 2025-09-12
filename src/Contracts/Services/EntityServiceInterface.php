@@ -2,16 +2,17 @@
 
 namespace Wave8\Factotum\Base\Contracts\Services;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 
 interface EntityServiceInterface
 {
-    public function create(Data $data): object;
+    public function create(Data $data): Model;
 
-    public function read(int $id): ?object;
+    public function read(int $id): ?Model;
 
-    public function update(int $id, Data $data): object;
+    public function update(int $id, Data $data): Model;
 
     public function delete(int $id): bool;
 

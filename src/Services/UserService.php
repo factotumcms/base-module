@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Services;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
 use Wave8\Factotum\Base\Dto\SettingDto;
@@ -14,14 +14,13 @@ class UserService implements UserServiceInterface
     /**
      * @throws \Exception
      */
-    public function create(UserDto|Data $data): User
+    public function create(UserDto|Data $data): Model
     {
         try {
-            $user = new User(
+
+            $user = User::create(
                 attributes: $data->toArray()
             );
-
-            $user->save();
 
         } catch (\Exception $e) {
             throw $e;
@@ -30,23 +29,20 @@ class UserService implements UserServiceInterface
         return $user;
     }
 
-    public function getAll(): Collection
+    public function getAll(): \Illuminate\Database\Eloquent\Collection
     {
         return User::all();
     }
 
-    public function read(int $id): ?object
+    public function read(int $id): ?Model
     {
-        // TODO: Implement read() method.
+        return null;
     }
 
-    public function update(int $id, SettingDto|Data $data): object
-    {
-        // TODO: Implement update() method.
-    }
+    public function update(int $id, SettingDto|Data $data): Model {}
 
     public function delete(int $id): bool
     {
-        // TODO: Implement delete() method.
+        return true;
     }
 }
