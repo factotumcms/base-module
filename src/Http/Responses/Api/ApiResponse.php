@@ -14,12 +14,4 @@ final class ApiResponse extends JsonResponse
             status: $status
         );
     }
-
-    public static function createSuccessful(string $message, mixed $data = null): JsonResponse
-    {
-        return response()->json([
-            'message' => $message,
-            'data' => $data,
-        ]);
-    }
 }

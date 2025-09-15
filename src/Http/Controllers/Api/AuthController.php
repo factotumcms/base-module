@@ -2,12 +2,10 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
 use Wave8\Factotum\Base\Contracts\Services\AuthServiceInterface;
 use Wave8\Factotum\Base\Dto\User\CreateUserDto;
 use Wave8\Factotum\Base\Http\Requests\Api\Auth\LoginRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
-use Wave8\Factotum\Base\Http\Responses\Api\Auth\LoginResponse;
 use Wave8\Factotum\Base\Resources\UserResource;
 
 final readonly class AuthController

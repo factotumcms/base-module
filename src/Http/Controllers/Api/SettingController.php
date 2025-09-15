@@ -2,10 +2,11 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
+use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Dto\Setting\UpdateSettingDto;
+use Wave8\Factotum\Base\Http\Requests\Api\Setting\CreateSettingRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\SettingResource;
@@ -25,11 +26,14 @@ final readonly class SettingController
         );
     }
 
-    public function store(Request $request): ApiResponse
+    public function store(CreateSettingRequest $request): ApiResponse
     {
+        $setting = $this->settingService->create(
+            data: CreateSettingDto::from($request->all()),
+        );
+
         return ApiResponse::make(
-            data: 'Not implemented',
-            status: Response::HTTP_FORBIDDEN
+            data: SettingResource::from($setting),
         );
     }
 

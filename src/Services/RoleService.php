@@ -5,12 +5,13 @@ namespace Wave8\Factotum\Base\Services;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
+use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
 use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dto\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Models\Role;
 
-class RoleService implements UserServiceInterface
+class RoleService implements RoleServiceInterface
 {
     /**
      * @throws \Exception

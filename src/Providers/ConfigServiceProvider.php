@@ -13,7 +13,8 @@ class ConfigServiceProvider extends LaravelServiceProvider
         ], ['factotum-base-config']);
 
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/config.php', 'factotum_base_config'
+            __DIR__.'/../../config/config.php',
+            'factotum_base_config'
         );
 
     }

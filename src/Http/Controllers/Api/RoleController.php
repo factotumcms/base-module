@@ -2,13 +2,13 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
-use Wave8\Factotum\Base\Dto\User\CreateUserDto;
-use Wave8\Factotum\Base\Dto\User\UpdateUserDto;
-use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
-use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
+use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
+use Wave8\Factotum\Base\Dto\Role\UpdateRoleDto;
+use Wave8\Factotum\Base\Http\Requests\Api\Role\CreateRoleRequest;
+use Wave8\Factotum\Base\Http\Requests\Api\Role\UpdateRoleRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Resources\RoleResource;
 use Wave8\Factotum\Base\Resources\UserResource;
 
 final readonly class RoleController
@@ -19,44 +19,44 @@ final readonly class RoleController
 
     public function index(): ApiResponse
     {
-        $users = $this->roleService->getAll();
+        $roles = $this->roleService->getAll();
 
         return ApiResponse::make(
-            data: $users->map(fn ($el) => UserResource::from($el)),
+            data: $roles->map(fn ($el) => RoleResource::from($el)),
         );
     }
 
-    public function store(CreateUserRequest $request): ApiResponse
+    public function store(CreateRoleRequest $request): ApiResponse
     {
-        $user = $this->roleService->create(
-            data: CreateUserDto::from($request->all())
+        $role = $this->roleService->create(
+            data: CreateRoleDto::from($request->all())
         );
 
         return ApiResponse::make(
-            data: UserResource::from($user)
+            data: RoleResource::from($role)
         );
     }
 
     public function show(int $id): ApiResponse
     {
-        $user = $this->roleService->show(
+        $role = $this->roleService->show(
             id: $id
         );
 
         return ApiResponse::make(
-            data: UserResource::from($user)
+            data: RoleResource::from($role)
         );
     }
 
-    public function update(int $id, UpdateUserRequest $request): ApiResponse
+    public function update(int $id, UpdateRoleRequest $request): ApiResponse
     {
         $user = $this->roleService->update(
             id: $id,
-            data: UpdateUserDto::from($request->all())
+            data: UpdateRoleDto::from($request->all())
         );
 
         return ApiResponse::make(
-            data: UserResource::from($user)
+            data: RoleResource::from($user)
         );
     }
 

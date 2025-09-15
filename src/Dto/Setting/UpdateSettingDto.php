@@ -11,7 +11,6 @@ class UpdateSettingDto extends Data
     ) {}
 
     public static function make(
-
         ?string $value = null,
     ): static {
         return new static(

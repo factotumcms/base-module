@@ -28,7 +28,6 @@ class ModuleInstall extends Command
     public function __construct(
         UserServiceInterface $userService,
         SettingServiceInterface $settingService,
-
     ) {
         $this->userService = $userService;
         $this->settingService = $settingService;

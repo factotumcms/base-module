@@ -16,7 +16,7 @@ class Setting extends Model
         'user_id',
     ];
 
-    public function users(): belongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }

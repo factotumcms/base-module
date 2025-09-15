@@ -15,25 +15,20 @@ use Wave8\Factotum\Base\Types\SettingTypeType;
 
 class SettingService implements SettingServiceInterface
 {
-    const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
+    public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
 
     /**
      * @throws \Exception
      */
     public function create(CreateSettingDto|Data $data): Model
     {
-        try {
-            $setting = new Setting(
-                attributes: $data->toArray()
-            );
+        $setting = new Setting(
+            attributes: $data->toArray()
+        );
 
-            $setting->save();
+        $setting->save();
 
-            Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
-
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
 
         return $setting;
     }
@@ -43,16 +38,9 @@ class SettingService implements SettingServiceInterface
      */
     public function getSystemSettings(): \Illuminate\Database\Eloquent\Collection
     {
-        try {
-
-            return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
-                return Setting::where('type', SettingTypeType::SYSTEM)->get();
-            });
-
-        } catch (\Exception $e) {
-            throw $e;
-        }
-
+        return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
+            return Setting::where('type', SettingTypeType::SYSTEM)->get();
+        });
     }
 
     /**
