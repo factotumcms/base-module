@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
@@ -36,7 +37,7 @@ class SettingService implements SettingServiceInterface
     /**
      * @throws \Exception
      */
-    public function getSystemSettings(): \Illuminate\Database\Eloquent\Collection
+    public function getSystemSettings(): Collection
     {
         return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
             return Setting::where('type', SettingTypeType::SYSTEM)->get();
@@ -89,7 +90,7 @@ class SettingService implements SettingServiceInterface
         return false;
     }
 
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    public function getAll(): Collection
     {
         return Setting::all();
     }

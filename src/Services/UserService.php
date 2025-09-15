@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
@@ -29,7 +30,7 @@ class UserService implements UserServiceInterface
         return $user;
     }
 
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    public function getAll(): Collection
     {
         return User::all();
     }

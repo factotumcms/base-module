@@ -1,5 +1,7 @@
 <?php
 
+use Wave8\Factotum\Base\Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,7 +13,7 @@
 |
 */
 
-pest()->extend(Wave8\Factotum\Base\Tests\TestCase::class)
+pest()->extend(TestCase::class)
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
