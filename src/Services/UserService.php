@@ -34,13 +34,13 @@ class UserService implements UserServiceInterface
         return User::all();
     }
 
-    public function read(int $id): ?Model
+    public function show(int $id): ?Model
     {
         try {
 
             return User::findOrFail($id);
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -55,13 +55,21 @@ class UserService implements UserServiceInterface
 
             return $user;
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             throw $e;
         }
     }
 
     public function delete(int $id): bool
     {
-        return true;
+        try {
+
+            $user = User::findOrFail($id);
+
+            return $user->delete();
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

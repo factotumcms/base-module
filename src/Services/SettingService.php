@@ -15,6 +15,8 @@ use Wave8\Factotum\Base\Types\SettingTypeType;
 
 class SettingService implements SettingServiceInterface
 {
+    const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
+
     /**
      * @throws \Exception
      */
@@ -26,6 +28,8 @@ class SettingService implements SettingServiceInterface
             );
 
             $setting->save();
+
+            Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
 
         } catch (\Exception $e) {
             throw $e;
@@ -41,7 +45,7 @@ class SettingService implements SettingServiceInterface
     {
         try {
 
-            return Cache::rememberForever('system_settings', function () {
+            return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
                 return Setting::where('type', SettingTypeType::SYSTEM)->get();
             });
 
@@ -76,23 +80,29 @@ class SettingService implements SettingServiceInterface
         };
     }
 
-    public function read(int $id): ?Model
+    public function show(int $id): ?Model
     {
-        // TODO: Implement read() method.
+        return Setting::findOrFail($id);
     }
 
     public function update(int $id, Data $data): Model
     {
-        // TODO: Implement update() method.
+        $setting = Setting::findOrFail($id);
+
+        $setting->update($data->toArray());
+
+        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
+
+        return $setting;
     }
 
     public function delete(int $id): bool
     {
-        // TODO: Implement delete() method.
+        return false;
     }
 
     public function getAll(): \Illuminate\Database\Eloquent\Collection
     {
-        // TODO: Implement getAll() method.
+        return Setting::all();
     }
 }

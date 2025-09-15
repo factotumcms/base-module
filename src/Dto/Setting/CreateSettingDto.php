@@ -33,5 +33,4 @@ class CreateSettingDto extends Data
             value: $value,
         );
     }
-
 }

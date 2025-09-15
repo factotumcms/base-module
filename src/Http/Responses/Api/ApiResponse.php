@@ -22,4 +22,12 @@ final class ApiResponse
             'data' => $data,
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+
+    public static function createCustom(?string $message, int $status, mixed $data = null): JsonResponse
+    {
+        return response()->json([
+            'message' => $message,
+            'data' => $data,
+        ], $status);
+    }
 }

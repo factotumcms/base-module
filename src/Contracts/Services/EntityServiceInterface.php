@@ -10,7 +10,7 @@ interface EntityServiceInterface
 {
     public function create(Data $data): Model;
 
-    public function read(int $id): ?Model;
+    public function show(int $id): ?Model;
 
     public function update(int $id, Data $data): Model;
 

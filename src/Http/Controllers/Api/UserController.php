@@ -2,7 +2,6 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
 use Wave8\Factotum\Base\Dto\User\CreateUserDto;
@@ -27,6 +26,7 @@ readonly class UserController
             data: $users->map(fn ($el) => UserResource::from($el))
         );
     }
+
     public function store(CreateUserRequest $request): JsonResponse
     {
         $user = $this->userService->create(
@@ -41,9 +41,10 @@ readonly class UserController
 
     public function show(int $id): JsonResponse
     {
-        $user = $this->userService->read(
+        $user = $this->userService->show(
             id: $id
         );
+
         return ApiResponse::createSuccessful(
             message: '',
             data: UserResource::from($user)
@@ -63,11 +64,12 @@ readonly class UserController
         );
     }
 
-
     public function destroy(int $id): JsonResponse
     {
-        return ApiResponse::createSuccessful('Not implemented yet');
+        $this->userService->delete($id);
+
+        return ApiResponse::createSuccessful(
+            message: 'ok'
+        );
     }
-
-
 }
