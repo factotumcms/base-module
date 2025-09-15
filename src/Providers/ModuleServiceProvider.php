@@ -17,6 +17,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
         $this->registerCommands();
 
         $this->loadTranslationsFrom(__DIR__.'/../../lang');
+
     }
 
     public function boot(): void

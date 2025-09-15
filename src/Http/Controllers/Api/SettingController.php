@@ -2,7 +2,6 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
@@ -11,61 +10,57 @@ use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\SettingResource;
 
-readonly class SettingController
+final readonly class SettingController
 {
     public function __construct(
         private SettingServiceInterface $settingService,
     ) {}
 
-    public function index(): JsonResponse
+    public function index(): ApiResponse
     {
         $settings = $this->settingService->getAll();
 
-        return ApiResponse::createSuccessful(
-            message: 'Settings retrieved successfully',
-            data: $settings->map(fn ($el) => SettingResource::from($el))
+        return ApiResponse::make(
+            data: $settings->map(fn ($el) => SettingResource::from($el)),
         );
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): ApiResponse
     {
-        return ApiResponse::createCustom(
-            message: 'Not implemented',
+        return ApiResponse::make(
+            data: 'Not implemented',
             status: Response::HTTP_FORBIDDEN
         );
     }
 
-    public function show(int $id): JsonResponse
+    public function show(int $id): ApiResponse
     {
         $setting = $this->settingService->show(
             id: $id
         );
 
-        return ApiResponse::createSuccessful(
-            message: 'ok',
-            data: SettingResource::from($setting)
+        return ApiResponse::make(
+            data: SettingResource::from($setting),
         );
     }
 
-    public function update(int $id, UpdateSettingRequest $request): JsonResponse
+    public function update(int $id, UpdateSettingRequest $request): ApiResponse
     {
         $setting = $this->settingService->update(
             id: $id,
             data: UpdateSettingDto::from($request->all())
         );
 
-        return ApiResponse::createSuccessful(
-            message: 'ok',
-            data: SettingResource::from($setting)
+        return ApiResponse::make(
+            data: SettingResource::from($setting),
         );
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id): ApiResponse
     {
-        return ApiResponse::createCustom(
-            message: 'Not implemented',
+        return ApiResponse::make(
+            data: 'Not implemented',
             status: Response::HTTP_FORBIDDEN
         );
-
     }
 }
