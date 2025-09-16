@@ -49,13 +49,13 @@ final readonly class RoleController
 
     public function update(int $id, UpdateRoleRequest $request): ApiResponse
     {
-        $user = $this->roleService->update(
+        $role = $this->roleService->update(
             id: $id,
             data: UpdateRoleDto::from($request->all())
         );
 
         return ApiResponse::make(
-            data: RoleResource::from($user)
+            data: RoleResource::from($role)
         );
     }
 

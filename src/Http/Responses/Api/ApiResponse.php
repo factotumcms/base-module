@@ -7,11 +7,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ApiResponse extends JsonResponse
 {
-    public static function make(mixed $data, int $status = Response::HTTP_OK): static
+    public static function make(mixed $data, ?array $headers = null, int $status = Response::HTTP_OK): static
     {
-        return new self(
+        $response = new self(
             data: $data,
             status: $status
         );
+
+        if ($headers) {
+            foreach ($headers as $key => $value) {
+                $response->headers->set($key, $value);
+            }
+        }
+
+        return $response;
     }
 }

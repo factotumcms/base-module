@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dto\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Types\SettingDataType;
 use Wave8\Factotum\Base\Types\SettingGroupType;
@@ -18,11 +19,15 @@ class SettingService implements SettingServiceInterface
 {
     public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
 
+
     /**
-     * @throws \Exception
+     * Create a new setting.
+     * @param CreateSettingDto|Data $data
+     * @return Model
      */
     public function create(CreateSettingDto|Data $data): Model
     {
+        //todo:: To review the user's settings logic
         $setting = new Setting(
             attributes: $data->toArray()
         );
@@ -34,8 +39,10 @@ class SettingService implements SettingServiceInterface
         return $setting;
     }
 
+
     /**
-     * @throws \Exception
+     * Retrieve all system settings, cached indefinitely.
+     * @return Collection
      */
     public function getSystemSettings(): Collection
     {
@@ -44,7 +51,11 @@ class SettingService implements SettingServiceInterface
         });
     }
 
+
     /**
+     * @param SettingType $key
+     * @param SettingGroupType $group
+     * @return mixed
      * @throws \Exception
      */
     public function getSystemSettingValue(SettingType $key, SettingGroupType $group = SettingGroupType::MEDIA): mixed
@@ -57,6 +68,11 @@ class SettingService implements SettingServiceInterface
         return $setting ? $this->castSettingValue(setting: $setting) : null;
     }
 
+    /**
+     * Casts the setting value to its appropriate data type.
+     * @param Setting $setting
+     * @return mixed
+     */
     private function castSettingValue(Setting $setting): mixed
     {
         return match ($setting->data_type) {
@@ -69,12 +85,23 @@ class SettingService implements SettingServiceInterface
         };
     }
 
+    /**
+     * Display the specified resource.
+     * @param int $id
+     * @return Model|null
+     */
     public function show(int $id): ?Model
     {
         return Setting::findOrFail($id);
     }
 
-    public function update(int $id, Data $data): Model
+    /**
+     * Update a setting value.
+     * @param int $id
+     * @param Data $data
+     * @return Model
+     */
+    public function update(int $id, UpdateSettingDto|Data $data): Model
     {
         $setting = Setting::findOrFail($id);
 
@@ -87,6 +114,7 @@ class SettingService implements SettingServiceInterface
 
     public function delete(int $id): bool
     {
+        //Todo:: To implement the delete logic or avoid
         return false;
     }
 
