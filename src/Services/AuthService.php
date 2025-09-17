@@ -27,7 +27,7 @@ class AuthService implements AuthServiceInterface
         try {
 
             $identifier = $this->settingService->getSystemSettingValue(
-                key: SettingType::AUTH_IDENTIFIER,
+                key: SettingType::AUTH_BASIC_IDENTIFIER,
                 group: SettingGroupType::AUTH,
             );
 

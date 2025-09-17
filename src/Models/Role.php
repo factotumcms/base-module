@@ -2,4 +2,6 @@
 
 namespace Wave8\Factotum\Base\Models;
 
-class Role extends \Spatie\Permission\Models\Role {}
+class Role extends \Spatie\Permission\Models\Role {
+
+}

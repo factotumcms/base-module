@@ -8,12 +8,12 @@ class CreateRoleDto extends Data
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $guard_name = 'web'
+        public readonly string $guard_name = 'api'
     ) {}
 
     public static function make(
         string $name,
-        string $guard_name = 'web'
+        string $guard_name = 'api'
     ): static {
         return new static(
             $name,

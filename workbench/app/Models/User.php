@@ -1,29 +1,16 @@
 <?php
 
-namespace Wave8\Factotum\Base\Models;
+namespace Workbench\App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasPermissions;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasPermissions;
-    use HasRoles;
-    use Notifiable;
-    use SoftDeletes;
-
-    protected string $guard_name = 'api';
-    protected function getDefaultGuardName(): string { return $this->guard_name; }
+    /** @use HasFactory<\Workbench\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -31,13 +18,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'username',
+        'name',
         'email',
         'password',
-        'is_active',
-        'email_verified_at',
     ];
 
     /**
@@ -61,10 +44,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function settings(): BelongsToMany
-    {
-        return $this->belongsToMany(Setting::class);
     }
 }

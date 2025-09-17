@@ -19,6 +19,10 @@
         "spatie/laravel-permission": "^6.21",
         "spatie/laravel-data": "^4.17"
     },
+    "require-dev": {
+        "pestphp/pest": "*",
+        "orchestra/testbench": "^10.6"
+    },
     "autoload": {
         "psr-4": {
             "Wave8\\Factotum\\Base\\": "src/",
@@ -27,14 +31,30 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Wave8\\Factotum\\Base\\Tests\\": "tests/"
+            "Wave8\\Factotum\\Base\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "scripts": {
-        "post-install-cmd": [
-
+        "post-install-cmd": [],
+        "test": "./vendor/bin/pest",
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
         ],
-        "test": "./vendor/bin/pest"
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "lint": [
+            "pint"
+        ]
     },
     "extra": {
         "laravel": {
@@ -48,8 +68,5 @@
             "composer/installers": true,
             "pestphp/pest-plugin": true
         }
-    },
-    "require-dev": {
-        "pestphp/pest": "^4.1"
     }
 }
