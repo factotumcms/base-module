@@ -4,13 +4,16 @@ namespace Wave8\Factotum\Base\Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Wave8\Factotum\Base\Database\Seeder\DatabaseSeeder;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Providers\ModuleServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
+
     protected $enablesPackageDiscoveries = true;
+
     protected function getPackageProviders($app): array
     {
         return [
@@ -23,7 +26,7 @@ abstract class TestCase extends BaseTestCase
         // Code before application created.
 
         $this->afterApplicationCreated(function () {
-            $this->seed(\Wave8\Factotum\Base\Database\Seeder\DatabaseSeeder::class);
+            $this->seed(DatabaseSeeder::class);
         });
 
         $this->beforeApplicationDestroyed(function () {

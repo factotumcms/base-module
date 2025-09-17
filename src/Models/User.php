@@ -23,7 +23,11 @@ class User extends Authenticatable
     use SoftDeletes;
 
     protected string $guard_name = 'api';
-    protected function getDefaultGuardName(): string { return $this->guard_name; }
+
+    protected function getDefaultGuardName(): string
+    {
+        return $this->guard_name;
+    }
 
     /**
      * The attributes that are mass assignable.
