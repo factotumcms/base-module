@@ -17,4 +17,6 @@ interface EntityServiceInterface
     public function delete(int $id): bool;
 
     public function getAll(): Collection;
+
+    public function filter(array $filters): Collection;
 }

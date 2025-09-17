@@ -73,4 +73,6 @@ class UserService implements UserServiceInterface
             throw $e;
         }
     }
+
+    public function filter(array $filters): Collection {}
 }

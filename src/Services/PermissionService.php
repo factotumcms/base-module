@@ -61,4 +61,9 @@ class PermissionService implements PermissionServiceInterface
 
         return $permission->delete();
     }
+
+    public function filter(array $filters): Collection
+    {
+        // TODO: Implement filter() method.
+    }
 }

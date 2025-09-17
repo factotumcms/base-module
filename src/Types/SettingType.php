@@ -8,7 +8,8 @@ enum SettingType: string
 {
     use ListCases;
 
-    case AUTH_IDENTIFIER = 'auth_identifier';
+    case AUTH_TYPE = 'auth_type';
+    case AUTH_BASIC_IDENTIFIER = 'auth_basic_identifier';
     case THUMB_SIZE_WIDTH = 'thumb_size_width';
     case THUMB_SIZE_HEIGHT = 'thumb_size_height';
     case THUMB_QUALITY = 'thumb_quality';

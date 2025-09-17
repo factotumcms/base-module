@@ -9,13 +9,12 @@ use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dto\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Models\Role;
+use Wave8\Factotum\Base\Types\PermissionType;
 
 class RoleService implements RoleServiceInterface
 {
     /**
      * Create a new role.
-     * @param CreateRoleDto|Data $data
-     * @return Model
      */
     public function create(CreateRoleDto|Data $data): Model
     {
@@ -26,7 +25,6 @@ class RoleService implements RoleServiceInterface
 
     /**
      * Retrieve all roles.
-     * @return Collection
      */
     public function getAll(): Collection
     {
@@ -35,8 +33,6 @@ class RoleService implements RoleServiceInterface
 
     /**
      * Retrieve a role by its ID.
-     * @param int $id
-     * @return Model|null
      */
     public function show(int $id): ?Model
     {
@@ -45,9 +41,6 @@ class RoleService implements RoleServiceInterface
 
     /**
      * Update a role by its ID.
-     * @param int $id
-     * @param UpdateRoleDto|Data $data
-     * @return Model
      */
     public function update(int $id, UpdateRoleDto|Data $data): Model
     {
@@ -60,13 +53,38 @@ class RoleService implements RoleServiceInterface
 
     /**
      * Delete a role by its ID.
-     * @param int $id
-     * @return bool
      */
     public function delete(int $id): bool
     {
         $role = Role::findOrFail($id);
 
         return $role->delete();
+    }
+
+    public function filter(array $filters): Collection
+    {
+        // todo:: tipizzare i filters con un dto
+        $query = Role::query();
+
+        foreach ($filters as $key => $value) {
+            $query->where($key, $value);
+        }
+
+        return $query->get();
+    }
+
+    /**
+     * @param  \Illuminate\Support\Collection<PermissionType>  $permissions
+     */
+    public function assignPermissions(int $roleId, \Illuminate\Support\Collection $permissions): Model
+    {
+        /** @var Role $role */
+        $role = Role::findOrFail($roleId);
+
+        if ($permissions->isNotEmpty()) {
+            $role->givePermissionTo($permissions);
+        }
+
+        return $role;
     }
 }
