@@ -12,17 +12,19 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Wave8\Factotum\Base\Traits\HasMediaAssets;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
+    use HasMediaAssets;
     use HasPermissions;
     use HasRoles;
     use Notifiable;
     use SoftDeletes;
 
-    protected string $guard_name = 'api';
+    protected string $guard_name = 'web';
 
     protected function getDefaultGuardName(): string
     {

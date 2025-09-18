@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.10.1",
         "laravel/sanctum": "^4.2",
         "spatie/laravel-permission": "^6.21",
-        "spatie/laravel-data": "^4.17"
+        "spatie/laravel-data": "^4.17",
+        "spatie/laravel-medialibrary": "^11.14"
     },
     "require-dev": {
         "pestphp/pest": "*",
@@ -31,10 +32,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Wave8\\Factotum\\Base\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/",
-            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+            "Wave8\\Factotum\\Base\\Tests\\": "tests/"
         }
     },
     "scripts": {

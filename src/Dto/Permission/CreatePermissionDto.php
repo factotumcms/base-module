@@ -8,12 +8,12 @@ class CreatePermissionDto extends Data
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $guard_name = 'api'
+        public readonly string $guard_name = 'web'
     ) {}
 
     public static function make(
         string $name,
-        string $guard_name = 'api'
+        string $guard_name = 'web'
     ): static {
         return new static(
             $name,
