@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Services;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
 use Wave8\Factotum\Base\Models\MediaAsset;
 
@@ -24,16 +23,10 @@ class MediaService implements MediaServiceInterface
         $mediaAssets->save();
     }
 
-    public function showTest()
+    public function retrieveByUuid(string $uuid): MediaAsset
     {
-        $user = Auth::user();
-        $mediaAssets = $user->mediaAssets();
-
-        foreach ($user->mediaAssets()->get() as $mediaAsset) {
-            //            $test = $mediaAsset->getMedia('*')->first()->getUrl();
-            $test = $mediaAsset->users()->get();
-            dd($test);
-        }
-
+        return MediaAsset::whereHas('media', function ($query) use ($uuid) {
+            $query->where('uuid', $uuid);
+        })->firstOrFail();
     }
 }
