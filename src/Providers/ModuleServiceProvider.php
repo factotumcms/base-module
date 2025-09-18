@@ -3,6 +3,7 @@
 namespace Wave8\Factotum\Base\Providers;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\ModuleInstall;
 
 class ModuleServiceProvider extends LaravelServiceProvider
@@ -17,6 +18,8 @@ class ModuleServiceProvider extends LaravelServiceProvider
         $this->registerCommands();
 
         $this->loadTranslationsFrom(__DIR__.'/../../lang');
+
+        $this->app->register(TranslationServiceProvider::class);
 
     }
 

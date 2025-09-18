@@ -26,6 +26,7 @@ Descrizione progetto ...
 Installation process
 1. composer require wave8/factotum-base
 2. php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-migrations"
+3. php artisan vendor:publish --provider="Spatie\TranslationLoader\TranslationServiceProvider" --tag="translation-loader-migrations"
 3. php artisan migrate
 
 # Build and Test

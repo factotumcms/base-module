@@ -14,4 +14,9 @@ return [
         'type' => 'basic', // Options: basic, jwt, passport
         'basic_identifier' => 'email', // Options: email, username, phone
     ],
+
+    'locale' => [
+        'default' => env('APP_LOCALE', 'en_GB'),
+        'available' => ['it_IT', 'en_GB'],
+    ],
 ];
