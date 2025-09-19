@@ -2,65 +2,66 @@
 
 namespace Wave8\Factotum\Base\Services;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\EntityService as EntityServiceContract;
-use Wave8\Factotum\Base\Contracts\SettingService as SettingServiceContract;
-use Wave8\Factotum\Base\Dto\SettingDto;
+use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
+use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dto\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Models\Setting;
-use Wave8\Factotum\Base\Resources\SettingResource;
-use Wave8\Factotum\Base\Types\BaseSettingGroup;
+use Wave8\Factotum\Base\Types\Setting as SettingType;
 use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingType;
+use Wave8\Factotum\Base\Types\SettingGroup;
+use Wave8\Factotum\Base\Types\SettingScope;
 
-class SettingService implements EntityServiceContract, SettingServiceContract
+class SettingService implements SettingServiceInterface
 {
+    public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
+
     /**
-     * @throws \Exception
+     * Create a new setting.
      */
-    public function create(SettingDto|Data $data): Setting
+    public function create(CreateSettingDto|Data $data): Model
     {
-        try {
-            $setting = new Setting(
-                attributes: $data->toArray()
-            );
+        // todo:: To review the user's settings logic
+        $setting = new Setting(
+            attributes: $data->toArray()
+        );
 
-            $setting->save();
+        $setting->save();
 
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
 
         return $setting;
     }
 
     /**
-     * @throws \Exception
+     * Retrieve all system settings, cached indefinitely.
      */
     public function getSystemSettings(): Collection
     {
-        try {
-            $settings = Setting::where('type', SettingType::SYSTEM)->get()
-                ->get()->map(function ($item) {
-                    return SettingResource::from($item->toArray());
-                });
-        } catch (\Exception $e) {
-            throw $e;
-        }
-
-        return $settings;
+        return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
+            return Setting::where('scope', SettingScope::SYSTEM)->get();
+        });
     }
 
-    public function getSettingValue(string $key, string $type = SettingType::SYSTEM, string $group = BaseSettingGroup::MEDIA): mixed
+    /**
+     * @throws \Exception
+     */
+    public function getSystemSettingValue(SettingType $key, SettingGroup $group = SettingGroup::MEDIA): mixed
     {
-        $setting = Setting::where('key', $key)
-            ->where('type', $type)
+        $setting = $this->getSystemSettings()
+            ->where('key', $key)
             ->where('group', $group)
             ->first();
 
-        return $setting ? $this->castSettingValue($setting) : null;
+        return $setting ? $this->castSettingValue(setting: $setting) : null;
     }
 
+    /**
+     * Casts the setting value to its appropriate data type.
+     */
     private function castSettingValue(Setting $setting): mixed
     {
         return match ($setting->data_type) {
@@ -71,5 +72,45 @@ class SettingService implements EntityServiceContract, SettingServiceContract
             SettingDataType::STRING => (string) $setting->value,
             default => $setting->value,
         };
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(int $id): ?Model
+    {
+        return Setting::findOrFail($id);
+    }
+
+    /**
+     * Update a setting value.
+     *
+     * @param  Data  $data
+     */
+    public function update(int $id, UpdateSettingDto|Data $data): Model
+    {
+        $setting = Setting::findOrFail($id);
+
+        $setting->update($data->toArray());
+
+        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
+
+        return $setting;
+    }
+
+    public function delete(int $id): bool
+    {
+        // Todo:: To implement the delete logic or avoid
+        return false;
+    }
+
+    public function getAll(): Collection
+    {
+        return Setting::all();
+    }
+
+    public function filter(array $filters): Collection
+    {
+        // TODO: Implement filter() method.
     }
 }

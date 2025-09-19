@@ -2,6 +2,21 @@
 
 return [
     'module_name' => 'Base',
-    'admin_default_email' => env('ADMIN_DEFAULT_EMAIL', 'agencydev@8wave.it'),
-    'admin_default_password' => env('ADMIN_DEFAULT_PASSWORD', 'password'),
+    'admin_default' => [
+        'email' => env('ADMIN_DEFAULT_EMAIL', 'admin@gmail.com'),
+        'password' => env('ADMIN_DEFAULT_PASSWORD', 'password'),
+        'username' => env('ADMIN_DEFAULT_PASSWORD', 'admin'),
+        'first_name' => env('ADMIN_DEFAULT_FIRST_NAME', 'Admin'),
+        'last_name' => env('ADMIN_DEFAULT_LAST_NAME', 'Default'),
+    ],
+
+    'auth' => [
+        'type' => 'basic', // Options: basic, jwt, passport
+        'basic_identifier' => 'email', // Options: email, username, phone
+    ],
+
+    'locale' => [
+        'default' => env('APP_LOCALE', 'en_GB'),
+        'available' => ['it_IT', 'en_GB'],
+    ],
 ];

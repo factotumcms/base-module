@@ -2,19 +2,15 @@
 
 namespace Wave8\Factotum\Base\Types;
 
-use Wave8\Factotum\Base\Traits\ConstantsList;
+use Wave8\Factotum\Base\Traits\ListCases;
 
-abstract class SettingDataType
+enum SettingDataType: string
 {
-    use ConstantsList;
+    use ListCases;
 
-    const string INTEGER = 'integer';
-
-    const string FLOAT = 'float';
-
-    const string STRING = 'string';
-
-    const string BOOLEAN = 'boolean';
-
-    const string JSON = 'json';
+    case INTEGER = 'integer';
+    case FLOAT = 'float';
+    case STRING = 'string';
+    case BOOLEAN = 'boolean';
+    case JSON = 'json';
 }

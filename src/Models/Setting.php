@@ -10,12 +10,13 @@ class Setting extends Model
     protected $fillable = [
         'type',
         'data_type',
+        'group',
         'key',
         'value',
         'user_id',
     ];
 
-    public function users(): belongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }

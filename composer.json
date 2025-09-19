@@ -1,6 +1,7 @@
 {
     "name": "wave8/factotum-base",
     "type": "library",
+    "version": "1.0.0-alpha.1",
     "description": "Factotum V8 - Base Module",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -17,16 +18,42 @@
         "laravel/tinker": "^2.10.1",
         "laravel/sanctum": "^4.2",
         "spatie/laravel-permission": "^6.21",
-        "spatie/laravel-data": "^4.17"
+        "spatie/laravel-data": "^4.17",
+        "spatie/laravel-medialibrary": "^11.14",
+        "spatie/laravel-translation-loader": "^2.8"
+    },
+    "require-dev": {
+        "pestphp/pest": "*",
+        "orchestra/testbench": "^10.6"
     },
     "autoload": {
         "psr-4": {
-            "Wave8\\Factotum\\Base\\": "src/"
+            "Wave8\\Factotum\\Base\\": "src/",
+            "Wave8\\Factotum\\Base\\Database\\Seeder\\": "database/seeder/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wave8\\Factotum\\Base\\Tests\\": "tests/"
         }
     },
     "scripts": {
-        "post-install-cmd": [
-
+        "post-install-cmd": [],
+        "test": "./vendor/bin/pest",
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "lint": [
+            "pint"
         ]
     },
     "extra": {
@@ -38,7 +65,8 @@
     },
     "config": {
         "allow-plugins": {
-            "composer/installers": true
+            "composer/installers": true,
+            "pestphp/pest-plugin": true
         }
     }
 }

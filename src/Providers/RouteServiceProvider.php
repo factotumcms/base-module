@@ -42,13 +42,17 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
 
     protected function registerPublicApiRoutes(): void
     {
-        $this->mapRoutes(__DIR__.'/../../routes/api/public');
+        Route::group([
+            'middleware' => ['api'],
+        ], function () {
+            $this->mapRoutes(__DIR__.'/../../routes/api/public');
+        });
     }
 
     protected function registerProtectedApiRoutes(): void
     {
         Route::group([
-            'middleware' => ['api'],
+            'middleware' => ['api', 'auth:sanctum'],
         ], function () {
             $this->mapRoutes(__DIR__.'/../../routes/api/protected');
         });

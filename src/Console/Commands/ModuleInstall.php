@@ -4,39 +4,20 @@ namespace Wave8\Factotum\Base\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Wave8\Factotum\Base\Contracts\SettingService;
-use Wave8\Factotum\Base\Contracts\UserService;
-use Wave8\Factotum\Base\Dto\SettingDto;
-use Wave8\Factotum\Base\Dto\UserDto;
-use Wave8\Factotum\Base\Models\Permission;
-use Wave8\Factotum\Base\Models\Role;
-use Wave8\Factotum\Base\Types\BaseSetting;
-use Wave8\Factotum\Base\Types\BaseSettingGroup;
-use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingType;
+use Illuminate\Support\Facades\File;
+use Wave8\Factotum\Base\Database\Seeder\DatabaseSeeder;
+use Wave8\Factotum\Base\Models\User;
 
 class ModuleInstall extends Command
 {
-    private UserService $userService;
-
-    private SettingService $settingService;
-
-    public function __construct(
-        UserService $userService,
-        SettingService $settingService,
-    ) {
-        $this->userService = $userService;
-        $this->settingService = $settingService;
-
-        parent::__construct();
-    }
+    private int $processStep = 1;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'factotum-base:module-install';
+    protected $signature = 'factotum-base:install';
 
     /**
      * The console command description.
@@ -50,84 +31,81 @@ class ModuleInstall extends Command
      */
     public function handle()
     {
-        //        if(!$this->confirm('This command will initialize the Factotum Base Module. Do you wish to continue?')) {
-        //            return;
-        //        }
+        $this->printDisclaimer();
 
-        $this->info('Factotum Base Module installation started');
+        if (! $this->confirm('Do you wish to continue?')) {
+            $this->alert('Aborted!');
 
-        $this->runVendorPublish();
+            return;
+        }
+
+        $this->info('*** Factotum Base Module installation started ***');
+
+        $this->setUpEnvironment();
+        $this->publishVendorMigrations();
         $this->runMigration();
-        $this->cleanLaravelStubs();
         $this->seedData();
+
+        $this->info('*** Factotum Base Module installation finished ***');
+
     }
 
-    /**
-     * Run the vendor:publish command to publish module assets.
-     */
-    private function runVendorPublish(): void
+    private function printDisclaimer(): void
     {
-        // Publish the module configurations
-        $this->info('Publishing configuration files..');
-        Artisan::call('vendor:publish', ['--tag' => 'factotum-base-config', '--force' => true]);
-        Artisan::call('vendor:publish', ['--tag' => 'factotum-base-lang', '--force' => true]);
+        $this->warn('********************');
+        $this->warn('*      DANGER      *');
+        $this->warn('********************');
+        $this->warn('This command will initialize the Factotum Base Module from scratch. All data will be lost!!');
     }
 
     private function runMigration(): void
     {
         // Run migrations
-        $this->info('Running migrations..');
+        $this->info("{$this->processStep}) - Running migrations..");
         Artisan::call('migrate:fresh');
-    }
 
-    private function cleanLaravelStubs(): void
-    {
-        // Remove default plain Laravel stubs
-        $this->info('Cleaning default stubs..');
-        if (is_file(app_path('Models/User.php'))) {
-            unlink(app_path('Models/User.php'));
-        }
+        $this->processStep++;
     }
 
     private function seedData(): void
     {
-        // Create a default admin user
-        $this->info('Creating default admin user..');
-        $adminUser = $this->userService->create(
-            data: new UserDto(
-                email: config('factotum-base-config.admin_default_email'),
-                password: config('factotum-base-config.admin_default_password'),
-            )
-        );
+        $this->info("{$this->processStep}) - Seeding database..");
+        $this->call('db:seed', [
+            '--class' => DatabaseSeeder::class,
+        ]);
 
-        $adminRole = Role::create(['name' => 'admin']);
-        Permission::create(['name' => 'can_edit_users']);
+        $this->processStep++;
+    }
 
-        $adminRole->givePermissionTo('can_edit_users');
-        $adminUser->assignRole('admin');
+    private function publishVendorMigrations(): void
+    {
+        $this->info("{$this->processStep}) - Publish required vendor migrations..");
 
-        // Create settings
-        $this->info('Creating default settings..');
-        $this->settingService->create(
-            data: new SettingDto(
-                type: SettingType::SYSTEM,
-                data_type: SettingDataType::INTEGER,
-                group: BaseSettingGroup::MEDIA,
-                key: BaseSetting::THUMB_SIZE_WIDTH,
-                value: 50,
-            )
-        );
+        $this->call('vendor:publish', ['--provider' => 'Laravel\Sanctum\SanctumServiceProvider', '--tag' => 'sanctum-migrations']);
+        $this->call('vendor:publish', ['--provider' => 'Spatie\MediaLibrary\MediaLibraryServiceProvider', '--tag' => 'medialibrary-migrations']);
+        $this->call('vendor:publish', ['--provider' => 'Spatie\TranslationLoader\TranslationServiceProvider', '--tag' => 'translation-loader-migrations']);
+        $this->call('vendor:publish', ['--provider' => 'Spatie\Permission\PermissionServiceProvider', '--tag' => 'permission-migrations']);
 
-        $setting = $this->settingService->create(
-            data: new SettingDto(
-                type: SettingType::SYSTEM,
-                data_type: SettingDataType::JSON,
-                group: BaseSettingGroup::MEDIA,
-                key: BaseSetting::THUMB_QUALITY,
-                value: json_encode(['jpg' => 90, 'png' => 9])
-            )
-        );
+        $this->processStep++;
+    }
 
-        $adminUser->settings()->attach($setting->id, ['value' => 90]);
+    private function setUpEnvironment()
+    {
+        // Clear previous and Laravel default published migrations
+        $directory = database_path('migrations');
+        File::delete(File::allFiles($directory));
+
+        // Clear previous and Laravel default models
+        $directory = app_path('Models');
+        File::delete(File::allFiles($directory));
+
+        // Set up default Auth user model
+        // todo:: da implementare
+        //        if ( !is_subclass_of(config('auth.providers.users.model'), User::class) ) {
+        //            $this->mergeConfigFrom(
+        //                __DIR__ . '/../../config/auth-providers.php',
+        //                'auth.providers'
+        //            );
+        //        }
     }
 }
