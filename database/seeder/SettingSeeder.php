@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Models\User;
+use Wave8\Factotum\Base\Types\Setting;
 use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingGroupType;
-use Wave8\Factotum\Base\Types\SettingType;
-use Wave8\Factotum\Base\Types\SettingTypeType;
+use Wave8\Factotum\Base\Types\SettingGroup;
+use Wave8\Factotum\Base\Types\SettingScope;
 
 class SettingSeeder extends Seeder
 {
@@ -28,20 +28,20 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: CreateSettingDto::make(
-                type: SettingTypeType::SYSTEM,
+                scope: SettingScope::SYSTEM,
                 data_type: SettingDataType::STRING,
-                group: SettingGroupType::AUTH,
-                key: SettingType::AUTH_TYPE,
+                group: SettingGroup::AUTH,
+                key: Setting::AUTH_TYPE,
                 value: 'basic',
             )
         );
 
         $this->settingService->create(
             data: CreateSettingDto::make(
-                type: SettingTypeType::SYSTEM,
+                scope: SettingScope::SYSTEM,
                 data_type: SettingDataType::STRING,
-                group: SettingGroupType::AUTH,
-                key: SettingType::AUTH_BASIC_IDENTIFIER,
+                group: SettingGroup::AUTH,
+                key: Setting::AUTH_BASIC_IDENTIFIER,
                 value: 'email',
             )
         );

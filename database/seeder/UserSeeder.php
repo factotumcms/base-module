@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
 use Wave8\Factotum\Base\Dto\User\CreateUserDto;
 use Wave8\Factotum\Base\Models\User;
-use Wave8\Factotum\Base\Types\RoleType;
+use Wave8\Factotum\Base\Types\Role;
 
 class UserSeeder extends Seeder
 {
@@ -34,6 +34,6 @@ class UserSeeder extends Seeder
             )
         );
 
-        $adminUser->assignRole(RoleType::ADMIN);
+        $adminUser->assignRole(Role::ADMIN);
     }
 }

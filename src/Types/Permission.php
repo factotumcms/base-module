@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Types;
 
 use Wave8\Factotum\Base\Traits\ListCases;
 
-enum PermissionType: string
+enum Permission: string
 {
     use ListCases;
     case EDIT_USER = 'edit_user';

@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Wave8\Factotum\Base\Contracts\Services\AuthServiceInterface;
 use Wave8\Factotum\Base\Dto\User\CreateUserDto;
 use Wave8\Factotum\Base\Models\User;
-use Wave8\Factotum\Base\Types\SettingGroupType;
-use Wave8\Factotum\Base\Types\SettingType;
+use Wave8\Factotum\Base\Types\Setting as SettingType;
+use Wave8\Factotum\Base\Types\SettingGroup;
 
 class AuthService implements AuthServiceInterface
 {
@@ -28,7 +28,7 @@ class AuthService implements AuthServiceInterface
 
             $identifier = $this->settingService->getSystemSettingValue(
                 key: SettingType::AUTH_BASIC_IDENTIFIER,
-                group: SettingGroupType::AUTH,
+                group: SettingGroup::AUTH,
             );
 
             if (! Auth::attempt($data->only($identifier, 'password')->toArray())) {

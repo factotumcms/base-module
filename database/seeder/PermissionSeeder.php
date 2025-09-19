@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dto\Permission\CreatePermissionDto;
-use Wave8\Factotum\Base\Types\PermissionType;
+use Wave8\Factotum\Base\Types\Permission;
 
 class PermissionSeeder extends Seeder
 {
@@ -28,7 +28,7 @@ class PermissionSeeder extends Seeder
             'name' => 'admin',
         ])->firstOrFail();
 
-        foreach (PermissionType::getValues() as $permission) {
+        foreach (Permission::getValues() as $permission) {
             $this->permissionService->create(
                 data: CreatePermissionDto::make(
                     name: $permission

@@ -10,10 +10,10 @@ use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Dto\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Models\Setting;
+use Wave8\Factotum\Base\Types\Setting as SettingType;
 use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingGroupType;
-use Wave8\Factotum\Base\Types\SettingType;
-use Wave8\Factotum\Base\Types\SettingTypeType;
+use Wave8\Factotum\Base\Types\SettingGroup;
+use Wave8\Factotum\Base\Types\SettingScope;
 
 class SettingService implements SettingServiceInterface
 {
@@ -42,14 +42,14 @@ class SettingService implements SettingServiceInterface
     public function getSystemSettings(): Collection
     {
         return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
-            return Setting::where('type', SettingTypeType::SYSTEM)->get();
+            return Setting::where('scope', SettingScope::SYSTEM)->get();
         });
     }
 
     /**
      * @throws \Exception
      */
-    public function getSystemSettingValue(SettingType $key, SettingGroupType $group = SettingGroupType::MEDIA): mixed
+    public function getSystemSettingValue(SettingType $key, SettingGroup $group = SettingGroup::MEDIA): mixed
     {
         $setting = $this->getSystemSettings()
             ->where('key', $key)

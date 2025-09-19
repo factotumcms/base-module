@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
-use Wave8\Factotum\Base\Types\RoleType;
+use Wave8\Factotum\Base\Types\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -22,7 +22,7 @@ class RoleSeeder extends Seeder
         // Create admin default user
         Log::info('Creating default roles..');
 
-        foreach (RoleType::getValues() as $role) {
+        foreach (Role::getValues() as $role) {
             $this->roleService->create(
                 data: CreateRoleDto::make(
                     name: $role

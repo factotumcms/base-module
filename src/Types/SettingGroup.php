@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Types;
 
 use Wave8\Factotum\Base\Traits\ListCases;
 
-enum SettingGroupType: string
+enum SettingGroup: string
 {
     use ListCases;
 

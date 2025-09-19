@@ -9,7 +9,7 @@ use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dto\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Models\Role;
-use Wave8\Factotum\Base\Types\PermissionType;
+use Wave8\Factotum\Base\Types\Permission;
 
 class RoleService implements RoleServiceInterface
 {
@@ -74,7 +74,7 @@ class RoleService implements RoleServiceInterface
     }
 
     /**
-     * @param  \Illuminate\Support\Collection<PermissionType>  $permissions
+     * @param  \Illuminate\Support\Collection<Permission>  $permissions
      */
     public function assignPermissions(int $roleId, \Illuminate\Support\Collection $permissions): Model
     {

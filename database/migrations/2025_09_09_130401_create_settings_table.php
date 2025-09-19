@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->string('scope');
             $table->string('data_type');
             $table->string('group');
             $table->string('key');
             $table->text('value')->nullable();
             $table->timestamps();
 
-            $table->unique(['key', 'type', 'group']);
+            $table->unique(['key', 'scope', 'group']);
         });
 
         Schema::create('setting_user', function (Blueprint $table) {

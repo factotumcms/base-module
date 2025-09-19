@@ -4,11 +4,11 @@ namespace Wave8\Factotum\Base\Services;
 
 use Spatie\TranslationLoader\LanguageLine;
 use Wave8\Factotum\Base\Contracts\Services\LanguageServiceInterface;
-use Wave8\Factotum\Base\Types\LocaleType;
+use Wave8\Factotum\Base\Types\Locale;
 
 class LanguageService implements LanguageServiceInterface
 {
-    public function updateByLocale(LocaleType $locale, string $group, string $key, string $data): void
+    public function updateByLocale(Locale $locale, string $group, string $key, string $data): void
     {
         // todo:: cambiare gli argomenti con un dto
 

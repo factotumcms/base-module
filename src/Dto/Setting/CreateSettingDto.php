@@ -3,30 +3,30 @@
 namespace Wave8\Factotum\Base\Dto\Setting;
 
 use Spatie\LaravelData\Data;
+use Wave8\Factotum\Base\Types\Setting;
 use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingGroupType;
-use Wave8\Factotum\Base\Types\SettingType;
-use Wave8\Factotum\Base\Types\SettingTypeType;
+use Wave8\Factotum\Base\Types\SettingGroup;
+use Wave8\Factotum\Base\Types\SettingScope;
 
 class CreateSettingDto extends Data
 {
     public function __construct(
-        public SettingTypeType $type,
+        public SettingScope $scope,
         public SettingDataType $data_type,
-        public SettingGroupType $group,
-        public SettingType $key,
+        public SettingGroup $group,
+        public Setting $key,
         public ?string $value = null,
     ) {}
 
     public static function make(
-        SettingTypeType $type,
+        SettingScope $scope,
         SettingDataType $data_type,
-        SettingGroupType $group,
-        SettingType $key,
+        SettingGroup $group,
+        Setting $key,
         ?string $value = null,
     ): static {
         return new static(
-            type: $type,
+            scope: $scope,
             data_type: $data_type,
             group: $group,
             key: $key,

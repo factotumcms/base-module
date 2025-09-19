@@ -4,10 +4,9 @@ namespace Wave8\Factotum\Base\Types;
 
 use Wave8\Factotum\Base\Traits\ListCases;
 
-enum SettingTypeType: string
+enum Role: string
 {
     use ListCases;
-
-    case SYSTEM = 'system';
-    case USER = 'user';
+    case ADMIN = 'admin';
+    case EDITOR = 'editor';
 }
