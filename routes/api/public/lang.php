@@ -9,6 +9,6 @@ Route::get('/testLocale', function (Request $request) {
 
     $service = app()->make(LanguageService::class);
 
-    $service->updateByLocale(Locale::en_GB, 'auth', 'argomento', 'Test api inglese');
+    $service->registerLine(Locale::en_GB, 'auth', 'argomento', 'Test api inglese');
 
 });

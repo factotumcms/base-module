@@ -4,21 +4,32 @@ namespace Wave8\Factotum\Base\Services;
 
 use Spatie\TranslationLoader\LanguageLine;
 use Wave8\Factotum\Base\Contracts\Services\LanguageServiceInterface;
-use Wave8\Factotum\Base\Types\Locale;
+use Wave8\Factotum\Base\Dto\Language\RegisterLineDto;
 
 class LanguageService implements LanguageServiceInterface
 {
-    public function updateByLocale(Locale $locale, string $group, string $key, string $data): void
+    /**
+     * Register a new language line or update an existing one for a specific locale.
+     *
+     * @param  RegisterLineDto  $data  The data transfer object containing the language line details.
+     */
+    public function registerLine(RegisterLineDto $data): void
     {
-        // todo:: cambiare gli argomenti con un dto
+        $line = LanguageLine::where('group', $data->group)
+            ->where('key', $data->key)
+            ->first();
 
-        $line = LanguageLine::where('group', $group)
-            ->where('key', $key)
-            ->firstOrFail();
+        if (! $line) {
+            $line = LanguageLine::create([
+                'group' => $data->group,
+                'key' => $data->key,
+                'text' => [],
+            ]);
+        }
 
         $text = $line->text;
 
-        $text[$locale->value] = $data;
+        $text[$data->locale->value] = $data->line;
 
         $line->text = $text;
 
