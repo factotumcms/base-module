@@ -4,6 +4,7 @@ namespace Wave8\Factotum\Base\Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Database\Seeder\DatabaseSeeder;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Providers\ModuleServiceProvider;
@@ -18,6 +19,7 @@ abstract class TestCase extends BaseTestCase
     {
         return [
             ModuleServiceProvider::class,
+            TranslationServiceProvider::class,
         ];
     }
 

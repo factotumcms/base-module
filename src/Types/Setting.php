@@ -14,4 +14,6 @@ enum Setting: string
     case THUMB_SIZE_HEIGHT = 'thumb_size_height';
     case THUMB_QUALITY = 'thumb_quality';
     case RESIZE_QUALITY = 'resize_quality';
+    case LOCALE_DEFAULT = 'locale_default';
+    case LOCALE_AVAILABLE = 'locale_available';
 }

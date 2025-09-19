@@ -10,22 +10,25 @@ class ModuleServiceProvider extends LaravelServiceProvider
 {
     public function register(): void
     {
+        // Register DI services
         $this->app->register(AppServiceProvider::class);
+
+        // Register app required service providers
         $this->app->register(ConfigServiceProvider::class);
         $this->app->register(LangServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
 
-        $this->registerCommands();
-
-        $this->loadTranslationsFrom(__DIR__.'/../../lang');
-
+        // Register third party service providers
         $this->app->register(TranslationServiceProvider::class);
 
+        // Register commands
+        $this->registerCommands();
     }
 
     public function boot(): void
     {
         $this->registerMigrations();
+        $this->registerTranslations();
     }
 
     public function registerCommands(): void
@@ -35,8 +38,13 @@ class ModuleServiceProvider extends LaravelServiceProvider
         ]);
     }
 
-    public function registerMigrations(): void
+    private function registerMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+    }
+
+    private function registerTranslations(): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../../lang');
     }
 }
