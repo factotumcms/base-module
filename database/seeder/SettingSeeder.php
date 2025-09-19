@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Models\User;
-use Wave8\Factotum\Base\Types\Locale;
-use Wave8\Factotum\Base\Types\Setting;
-use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingGroup;
-use Wave8\Factotum\Base\Types\SettingScope;
+use Wave8\Factotum\Base\Enum\Locale;
+use Wave8\Factotum\Base\Enum\Setting;
+use Wave8\Factotum\Base\Enum\SettingDataType;
+use Wave8\Factotum\Base\Enum\SettingGroup;
+use Wave8\Factotum\Base\Enum\SettingScope;
 
 class SettingSeeder extends Seeder
 {

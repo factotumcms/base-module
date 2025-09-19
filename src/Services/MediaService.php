@@ -17,7 +17,7 @@ class MediaService implements MediaServiceInterface
         $mediaAssets->media_id = $media->id;
         $mediaAssets->save();
 
-        $model->mediaAssets()->attach($mediaAssets->id);
+        $model?->mediassets()->attach($mediaAssets->id);
 
         $mediaAssets->media_id = $media->id;
         $mediaAssets->save();

@@ -24,7 +24,8 @@ Descrizione progetto ...
 
 # Getting Started
 Installation process
-1. composer require wave8/factotum-base
+1. composer create-project laravel/laravel . "^12.0.0"
+2. composer require wave8/factotum-base
 3. php artisan migrate
 
 # Build and Test

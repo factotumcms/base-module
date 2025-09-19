@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Wave8\Factotum\Base\Services\LanguageService;
-use Wave8\Factotum\Base\Types\Locale;
+use Wave8\Factotum\Base\Enum\Locale;
 
 Route::get('/testLocale', function (Request $request) {
 

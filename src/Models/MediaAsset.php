@@ -28,6 +28,6 @@ class MediaAsset extends Model implements HasMedia
     {
         return $this->morphedByMany(
             User::class, 'model', 'media_asset_model', 'media_asset_id', 'model_id'
-        );
+        )->withTimestamps();
     }
 }

@@ -10,10 +10,10 @@ use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Dto\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Models\Setting;
-use Wave8\Factotum\Base\Types\Setting as SettingType;
-use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingGroup;
-use Wave8\Factotum\Base\Types\SettingScope;
+use Wave8\Factotum\Base\Enum\Setting as SettingType;
+use Wave8\Factotum\Base\Enum\SettingDataType;
+use Wave8\Factotum\Base\Enum\SettingGroup;
+use Wave8\Factotum\Base\Enum\SettingScope;
 
 class SettingService implements SettingServiceInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Types;
+namespace Wave8\Factotum\Base\Enum;
 
 use Wave8\Factotum\Base\Traits\ListCases;
 
