@@ -35,7 +35,7 @@ final readonly class MediaController
     {
         $media = $this->mediaService->show($id);
 
-        $file = Storage::disk($media->disk)->path('images/'.$media->file_name);
+        $file = Storage::disk($media->disk)->path($media->path.'/'.$media->file_name);
 
         return response()->file(
             $file,
