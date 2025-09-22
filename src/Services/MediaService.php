@@ -2,31 +2,109 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
-use Wave8\Factotum\Base\Models\MediaAsset;
+use Wave8\Factotum\Base\Dto\Media\CreateImageDto;
+use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
+use Wave8\Factotum\Base\Models\Media;
 
 class MediaService implements MediaServiceInterface
 {
-    public function storeFromRequest(?Model $model)
+    /**
+     * @throws \Exception
+     */
+    public function store(StoreFileDto $data): bool|string
     {
-        $mediaAssets = new MediaAsset;
 
-        $media = $mediaAssets->addMediaFromRequest('file')->toMediaCollection('images');
+        $metadata = $this->generateFileMetadata($data->file);
 
-        $mediaAssets->media_id = $media->id;
-        $mediaAssets->save();
+        $this->checkFileNameConflict($metadata['filename']);
 
-        $model?->mediassets()->attach($mediaAssets->id);
+        $storedFilename = $data->file->storeAs(
+            path: $data->path,
+            name: $metadata['filename'],
+            options: ['disk' => $data->disk->value]
+        );
 
-        $mediaAssets->media_id = $media->id;
-        $mediaAssets->save();
+        if ($storedFilename) {
+            $this->create(
+                data: CreateImageDto::make(
+                    name: $metadata['original_filename'],
+                    file_name: $metadata['filename'],
+                    mime_type: $metadata['mime_type'],
+                    disk: $data->disk,
+                    path: $data->path,
+                    conversions_disk: $data->disk,
+                    conversions_path: $data->conversions_path,
+                    size: $metadata['size'],
+                )
+            );
+        }
+
+        return $storedFilename;
     }
 
-    public function retrieveByUuid(string $uuid): MediaAsset
+    private function generateFileMetadata(UploadedFile $file): array
     {
-        return MediaAsset::whereHas('media', function ($query) use ($uuid) {
-            $query->where('uuid', $uuid);
-        })->firstOrFail();
+        $metadata = [
+            'mime_type' => $file->getClientMimeType(),
+            'original_filename' => $file->getClientOriginalName(),
+            'size' => $file->getSize(),
+        ];
+
+        $metadata['extension'] = $file->getClientOriginalExtension();
+
+        $tempFilename = Str::slug(explode('.', $metadata['original_filename'])[0]);
+
+        $metadata['filename'] = $tempFilename.'.'.$metadata['extension'];
+
+        return $metadata;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function checkFileNameConflict(string $filename): void
+    {
+        $media = Media::where('file_name', $filename)->first();
+
+        if ($media) {
+            throw new \Exception('File name conflict: '.$filename);
+        }
+    }
+
+    public function create(Data $data): Model
+    {
+
+        return Media::create($data->toArray());
+    }
+
+    public function show(int $id): ?Model
+    {
+        return Media::findOrFail($id);
+    }
+
+    public function update(int $id, Data $data): Model
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete(int $id): bool
+    {
+        // TODO: Implement delete() method.
+    }
+
+    public function getAll(): Collection
+    {
+        // TODO: Implement getAll() method.
+    }
+
+    public function filter(array $filters): Collection
+    {
+        // TODO: Implement filter() method.
     }
 }

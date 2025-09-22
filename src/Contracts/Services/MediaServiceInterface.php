@@ -2,4 +2,4 @@
 
 namespace Wave8\Factotum\Base\Contracts\Services;
 
-interface MediaServiceInterface {}
+interface MediaServiceInterface extends EntityServiceInterface {}

@@ -4,4 +4,4 @@ use Illuminate\Support\Facades\Route;
 use Wave8\Factotum\Base\Http\Controllers\Api\MediaController;
 
 Route::post('media/upload', [MediaController::class, 'upload']);
-Route::get('media/{uuid}', [MediaController::class, 'show']);
+Route::get('media/{id}', [MediaController::class, 'show']);

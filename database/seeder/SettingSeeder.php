@@ -6,12 +6,12 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Enum\Locale;
 use Wave8\Factotum\Base\Enum\Setting;
 use Wave8\Factotum\Base\Enum\SettingDataType;
 use Wave8\Factotum\Base\Enum\SettingGroup;
 use Wave8\Factotum\Base\Enum\SettingScope;
+use Wave8\Factotum\Base\Models\User;
 
 class SettingSeeder extends Seeder
 {
