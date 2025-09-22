@@ -23,14 +23,15 @@ class GenerateImagesConversions extends Command
      */
     protected $description = 'Command description';
 
-    /** @var MediaService $service */
+    /** @var MediaService */
     protected MediaServiceInterface $service;
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-//        GenerateImagesConversions::dispatch();
+        //        GenerateImagesConversions::dispatch();
 
         // ***** debug
 

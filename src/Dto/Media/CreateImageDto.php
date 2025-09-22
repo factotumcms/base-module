@@ -18,7 +18,7 @@ class CreateImageDto extends Data
         public readonly Disk $conversions_disk,
         public readonly string $conversions_path,
         public readonly int $size,
-        public readonly ?array $custom_properties = null,
+        public readonly string $custom_properties,
     ) {}
 
     public static function make(
@@ -31,7 +31,7 @@ class CreateImageDto extends Data
         Disk $conversions_disk,
         string $conversions_path,
         int $size,
-        ?array $custom_properties = null,
+        MediaCustomProperties $custom_properties,
     ): static {
         return new static(
             name: $name,
@@ -43,7 +43,7 @@ class CreateImageDto extends Data
             conversions_disk: $conversions_disk,
             conversions_path: $conversions_path,
             size: $size,
-            custom_properties: $custom_properties,
+            custom_properties: json_encode($custom_properties),
         );
     }
 }

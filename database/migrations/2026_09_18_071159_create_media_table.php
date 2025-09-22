@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid()->nullable()->unique();
             $table->string('name');
-            $table->string('file_name')->unique();
+            $table->string('file_name');
             $table->string('media_type')->index();
             $table->string('mime_type');
             $table->string('disk');
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->boolean('converted')->default(false);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['file_name', 'disk', 'path']);
         });
 
     }

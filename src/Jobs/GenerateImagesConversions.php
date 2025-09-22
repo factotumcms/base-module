@@ -30,6 +30,5 @@ class GenerateImagesConversions implements ShouldQueue
             'media_type' => MediaType::IMAGE->value,
         ]);
 
-
     }
 }

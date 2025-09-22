@@ -20,8 +20,9 @@ final readonly class MediaController
         $file = $this->mediaService->store(
             StoreFileDto::make(
                 file: $request->file('file'),
-                disk: Disk::tryFrom($request->get('disk')),
-                path: $request->get('path'),
+                disk: Disk::tryFrom($request->get('disk')) ?? null,
+                path: $request->get('path') ?? null,
+                conversions_path: $request->get('conversions_path')
             )
         );
 

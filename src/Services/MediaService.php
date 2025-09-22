@@ -5,20 +5,31 @@ namespace Wave8\Factotum\Base\Services;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Image;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
+use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dto\Media\CreateImageDto;
+use Wave8\Factotum\Base\Dto\Media\MediaCustomProperties;
 use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enum\MediaType;
+use Wave8\Factotum\Base\Enum\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
 
 class MediaService implements MediaServiceInterface
 {
+    function __construct(
+        /** @var SettingService $settingService */
+        private readonly SettingServiceInterface $settingService,
+    )
+    {
+
+    }
     public function create(Data $data): Model
     {
 
@@ -63,7 +74,7 @@ class MediaService implements MediaServiceInterface
     {
         $metadata = $this->generateFileMetadata($data->file);
 
-        $this->checkFileNameConflict($metadata['filename']);
+        $this->checkMediaUnique($metadata['filename'], $data->disk->value, $data->path);
 
         $storedFilename = $data->file->storeAs(
             path: $data->path,
@@ -83,11 +94,12 @@ class MediaService implements MediaServiceInterface
                     conversions_disk: $data->disk,
                     conversions_path: $data->conversions_path,
                     size: $metadata['size'],
+                    custom_properties: $this->setDefaultCustomProperties($metadata)
                 )
             );
 
-            if($media){
-//                GenerateImagesConversions::dispatch();
+            if ($media) {
+                //                GenerateImagesConversions::dispatch();
             }
         }
 
@@ -139,9 +151,12 @@ class MediaService implements MediaServiceInterface
      *
      * @throws \Exception
      */
-    private function checkFileNameConflict(string $filename): void
+    private function checkMediaUnique(string $filename, string $disk, string $path): void
     {
-        $media = Media::where('file_name', $filename)->first();
+        $media = Media::where('file_name', $filename)
+            ->where('disk', $disk)
+            ->where('path', $path)
+            ->first();
 
         if ($media) {
             throw new \Exception('File name conflict: '.$filename);
@@ -150,17 +165,77 @@ class MediaService implements MediaServiceInterface
 
     public function generateConversions(Model $media): void
     {
+        $props = json_decode($media->custom_properties);
 
-        $this->generateImageThumbnail($this->getFullMediaPath($media));
+        if($props->conversions->thumbnail->enabled){
+            $this->generateImageThumbnail($media);
+        }
 
+
+
+//        $media->converted = true;
+        $media->save();
     }
 
-    private function generateImageThumbnail(string $filePath): void
+    private function generateImageThumbnail(Model $media): void
     {
-        Image::load($filePath)
-            ->orientation(Orientation::Rotate90)
-            ->width(100)
-            ->height(100)
-            ->save($filePath);
+//        $basePath = Storage::disk($media->disk)->path($media->path);
+        $fileName = explode('.',  $media->file_name)[0];
+        $fileExtension = '.' . explode('.',  $media->file_name)[1];
+        $fullPath = $this->getFullMediaPath($media);
+        $props = json_decode($media->custom_properties);
+
+        $destPath = Storage::disk($media->conversions_disk)->path($media->conversions_path);
+
+        if($props->conversions->thumbnail->path){
+            $destPath .= '/'.$props->conversions->thumbnail->path;
+        }
+
+        if(!is_dir($destPath)){
+            File::makeDirectory($destPath, 0755, true);
+        }
+
+        $thumbSuffix = $this->settingService->getSystemSettingValue(Setting::THUMB_SUFFIX);
+        $destPath .= '/'.$fileName . $thumbSuffix . $fileExtension;
+
+        if(is_file($fullPath)){
+            $width = $this->settingService->getSystemSettingValue(Setting::THUMB_SIZE_WIDTH);
+            $height = $this->settingService->getSystemSettingValue(Setting::THUMB_SIZE_HEIGHT);
+
+            try {
+
+                Image::load($fullPath)
+                    ->width($width)
+                    ->height($height)
+                    ->save($destPath);
+
+            }catch (\Exception $e){
+                dd($e->getMessage());
+            }
+        }
+    }
+
+    private function setDefaultCustomProperties(array $metadata): MediaCustomProperties
+    {
+        switch ($this->detectMediaType($metadata['mime_type'])) {
+            case MediaType::IMAGE:
+                return MediaCustomProperties::make(
+                    alt: $metadata['original_filename'],
+                    title: $metadata['original_filename'],
+                    conversions: [
+                        'thumbnail' => [
+                            'enabled' => true,
+                            //todo:: usare config
+                            'path' => 'thumb',
+                        ],
+                        'greyscale' => false,
+                        'blur' => false,
+                    ]
+                );
+
+            default:
+                return MediaCustomProperties::make();
+
+        }
     }
 }

@@ -66,5 +66,45 @@ class SettingSeeder extends Seeder
                 value: json_encode(Locale::getValues()),
             )
         );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::INTEGER,
+                group: SettingGroup::MEDIA,
+                key: Setting::THUMB_SIZE_WIDTH,
+                value: 100,
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::INTEGER,
+                group: SettingGroup::MEDIA,
+                key: Setting::THUMB_SIZE_HEIGHT,
+                value: 100,
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::STRING,
+                group: SettingGroup::MEDIA,
+                key: Setting::THUMB_PATH,
+                value: 'thumbs',
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::STRING,
+                group: SettingGroup::MEDIA,
+                key: Setting::THUMB_SUFFIX,
+                value: '_thumb',
+            )
+        );
     }
 }
