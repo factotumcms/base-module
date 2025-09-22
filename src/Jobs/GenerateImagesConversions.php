@@ -15,20 +15,24 @@ class GenerateImagesConversions implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(
-        /** @var MediaService */
-        private MediaServiceInterface $service,
-    ) {}
+    public function __construct() {}
 
     /**
      * Execute the job.
      */
     public function handle(): void
     {
-        $media = $this->service->filter([
+        /** @var MediaService $mediaService */
+        $mediaService = app()->make(MediaServiceInterface::class);
+
+        $media = $mediaService->filter([
             'converted' => false,
             'media_type' => MediaType::IMAGE->value,
         ]);
+
+        foreach ($media as $item) {
+            $mediaService->generateConversions($item);
+        }
 
     }
 }

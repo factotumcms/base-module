@@ -10,7 +10,7 @@ class StoreFileDto extends Data
 {
     public function __construct(
         public readonly UploadedFile $file,
-        public readonly ?Disk $disk = Disk::PUBLIC,
+        public readonly ?Disk $disk,
         public readonly ?string $path,
         public readonly ?string $conversions_path,
     ) {}

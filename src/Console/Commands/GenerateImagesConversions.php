@@ -4,7 +4,6 @@ namespace Wave8\Factotum\Base\Console\Commands;
 
 use Illuminate\Console\Command;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
-use Wave8\Factotum\Base\Enum\MediaType;
 use Wave8\Factotum\Base\Services\MediaService;
 
 class GenerateImagesConversions extends Command
@@ -31,20 +30,6 @@ class GenerateImagesConversions extends Command
      */
     public function handle()
     {
-        //        GenerateImagesConversions::dispatch();
-
-        // ***** debug
-
-        $this->service = app()->make(MediaServiceInterface::class);
-        $media = $this->service->filter([
-            'converted' => false,
-            'media_type' => MediaType::IMAGE->value,
-        ]);
-
-        foreach ($media as $item) {
-            $this->service->generateConversions($item);
-        }
-
-        // -------
+        GenerateImagesConversions::dispatch()->withoutOverlapping();
     }
 }
