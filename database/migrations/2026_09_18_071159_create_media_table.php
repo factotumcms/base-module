@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid()->nullable()->unique();
             $table->string('name');
             $table->string('file_name')->unique();
+            $table->string('media_type')->index();
             $table->string('mime_type');
             $table->string('disk');
             $table->string('path');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->string('conversions_path')->nullable();
             $table->unsignedBigInteger('size');
             $table->longText('custom_properties')->nullable();
+            $table->boolean('converted')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -2,7 +2,6 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Storage;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
 use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enum\Disk;
@@ -35,11 +34,9 @@ final readonly class MediaController
     {
         $media = $this->mediaService->show($id);
 
-        $file = Storage::disk($media->disk)->path($media->path.'/'.$media->file_name);
-
         return response()->file(
-            $file,
-            ['Content-Type' => 'image/jpeg']
+            $this->mediaService->getFullMediaPath($media),
+            ['Content-Type' => $media->mime_type]
         );
 
     }
