@@ -13,14 +13,13 @@ class Media extends Model
         'uuid',
         'name',
         'file_name',
-        'media_type',
         'mime_type',
+        'media_type',
+        'presets',
         'disk',
         'path',
-        'conversions_disk',
-        'conversions_path',
         'size',
         'custom_properties',
-        'converted',
+        'conversions',
     ];
 }

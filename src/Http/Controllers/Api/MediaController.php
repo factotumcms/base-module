@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
 use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
-use Wave8\Factotum\Base\Enum\Disk;
+use Wave8\Factotum\Base\Enum\MediaPreset;
 use Wave8\Factotum\Base\Http\Requests\Api\Media\UploadMediaRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 
@@ -20,9 +20,7 @@ final readonly class MediaController
         $file = $this->mediaService->store(
             StoreFileDto::make(
                 file: $request->file('file'),
-                disk: Disk::tryFrom($request->get('disk')) ?? null,
-                path: $request->get('path') ?? null,
-                conversions_path: $request->get('conversions_path')
+                presets: [MediaPreset::PROFILE_PICTURE]
             )
         );
 

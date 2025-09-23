@@ -11,8 +11,5 @@ enum MediaType: string
     case VIDEO = 'video';
     case AUDIO = 'audio';
     case PDF = 'pdf';
-    case XLS = 'xls';
-    case XLSX = 'xlsx';
-    case CSV = 'csv';
-    case WORD = 'word';
+    case FILE = 'file';
 }

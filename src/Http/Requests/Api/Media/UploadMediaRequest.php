@@ -24,9 +24,6 @@ class UploadMediaRequest extends FormRequest
     {
         return [
             'file' => ['file', 'required'],
-            'disk' => ['sometimes', 'string', 'in:public,local,s3'],
-            'path' => ['sometimes', 'string'],
-            'conversions_path' => ['sometimes', 'string'],
         ];
     }
 }

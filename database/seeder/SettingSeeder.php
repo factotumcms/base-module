@@ -5,7 +5,9 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
+use Wave8\Factotum\Base\Dto\Media\MediaPresetConfigDto;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Enum\Disk;
 use Wave8\Factotum\Base\Enum\Locale;
 use Wave8\Factotum\Base\Enum\Setting;
 use Wave8\Factotum\Base\Enum\SettingDataType;
@@ -70,20 +72,12 @@ class SettingSeeder extends Seeder
         $this->settingService->create(
             data: CreateSettingDto::make(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::INTEGER,
+                data_type: SettingDataType::JSON,
                 group: SettingGroup::MEDIA,
-                key: Setting::THUMB_SIZE_WIDTH,
-                value: 100,
-            )
-        );
-
-        $this->settingService->create(
-            data: CreateSettingDto::make(
-                scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::INTEGER,
-                group: SettingGroup::MEDIA,
-                key: Setting::THUMB_SIZE_HEIGHT,
-                value: 100,
+                key: Setting::PROFILE_PICTURE_PRESET,
+                value: json_encode(MediaPresetConfigDto::make(
+                    width: 200, height: 200, fit: 'crop', position: 'center'
+                )),
             )
         );
 
@@ -92,8 +86,8 @@ class SettingSeeder extends Seeder
                 scope: SettingScope::SYSTEM,
                 data_type: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
-                key: Setting::THUMB_PATH,
-                value: 'thumbs',
+                key: Setting::DEFAULT_MEDIA_DISK,
+                value: Disk::PUBLIC->value,
             )
         );
 
@@ -102,8 +96,8 @@ class SettingSeeder extends Seeder
                 scope: SettingScope::SYSTEM,
                 data_type: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
-                key: Setting::THUMB_SUFFIX,
-                value: '_thumb',
+                key: Setting::MEDIA_BASE_PATH,
+                value: 'media',
             )
         );
     }

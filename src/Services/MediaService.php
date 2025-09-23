@@ -8,14 +8,14 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Image;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
-use Wave8\Factotum\Base\Dto\Media\CreateImageDto;
-use Wave8\Factotum\Base\Dto\Media\MediaCustomProperties;
+use Wave8\Factotum\Base\Dto\Media\CreateMediaDto;
+use Wave8\Factotum\Base\Dto\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
+use Wave8\Factotum\Base\Enum\Disk;
 use Wave8\Factotum\Base\Enum\MediaType;
 use Wave8\Factotum\Base\Enum\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
@@ -23,16 +23,13 @@ use Wave8\Factotum\Base\Models\Media;
 
 class MediaService implements MediaServiceInterface
 {
-    function __construct(
+    public function __construct(
         /** @var SettingService $settingService */
         private readonly SettingServiceInterface $settingService,
-    )
-    {
+    ) {}
 
-    }
     public function create(Data $data): Model
     {
-
         return Media::create($data->toArray());
     }
 
@@ -73,34 +70,34 @@ class MediaService implements MediaServiceInterface
     public function store(StoreFileDto $data): bool|string
     {
         $metadata = $this->generateFileMetadata($data->file);
+        $presetConfigs = $this->getPresetsConfigs($data);
+        $mediaBasePath = $this->generateMediaPath();
+        $disk = Disk::tryFrom($this->settingService->getSystemSettingValue(Setting::DEFAULT_MEDIA_DISK));
 
-        $this->checkMediaUnique($metadata['filename'], $data->disk->value, $data->path);
+        $this->checkMediaUnique($metadata['filename'], $disk->value, $mediaBasePath);
 
         $storedFilename = $data->file->storeAs(
-            path: $data->path,
+            path: $mediaBasePath,
             name: $metadata['filename'],
-            options: ['disk' => $data->disk->value]
+            options: ['disk' => $disk->value]
         );
 
         if ($storedFilename) {
-            $media = $this->create(
-                data: CreateImageDto::make(
+            $this->create(
+                data: CreateMediaDto::make(
                     name: $metadata['original_filename'],
                     file_name: $metadata['filename'],
                     mime_type: $metadata['mime_type'],
                     media_type: $this->detectMediaType($metadata['mime_type']),
-                    disk: $data->disk,
-                    path: $data->path,
-                    conversions_disk: $data->disk,
-                    conversions_path: $data->conversions_path,
+                    presets: json_encode(array_keys($presetConfigs)),
+                    disk: $disk,
+                    path: $mediaBasePath,
                     size: $metadata['size'],
-                    custom_properties: $this->setDefaultCustomProperties($metadata)
+                    custom_properties: json_encode($this->setDefaultCustomProperties($metadata))
                 )
             );
 
-            if ($media) {
-                //                GenerateImagesConversions::dispatch();
-            }
+            //            GenerateImagesConversions::dispatch();
         }
 
         return $storedFilename;
@@ -121,8 +118,8 @@ class MediaService implements MediaServiceInterface
             'audio/mpeg' => MediaType::AUDIO,
             'audio/wav' => MediaType::AUDIO,
             'application/pdf' => MediaType::PDF,
-            'application/msword' => MediaType::WORD,
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => MediaType::XLSX,
+            'application/msword' => MediaType::FILE,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => MediaType::FILE,
             default => throw new \Exception('Unsupported media type: '.$mimeType),
         };
 
@@ -131,14 +128,14 @@ class MediaService implements MediaServiceInterface
     private function generateFileMetadata(UploadedFile $file): array
     {
         $metadata = [
-            'mime_type' => $file->getClientMimeType(),
+            'mime_type' => $file->getMimeType(),
             'original_filename' => $file->getClientOriginalName(),
             'size' => $file->getSize(),
         ];
 
         $metadata['extension'] = $file->getClientOriginalExtension();
 
-        $tempFilename = Str::slug(explode('.', $metadata['original_filename'])[0]);
+        $tempFilename = Str::slug(File::name($metadata['original_filename']));
 
         $metadata['filename'] = $tempFilename.'.'.$metadata['extension'];
 
@@ -167,38 +164,36 @@ class MediaService implements MediaServiceInterface
     {
         $props = json_decode($media->custom_properties);
 
-        if($props->conversions->thumbnail->enabled){
+        if ($props->conversions->thumbnail->enabled) {
             $this->generateImageThumbnail($media);
         }
 
+        $media->converted = true;
 
-
-//        $media->converted = true;
         $media->save();
     }
 
     private function generateImageThumbnail(Model $media): void
     {
-//        $basePath = Storage::disk($media->disk)->path($media->path);
-        $fileName = explode('.',  $media->file_name)[0];
-        $fileExtension = '.' . explode('.',  $media->file_name)[1];
+        $fileName = File::name($media->file_name);
+        $fileExtension = '.'.explode('.', $media->file_name)[1];
         $fullPath = $this->getFullMediaPath($media);
         $props = json_decode($media->custom_properties);
 
         $destPath = Storage::disk($media->conversions_disk)->path($media->conversions_path);
 
-        if($props->conversions->thumbnail->path){
+        if ($props->conversions->thumbnail->path) {
             $destPath .= '/'.$props->conversions->thumbnail->path;
         }
 
-        if(!is_dir($destPath)){
+        if (! is_dir($destPath)) {
             File::makeDirectory($destPath, 0755, true);
         }
 
         $thumbSuffix = $this->settingService->getSystemSettingValue(Setting::THUMB_SUFFIX);
-        $destPath .= '/'.$fileName . $thumbSuffix . $fileExtension;
+        $destPath .= '/'.$fileName.$thumbSuffix.$fileExtension;
 
-        if(is_file($fullPath)){
+        if (is_file($fullPath)) {
             $width = $this->settingService->getSystemSettingValue(Setting::THUMB_SIZE_WIDTH);
             $height = $this->settingService->getSystemSettingValue(Setting::THUMB_SIZE_HEIGHT);
 
@@ -209,33 +204,49 @@ class MediaService implements MediaServiceInterface
                     ->height($height)
                     ->save($destPath);
 
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 dd($e->getMessage());
             }
         }
     }
 
-    private function setDefaultCustomProperties(array $metadata): MediaCustomProperties
+    private function setDefaultCustomProperties(array $metadata): MediaCustomPropertiesDto
     {
         switch ($this->detectMediaType($metadata['mime_type'])) {
             case MediaType::IMAGE:
-                return MediaCustomProperties::make(
+                return MediaCustomPropertiesDto::make(
                     alt: $metadata['original_filename'],
                     title: $metadata['original_filename'],
-                    conversions: [
-                        'thumbnail' => [
-                            'enabled' => true,
-                            //todo:: usare config
-                            'path' => 'thumb',
-                        ],
-                        'greyscale' => false,
-                        'blur' => false,
-                    ]
                 );
 
             default:
-                return MediaCustomProperties::make();
+                return MediaCustomPropertiesDto::make();
 
         }
+    }
+
+    private function getPresetsConfigs($data): array
+    {
+        $configs = [];
+
+        foreach ($data->presets as $preset) {
+
+            $config = $this->settingService->getSystemSettingValue(Setting::from($preset->value));
+            if (isset($config)) {
+                $configs[$preset->value] = $config;
+            }
+        }
+
+        return $configs;
+    }
+
+    private function generateMediaPath(): string
+    {
+        $basePath = $this->settingService->getSystemSettingValue(Setting::MEDIA_BASE_PATH);
+
+        return implode(DIRECTORY_SEPARATOR, [
+            $basePath, date('Y'), date('m'), date('d'),
+        ]);
+
     }
 }
