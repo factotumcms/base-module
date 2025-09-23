@@ -63,11 +63,11 @@ class RoleService implements RoleServiceInterface
 
     public function filter(array $filters): Collection
     {
-        // todo:: tipizzare i filters con un dto
         $query = Role::query();
 
-        foreach ($filters as $key => $value) {
-            $query->where($key, $value);
+        foreach ($filters as $filter) {
+            [$key, $condition, $value] = $filter;
+            $query->where($key, $condition, $value);
         }
 
         return $query->get();

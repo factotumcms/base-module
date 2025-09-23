@@ -61,8 +61,9 @@ class MediaService implements MediaServiceInterface
     {
         $query = Media::query();
 
-        foreach ($filters as $key => $value) {
-            $query->where($key, $value);
+        foreach ($filters as $filter) {
+            [$key, $condition, $value] = $filter;
+            $query->where($key, $condition, $value);
         }
 
         return $query->get();

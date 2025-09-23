@@ -25,11 +25,10 @@ class GenerateImagesConversions implements ShouldQueue
         /** @var MediaService $mediaService */
         $mediaService = app()->make(MediaServiceInterface::class);
 
-        // todo:: gestire il not null nei filter
         $media = $mediaService->filter([
-            //            'presets' => '!= null',
-            'conversions' => null,
-            'media_type' => MediaType::IMAGE->value,
+            ['presets', '!=', null],
+            ['conversions', '=', null],
+            ['media_type', '=', MediaType::IMAGE->value],
         ]);
 
         foreach ($media as $item) {
