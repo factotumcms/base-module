@@ -4,6 +4,7 @@ namespace Wave8\Factotum\Base\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,8 +13,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Wave8\Factotum\Base\Policies\UserPolicy;
 use Wave8\Factotum\Base\Traits\HasMediaAssets;
 
+#[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable
 {
     use HasApiTokens;

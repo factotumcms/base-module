@@ -2,12 +2,14 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Gate;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dto\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\CreateRoleRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\UpdateRoleRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Models\Role;
 use Wave8\Factotum\Base\Resources\RoleResource;
 
 final readonly class RoleController
@@ -18,6 +20,7 @@ final readonly class RoleController
 
     public function index(): ApiResponse
     {
+        Gate::authorize('read', Role::class);
         $roles = $this->roleService->getAll();
 
         return ApiResponse::make(
@@ -27,6 +30,7 @@ final readonly class RoleController
 
     public function store(CreateRoleRequest $request): ApiResponse
     {
+        Gate::authorize('create', Role::class);
         $role = $this->roleService->create(
             data: CreateRoleDto::from($request->all())
         );
@@ -38,6 +42,7 @@ final readonly class RoleController
 
     public function show(int $id): ApiResponse
     {
+        Gate::authorize('read', Role::class);
         $role = $this->roleService->show(
             id: $id
         );
@@ -49,6 +54,7 @@ final readonly class RoleController
 
     public function update(int $id, UpdateRoleRequest $request): ApiResponse
     {
+        Gate::authorize('update', Role::class);
         $role = $this->roleService->update(
             id: $id,
             data: UpdateRoleDto::from($request->all())
@@ -61,6 +67,7 @@ final readonly class RoleController
 
     public function destroy(int $id): ApiResponse
     {
+        Gate::authorize('delete', Role::class);
         $this->roleService->delete($id);
 
         return ApiResponse::make(

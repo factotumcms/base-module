@@ -76,9 +76,9 @@ class SettingSeeder extends Seeder
                 key: Setting::PROFILE_PICTURE_PRESET,
                 value: json_encode(MediaPresetConfigDto::make(
                     width: config('factotum_base_config.media.profile_picture_preset.width'),
-                    height: config('factotum_base_config.media.profile_picture_presets.height'),
+                    height: config('factotum_base_config.media.profile_picture_preset.height'),
                     fit: config('factotum_base_config.media.profile_picture_preset.fit'),
-                    position: config('factotum_base_config.media.profile_picture_presets.position'),
+                    position: config('factotum_base_config.media.profile_picture_preset.position'),
                 )),
             )
         );
