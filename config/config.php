@@ -17,6 +17,22 @@ return [
 
     'locale' => [
         'default' => env('APP_LOCALE', 'en_GB'),
-        'available' => ['it_IT', 'en_GB'],
+    ],
+
+    'media' => [
+        'disk' => env('FILESYSTEM_DISK', 'public'), // Options: public, s3, local. (must be configured in config/filesystems.php)
+        'base_path' => env('MEDIA_BASE_PATH', 'media'),
+        'profile_picture_preset' => [
+            'width' => 300,
+            'height' => 300,
+            'fit' => 'crop',
+            'position' => 'center',
+        ],
+        'thumbnail_preset' => [
+            'width' => 300,
+            'height' => 300,
+            'fit' => 'crop',
+            'position' => 'center',
+        ],
     ],
 ];
