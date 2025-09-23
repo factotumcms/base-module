@@ -26,8 +26,9 @@ class GenerateImagesConversions implements ShouldQueue
         $mediaService = app()->make(MediaServiceInterface::class);
 
         $media = $mediaService->filter([
-            'converted' => false,
-            'media_type' => MediaType::IMAGE->value,
+            ['presets', '!=', null],
+            ['conversions', '=', null],
+            ['media_type', '=', MediaType::IMAGE->value],
         ]);
 
         foreach ($media as $item) {

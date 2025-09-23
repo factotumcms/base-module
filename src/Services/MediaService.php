@@ -16,6 +16,7 @@ use Wave8\Factotum\Base\Dto\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dto\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enum\Disk;
+use Wave8\Factotum\Base\Enum\MediaPreset;
 use Wave8\Factotum\Base\Enum\MediaType;
 use Wave8\Factotum\Base\Enum\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
@@ -40,25 +41,29 @@ class MediaService implements MediaServiceInterface
 
     public function update(int $id, Data $data): Model
     {
-        // TODO: Implement update() method.
+        $media = Media::findOrFail($id);
+        $media->update($data->toArray());
+
+        return $media;
     }
 
     public function delete(int $id): bool
     {
-        // TODO: Implement delete() method.
+        return true;
     }
 
     public function getAll(): Collection
     {
-        // TODO: Implement getAll() method.
+        return Media::all();
     }
 
     public function filter(array $filters): Collection
     {
         $query = Media::query();
 
-        foreach ($filters as $key => $value) {
-            $query->where($key, $value);
+        foreach ($filters as $filter) {
+            [$key, $condition, $value] = $filter;
+            $query->where($key, $condition, $value);
         }
 
         return $query->get();
@@ -97,7 +102,7 @@ class MediaService implements MediaServiceInterface
                 )
             );
 
-            //            GenerateImagesConversions::dispatch();
+            GenerateImagesConversions::dispatch();
         }
 
         return $storedFilename;
@@ -162,52 +167,54 @@ class MediaService implements MediaServiceInterface
 
     public function generateConversions(Model $media): void
     {
-        $props = json_decode($media->custom_properties);
+        foreach (json_decode($media->presets) as $preset) {
 
-        if ($props->conversions->thumbnail->enabled) {
-            $this->generateImageThumbnail($media);
+            match ($preset) {
+                MediaPreset::PROFILE_PICTURE->value => $path = $this->generateProfilePicture($media),
+                MediaPreset::THUMBNAIL->value => $path = $this->generateImageThumbnail($media),
+            };
+
+            $conversions[$preset] = $path;
         }
 
-        $media->converted = true;
-
+        $media->conversions = json_encode($conversions);
         $media->save();
     }
 
-    private function generateImageThumbnail(Model $media): void
+    private function generateImageThumbnail(Model $media): string
     {
         $fileName = File::name($media->file_name);
-        $fileExtension = '.'.explode('.', $media->file_name)[1];
-        $fullPath = $this->getFullMediaPath($media);
-        $props = json_decode($media->custom_properties);
+        $fileExtension = '.'.File::extension($media->file_name);
 
-        $destPath = Storage::disk($media->conversions_disk)->path($media->conversions_path);
+        $fullMediaPath = $this->getFullMediaPath($media);
+        $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
 
-        if ($props->conversions->thumbnail->path) {
-            $destPath .= '/'.$props->conversions->thumbnail->path;
-        }
+        $destPath = $fullMediaDirectory.'/conversions';
 
         if (! is_dir($destPath)) {
             File::makeDirectory($destPath, 0755, true);
         }
 
-        $thumbSuffix = $this->settingService->getSystemSettingValue(Setting::THUMB_SUFFIX);
+        $thumbSuffix = '_thumb';
         $destPath .= '/'.$fileName.$thumbSuffix.$fileExtension;
 
-        if (is_file($fullPath)) {
-            $width = $this->settingService->getSystemSettingValue(Setting::THUMB_SIZE_WIDTH);
-            $height = $this->settingService->getSystemSettingValue(Setting::THUMB_SIZE_HEIGHT);
+        if (is_file($fullMediaPath)) {
+            $props = json_decode($this->settingService->getSystemSettingValue(Setting::PROFILE_PICTURE_PRESET)); // todo change to thumbnail preset
 
             try {
 
-                Image::load($fullPath)
-                    ->width($width)
-                    ->height($height)
+                Image::load($fullMediaPath)
+                    ->width($props->width)
+                    ->height($props->height)
+//                    ->fit($props['fit'], $props['position'])
                     ->save($destPath);
 
             } catch (\Exception $e) {
                 dd($e->getMessage());
             }
         }
+
+        return $destPath;
     }
 
     private function setDefaultCustomProperties(array $metadata): MediaCustomPropertiesDto
@@ -248,5 +255,10 @@ class MediaService implements MediaServiceInterface
             $basePath, date('Y'), date('m'), date('d'),
         ]);
 
+    }
+
+    private function generateProfilePicture(Model $media): string
+    {
+        return 'media/toimplement.jpg';
     }
 }

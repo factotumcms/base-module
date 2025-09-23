@@ -2,9 +2,12 @@
 
 namespace Wave8\Factotum\Base\Models;
 
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Wave8\Factotum\Base\Policies\MediaPolicy;
 
+#[UsePolicy(MediaPolicy::class)]
 class Media extends Model
 {
     use SoftDeletes;

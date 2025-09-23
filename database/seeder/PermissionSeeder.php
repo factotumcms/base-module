@@ -25,7 +25,7 @@ class PermissionSeeder extends Seeder
         Log::info('Creating default permission..');
 
         $adminRole = $this->roleService->filter([
-            'name' => 'admin',
+            ['name', '=', 'admin'],
         ])->firstOrFail();
 
         foreach (Permission::getValues() as $permission) {

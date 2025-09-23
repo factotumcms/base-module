@@ -2,13 +2,10 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
-use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Dto\Setting\UpdateSettingDto;
-use Wave8\Factotum\Base\Http\Requests\Api\Setting\CreateSettingRequest;
-use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Resources\SettingResource;
 
 final readonly class SettingController
@@ -19,6 +16,7 @@ final readonly class SettingController
 
     public function index(): ApiResponse
     {
+        Gate::authorize('read', Setting::class);
         $settings = $this->settingService->getAll();
 
         return ApiResponse::make(
@@ -26,45 +24,15 @@ final readonly class SettingController
         );
     }
 
-    public function store(CreateSettingRequest $request): ApiResponse
-    {
-        $setting = $this->settingService->create(
-            data: CreateSettingDto::from($request->all()),
-        );
-
-        return ApiResponse::make(
-            data: SettingResource::from($setting),
-        );
-    }
-
     public function show(int $id): ApiResponse
     {
+        Gate::authorize('read', Setting::class);
         $setting = $this->settingService->show(
             id: $id
         );
 
         return ApiResponse::make(
             data: SettingResource::from($setting),
-        );
-    }
-
-    public function update(int $id, UpdateSettingRequest $request): ApiResponse
-    {
-        $setting = $this->settingService->update(
-            id: $id,
-            data: UpdateSettingDto::from($request->all())
-        );
-
-        return ApiResponse::make(
-            data: SettingResource::from($setting),
-        );
-    }
-
-    public function destroy(int $id): ApiResponse
-    {
-        return ApiResponse::make(
-            data: 'Not implemented',
-            status: Response::HTTP_FORBIDDEN
         );
     }
 }

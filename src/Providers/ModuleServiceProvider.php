@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Providers;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
-use Wave8\Factotum\Base\Console\Commands\GenerateImagesConversions;
+use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
 use Wave8\Factotum\Base\Console\Commands\ModuleInstall;
 
 class ModuleServiceProvider extends LaravelServiceProvider
@@ -36,7 +36,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
     {
         $this->commands([
             ModuleInstall::class,
-            GenerateImagesConversions::class,
+            DispatchGenerateImageConversions::class,
         ]);
     }
 
