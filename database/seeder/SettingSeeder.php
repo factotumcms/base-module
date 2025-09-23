@@ -84,6 +84,18 @@ class SettingSeeder extends Seeder
         $this->settingService->create(
             data: CreateSettingDto::make(
                 scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::JSON,
+                group: SettingGroup::MEDIA,
+                key: Setting::THUMBNAIL_PRESET,
+                value: json_encode(MediaPresetConfigDto::make(
+                    width: 200, height: 200, fit: 'crop', position: 'center'
+                )),
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
                 data_type: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::DEFAULT_MEDIA_DISK,

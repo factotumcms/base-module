@@ -20,7 +20,7 @@ final readonly class MediaController
         $file = $this->mediaService->store(
             StoreFileDto::make(
                 file: $request->file('file'),
-                presets: [MediaPreset::PROFILE_PICTURE]
+                presets: [MediaPreset::THUMBNAIL]
             )
         );
 
