@@ -2,12 +2,11 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Auth;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
+use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
+use Wave8\Factotum\Base\Enum\MediaPreset;
 use Wave8\Factotum\Base\Http\Requests\Api\Media\UploadMediaRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
-use Wave8\Factotum\Base\Models\User;
 
 final readonly class MediaController
 {
@@ -17,21 +16,27 @@ final readonly class MediaController
 
     public function upload(UploadMediaRequest $request): ApiResponse
     {
-        // todo:: da capire come utilizzare il mode, creare api specifiche per le diverse entità
-        $this->mediaService->storeFromRequest(
-            model: User::find(Auth::id()),
+
+        $file = $this->mediaService->store(
+            StoreFileDto::make(
+                file: $request->file('file'),
+                presets: [MediaPreset::PROFILE_PICTURE]
+            )
         );
 
         return ApiResponse::make(
-            data: 'ok'
+            data: $file
         );
     }
 
-    public function show(string $uuid)
+    public function show(int $id)
     {
-        /** @var Media $media */
-        $media = $this->mediaService->retrieveByUuid($uuid)->media[0];
+        $media = $this->mediaService->show($id);
 
-        return $media;
+        return response()->file(
+            $this->mediaService->getFullMediaPath($media),
+            ['Content-Type' => $media->mime_type]
+        );
+
     }
 }

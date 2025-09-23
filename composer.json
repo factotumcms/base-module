@@ -19,8 +19,8 @@
         "laravel/sanctum": "^4.2",
         "spatie/laravel-permission": "^6.21",
         "spatie/laravel-data": "^4.17",
-        "spatie/laravel-medialibrary": "^11.14",
-        "spatie/laravel-translation-loader": "^2.8"
+        "spatie/laravel-translation-loader": "^2.8",
+        "spatie/image": "^3.8"
     },
     "require-dev": {
         "pestphp/pest": "*",

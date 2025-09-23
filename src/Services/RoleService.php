@@ -8,8 +8,8 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dto\Role\UpdateRoleDto;
+use Wave8\Factotum\Base\Enum\Permission;
 use Wave8\Factotum\Base\Models\Role;
-use Wave8\Factotum\Base\Types\Permission;
 
 class RoleService implements RoleServiceInterface
 {

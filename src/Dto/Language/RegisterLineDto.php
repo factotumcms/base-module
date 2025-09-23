@@ -3,7 +3,7 @@
 namespace Wave8\Factotum\Base\Dto\Language;
 
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Types\Locale;
+use Wave8\Factotum\Base\Enum\Locale;
 
 class RegisterLineDto extends Data
 {

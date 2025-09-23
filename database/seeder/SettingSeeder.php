@@ -5,13 +5,15 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
+use Wave8\Factotum\Base\Dto\Media\MediaPresetConfigDto;
 use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Enum\Disk;
+use Wave8\Factotum\Base\Enum\Locale;
+use Wave8\Factotum\Base\Enum\Setting;
+use Wave8\Factotum\Base\Enum\SettingDataType;
+use Wave8\Factotum\Base\Enum\SettingGroup;
+use Wave8\Factotum\Base\Enum\SettingScope;
 use Wave8\Factotum\Base\Models\User;
-use Wave8\Factotum\Base\Types\Locale;
-use Wave8\Factotum\Base\Types\Setting;
-use Wave8\Factotum\Base\Types\SettingDataType;
-use Wave8\Factotum\Base\Types\SettingGroup;
-use Wave8\Factotum\Base\Types\SettingScope;
 
 class SettingSeeder extends Seeder
 {
@@ -64,6 +66,38 @@ class SettingSeeder extends Seeder
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE_AVAILABLE,
                 value: json_encode(Locale::getValues()),
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::JSON,
+                group: SettingGroup::MEDIA,
+                key: Setting::PROFILE_PICTURE_PRESET,
+                value: json_encode(MediaPresetConfigDto::make(
+                    width: 200, height: 200, fit: 'crop', position: 'center'
+                )),
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::STRING,
+                group: SettingGroup::MEDIA,
+                key: Setting::DEFAULT_MEDIA_DISK,
+                value: Disk::PUBLIC->value,
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::STRING,
+                group: SettingGroup::MEDIA,
+                key: Setting::MEDIA_BASE_PATH,
+                value: 'media',
             )
         );
     }
