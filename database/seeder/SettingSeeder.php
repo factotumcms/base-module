@@ -54,7 +54,7 @@ class SettingSeeder extends Seeder
                 data_type: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE_DEFAULT,
-                value: Locale::tryFrom(config('factotum_base_config.locale.default'))->value,
+                value: Locale::tryFrom(config('factotum-base.locale.default'))->value,
             )
         );
 
@@ -75,10 +75,10 @@ class SettingSeeder extends Seeder
                 group: SettingGroup::MEDIA,
                 key: Setting::PROFILE_PICTURE_PRESET,
                 value: json_encode(MediaPresetConfigDto::make(
-                    width: config('factotum_base_config.media.profile_picture_preset.width'),
-                    height: config('factotum_base_config.media.profile_picture_preset.height'),
-                    fit: config('factotum_base_config.media.profile_picture_preset.fit'),
-                    position: config('factotum_base_config.media.profile_picture_preset.position'),
+                    width: config('factotum-base.media.profile_picture_preset.width'),
+                    height: config('factotum-base.media.profile_picture_preset.height'),
+                    fit: config('factotum-base.media.profile_picture_preset.fit'),
+                    position: config('factotum-base.media.profile_picture_preset.position'),
                 )),
             )
         );
@@ -90,10 +90,10 @@ class SettingSeeder extends Seeder
                 group: SettingGroup::MEDIA,
                 key: Setting::THUMBNAIL_PRESET,
                 value: json_encode(MediaPresetConfigDto::make(
-                    width: config('factotum_base_config.media.thumbnail_preset.width'),
-                    height: config('factotum_base_config.media.thumbnail_preset.height'),
-                    fit: config('factotum_base_config.media.thumbnail_preset.fit'),
-                    position: config('factotum_base_config.media.thumbnail_preset.position'),
+                    width: config('factotum-base.media.thumbnail_preset.width'),
+                    height: config('factotum-base.media.thumbnail_preset.height'),
+                    fit: config('factotum-base.media.thumbnail_preset.fit'),
+                    position: config('factotum-base.media.thumbnail_preset.position'),
                 )),
             )
         );
@@ -104,7 +104,7 @@ class SettingSeeder extends Seeder
                 data_type: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::DEFAULT_MEDIA_DISK,
-                value: Disk::tryFrom(config('factotum_base_config.media.disk'))->value
+                value: Disk::tryFrom(config('factotum-base.media.disk'))->value
             )
         );
 
@@ -114,7 +114,7 @@ class SettingSeeder extends Seeder
                 data_type: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_BASE_PATH,
-                value: config('factotum_base_config.media.base_path')
+                value: config('factotum-base.media.base_path')
             )
         );
     }

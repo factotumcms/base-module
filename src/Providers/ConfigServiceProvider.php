@@ -9,12 +9,12 @@ class ConfigServiceProvider extends LaravelServiceProvider
     public function register()
     {
         $this->publishes([
-            __DIR__.'/../../config/config.php' => config_path('factotum_base_config.php'),
+            __DIR__.'/../../config/config.php' => config_path('factotum-base.php'),
         ], ['factotum-base-config']);
 
         $this->mergeConfigFrom(
             __DIR__.'/../../config/config.php',
-            'factotum_base_config'
+            'factotum-base'
         );
 
     }
