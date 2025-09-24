@@ -11,16 +11,16 @@ return [
     ],
 
     'auth' => [
-        'type' => 'basic', // Options: basic, jwt, passport
-        'basic_identifier' => 'email', // Options: email, username, phone
+        'type' => 'basic', // Options: basic
+        'basic_identifier' => 'email', // Options: email, username
     ],
 
     'locale' => [
-        'default' => env('APP_LOCALE', \Wave8\Factotum\Base\Enum\Locale::EN),
+        'default' => env('APP_LOCALE', \Wave8\Factotum\Base\Enums\Locale::EN),
     ],
 
     'media' => [
-        'disk' => env('FILESYSTEM_DISK', 'public'), // Options: public, s3, local. (must be configured in config/filesystems.php)
+        'disk' => env('FILESYSTEM_DISK', \Wave8\Factotum\Base\Enums\Disk::PUBLIC), // Options: public, s3, local. (must be configured in config/filesystems.php)
         'base_path' => env('MEDIA_BASE_PATH', 'media'),
         'profile_picture_preset' => [
             'width' => 300,

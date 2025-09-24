@@ -1,10 +1,10 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dto\Permission;
+namespace Wave8\Factotum\Base\Dtos\Role;
 
 use Spatie\LaravelData\Data;
 
-class CreatePermissionDto extends Data
+class CreateRoleDto extends Data
 {
     public function __construct(
         public readonly string $name,

@@ -1,10 +1,10 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dto\Media;
+namespace Wave8\Factotum\Base\Dtos\Media;
 
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Enum\Disk;
-use Wave8\Factotum\Base\Enum\MediaType;
+use Wave8\Factotum\Base\Enums\Disk;
+use Wave8\Factotum\Base\Enums\MediaType;
 
 class CreateMediaDto extends Data
 {

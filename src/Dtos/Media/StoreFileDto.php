@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dto\Media;
+namespace Wave8\Factotum\Base\Dtos\Media;
 
 use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\Data;

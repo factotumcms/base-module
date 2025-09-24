@@ -4,8 +4,8 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\Gate;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
-use Wave8\Factotum\Base\Dto\Role\CreateRoleDto;
-use Wave8\Factotum\Base\Dto\Role\UpdateRoleDto;
+use Wave8\Factotum\Base\Dtos\Role\CreateRoleDto;
+use Wave8\Factotum\Base\Dtos\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\CreateRoleRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\UpdateRoleRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;

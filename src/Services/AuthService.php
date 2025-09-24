@@ -4,9 +4,9 @@ namespace Wave8\Factotum\Base\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Wave8\Factotum\Base\Contracts\Services\AuthServiceInterface;
-use Wave8\Factotum\Base\Dto\User\CreateUserDto;
-use Wave8\Factotum\Base\Enum\Setting as SettingType;
-use Wave8\Factotum\Base\Enum\SettingGroup;
+use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
+use Wave8\Factotum\Base\Enums\Setting as SettingType;
+use Wave8\Factotum\Base\Enums\SettingGroup;
 use Wave8\Factotum\Base\Models\User;
 
 class AuthService implements AuthServiceInterface

@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
-use Wave8\Factotum\Base\Dto\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Dto\Setting\UpdateSettingDto;
-use Wave8\Factotum\Base\Enum\Setting as SettingType;
-use Wave8\Factotum\Base\Enum\SettingDataType;
-use Wave8\Factotum\Base\Enum\SettingGroup;
-use Wave8\Factotum\Base\Enum\SettingScope;
+use Wave8\Factotum\Base\Dtos\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dtos\Setting\UpdateSettingDto;
+use Wave8\Factotum\Base\Enums\Setting as SettingType;
+use Wave8\Factotum\Base\Enums\SettingDataType;
+use Wave8\Factotum\Base\Enums\SettingGroup;
+use Wave8\Factotum\Base\Enums\SettingScope;
 use Wave8\Factotum\Base\Models\Setting;
 
 class SettingService implements SettingServiceInterface

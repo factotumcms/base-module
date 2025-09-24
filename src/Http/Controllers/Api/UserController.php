@@ -4,8 +4,8 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\Gate;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
-use Wave8\Factotum\Base\Dto\User\CreateUserDto;
-use Wave8\Factotum\Base\Dto\User\UpdateUserDto;
+use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
+use Wave8\Factotum\Base\Dtos\User\UpdateUserDto;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
