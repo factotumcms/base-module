@@ -24,7 +24,7 @@ class LanguageSeeder extends Seeder
 
         $this->languageService->registerLine(
             data: RegisterLineDto::make(
-                locale: Locale::it_IT,
+                locale: Locale::IT,
                 group: 'auth',
                 key: 'login_successful',
                 line: 'Accesso effettuato con successo.',
@@ -33,7 +33,7 @@ class LanguageSeeder extends Seeder
 
         $this->languageService->registerLine(
             data: RegisterLineDto::make(
-                locale: Locale::it_IT,
+                locale: Locale::IT,
                 group: 'auth',
                 key: 'login_failed',
                 line: 'Accesso fallito, email o password errati.',
@@ -42,7 +42,7 @@ class LanguageSeeder extends Seeder
 
         $this->languageService->registerLine(
             data: RegisterLineDto::make(
-                locale: Locale::it_IT,
+                locale: Locale::IT,
                 group: 'auth',
                 key: 'logout_successful',
                 line: 'Logout effettuato con successo.',
@@ -51,7 +51,7 @@ class LanguageSeeder extends Seeder
 
         $this->languageService->registerLine(
             data: RegisterLineDto::make(
-                locale: Locale::en_GB,
+                locale: Locale::EN,
                 group: 'auth',
                 key: 'login_successful',
                 line: 'Login successful.',
@@ -60,7 +60,7 @@ class LanguageSeeder extends Seeder
 
         $this->languageService->registerLine(
             data: RegisterLineDto::make(
-                locale: Locale::en_GB,
+                locale: Locale::EN,
                 group: 'auth',
                 key: 'login_failed',
                 line: 'Login failed, email or password is incorrect.',
@@ -69,7 +69,7 @@ class LanguageSeeder extends Seeder
 
         $this->languageService->registerLine(
             data: RegisterLineDto::make(
-                locale: Locale::en_GB,
+                locale: Locale::EN,
                 group: 'auth',
                 key: 'logout_successful',
                 line: 'Logout successful.',

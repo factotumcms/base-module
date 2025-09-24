@@ -22,8 +22,9 @@ class UploadMediaRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            'file' => ['file', 'required'],
+            'file' => ['required', 'file'],
         ];
     }
 }
