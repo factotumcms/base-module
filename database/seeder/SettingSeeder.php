@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Media\MediaPresetConfigDto;
 use Wave8\Factotum\Base\Dtos\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Enum\Disk;
-use Wave8\Factotum\Base\Enum\Locale;
-use Wave8\Factotum\Base\Enum\Setting;
-use Wave8\Factotum\Base\Enum\SettingDataType;
-use Wave8\Factotum\Base\Enum\SettingGroup;
-use Wave8\Factotum\Base\Enum\SettingScope;
+use Wave8\Factotum\Base\Enums\Disk;
+use Wave8\Factotum\Base\Enums\Locale;
+use Wave8\Factotum\Base\Enums\Setting;
+use Wave8\Factotum\Base\Enums\SettingDataType;
+use Wave8\Factotum\Base\Enums\SettingGroup;
+use Wave8\Factotum\Base\Enums\SettingScope;
 
 class SettingSeeder extends Seeder
 {

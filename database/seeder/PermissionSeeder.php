@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
-use Wave8\Factotum\Base\Enum\Permission;
+use Wave8\Factotum\Base\Enums\Permission;
 
 class PermissionSeeder extends Seeder
 {

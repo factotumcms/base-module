@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\LanguageServiceInterface;
 use Wave8\Factotum\Base\Dtos\Language\RegisterLineDto;
-use Wave8\Factotum\Base\Enum\Locale;
+use Wave8\Factotum\Base\Enums\Locale;
 
 class LanguageSeeder extends Seeder
 {

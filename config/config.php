@@ -16,7 +16,7 @@ return [
     ],
 
     'locale' => [
-        'default' => env('APP_LOCALE', \Wave8\Factotum\Base\Enum\Locale::EN),
+        'default' => env('APP_LOCALE', \Wave8\Factotum\Base\Enums\Locale::EN),
     ],
 
     'media' => [

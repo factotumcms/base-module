@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
-use Wave8\Factotum\Base\Enum\Role;
+use Wave8\Factotum\Base\Enums\Role;
 use Wave8\Factotum\Base\Models\User;
 
 class UserSeeder extends Seeder

@@ -15,10 +15,10 @@ use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Media\StoreFileDto;
-use Wave8\Factotum\Base\Enum\Disk;
-use Wave8\Factotum\Base\Enum\MediaPreset;
-use Wave8\Factotum\Base\Enum\MediaType;
-use Wave8\Factotum\Base\Enum\Setting;
+use Wave8\Factotum\Base\Enums\Disk;
+use Wave8\Factotum\Base\Enums\MediaPreset;
+use Wave8\Factotum\Base\Enums\MediaType;
+use Wave8\Factotum\Base\Enums\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
 

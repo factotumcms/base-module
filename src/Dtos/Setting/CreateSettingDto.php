@@ -3,10 +3,10 @@
 namespace Wave8\Factotum\Base\Dtos\Setting;
 
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Enum\Setting;
-use Wave8\Factotum\Base\Enum\SettingDataType;
-use Wave8\Factotum\Base\Enum\SettingGroup;
-use Wave8\Factotum\Base\Enum\SettingScope;
+use Wave8\Factotum\Base\Enums\Setting;
+use Wave8\Factotum\Base\Enums\SettingDataType;
+use Wave8\Factotum\Base\Enums\SettingGroup;
+use Wave8\Factotum\Base\Enums\SettingScope;
 
 class CreateSettingDto extends Data
 {

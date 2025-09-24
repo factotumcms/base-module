@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Role\CreateRoleDto;
-use Wave8\Factotum\Base\Enum\Role;
+use Wave8\Factotum\Base\Enums\Role;
 
 class RoleSeeder extends Seeder
 {
