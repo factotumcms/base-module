@@ -81,6 +81,7 @@ class ModuleInstall extends Command
     {
         $this->info("{$this->processStep}) - Publish required vendor migrations..");
 
+        $this->call('lang:publish');
         $this->call('vendor:publish', ['--provider' => 'Laravel\Sanctum\SanctumServiceProvider', '--tag' => 'sanctum-migrations']);
         $this->call('vendor:publish', ['--provider' => 'Spatie\MediaLibrary\MediaLibraryServiceProvider', '--tag' => 'medialibrary-migrations']);
         $this->call('vendor:publish', ['--provider' => 'Spatie\TranslationLoader\TranslationServiceProvider', '--tag' => 'translation-loader-migrations']);
