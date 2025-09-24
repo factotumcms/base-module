@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\Gate;
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
-use Wave8\Factotum\Base\Dto\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enum\MediaPreset;
 use Wave8\Factotum\Base\Http\Requests\Api\Media\UploadMediaRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;

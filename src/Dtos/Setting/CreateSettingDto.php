@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dto\Setting;
+namespace Wave8\Factotum\Base\Dtos\Setting;
 
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Enum\Setting;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dto\User;
+namespace Wave8\Factotum\Base\Dtos\User;
 
 use Spatie\LaravelData\Data;
 

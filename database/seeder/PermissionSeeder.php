@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
-use Wave8\Factotum\Base\Dto\Permission\CreatePermissionDto;
+use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Enum\Permission;
 
 class PermissionSeeder extends Seeder

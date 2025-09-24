@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
-use Wave8\Factotum\Base\Dto\Permission\CreatePermissionDto;
-use Wave8\Factotum\Base\Dto\Permission\UpdatePermissionDto;
+use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
+use Wave8\Factotum\Base\Dtos\Permission\UpdatePermissionDto;
 use Wave8\Factotum\Base\Models\Permission;
 
 class PermissionService implements PermissionServiceInterface

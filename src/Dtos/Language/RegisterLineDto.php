@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dto\Language;
+namespace Wave8\Factotum\Base\Dtos\Language;
 
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Enum\Locale;
