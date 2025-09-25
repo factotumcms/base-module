@@ -1,32 +1,70 @@
-<div align="left">
-    <a href="https://spatie.be/open-source?utm_source=github&utm_medium=banner&utm_campaign=laravel-data">
-      <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="">
-        <img alt="Logo for laravel-data" src="https://framerusercontent.com/images/JOikVuJn0Cyh8xGEJHDctbP7quY.png?scale-down-to=512">
-      </picture>
-    </a>
+<div align="center">
 
-<h1>Factotum 8 - Base Module</h1>
+<br>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-data.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-data)
-[![Tests](https://github.com/spatie/laravel-data/actions/workflows/run-tests.yml/badge.svg)](https://github.com/spatie/laravel-data/actions/workflows/run-tests.yml)
-[![PHPStan](https://github.com/spatie/laravel-data/actions/workflows/phpstan.yml/badge.svg)](https://github.com/spatie/laravel-data/actions/workflows/phpstan.yml)
-[![Check & fix styling](https://github.com/spatie/laravel-data/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/spatie/laravel-data/actions/workflows/php-cs-fixer.yml)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-data.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-data)
+[![8 Wave](docs/static/8wave.svg)](https://8wave.it)
+
+<br>
+
+
+
+`php` `laravel` `base-module`
+
+
+
 
 </div>
 
-# Introduction 
-Descrizione progetto ...
+## Introduction
+Factotum is a Laravel-based open source CMS and application framework. It provides a modular architecture, a user-friendly interface, and a set of tools to build and manage web applications efficiently.
+<br>
 
-# Requirements and Dependencies
-- Laravel ^12.0
+This repository contains the base module of Factotum, which includes essential features and functionalities required for building applications, as authentication, roles and permissions, media handling and more.
 
-# Getting Started
-Installation process
-1. composer create-project laravel/laravel . "^12.0.0"
-2. composer require wave8/factotum-base
-3. php artisan migrate
+## Requirements and Dependencies
+- Laravel 12+
+- PHP 8.3+
 
-# Build and Test
 
+## Install
+### Laravel Setup
+
+1. Install a fresh Laravel application and **configure your .env file** with the database keys.
+```bash
+# composer
+composer create-project laravel/laravel example-app
+```
+
+2. Require Factotum Base Module as a composer dependency and publish the configuration file. <br>The configuration file is used to seed the initial data, feel free to change its values
+
+```bash
+# composer
+composer require wave8/factotum-base
+
+# config
+php artisan vendor:publish --tag=factotum-base-config
+```
+3. Install the Factotum Base Module. This procedure will run the migrations, seed the initial data and publish the assets.
+```bash
+# php
+php artisan factotum-base:install
+```
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+
+## Contributing
+
+Feel free to open issues and submit pull requests.
+
+## Security
+
+If you discover any security related issues, please email [assistenza@8wave.it](mailto:assistenza@8wave.it) or use the issue tracker.
+
+## Credits
+
+- [All Contributors](../../contributors)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
