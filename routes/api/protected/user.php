@@ -11,4 +11,4 @@ Route::prefix('users')
         Route::get('{id}', 'show')->can('read', User::class);
         Route::post('', 'store')->can('create', User::class);
         Route::put('{id}', 'update')->can('update', User::class);
-});
+    });

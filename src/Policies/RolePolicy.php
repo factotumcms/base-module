@@ -10,10 +10,11 @@ use Wave8\Factotum\Base\Services\RoleService;
 
 class RolePolicy
 {
-    /**@var RoleService $roleService */
-    function __construct(private RoleServiceInterface $roleService)
-    {}
+    /** @var RoleService $roleService */
+    public function __construct(private RoleServiceInterface $roleService) {}
+
     use HandlesAuthorization;
+
     public function create(User $user): bool
     {
         return $user->hasPermissionTo(Permission::CREATE_ROLE);
@@ -29,7 +30,7 @@ class RolePolicy
         $requestRoleId = (int) request()->route('id');
 
         // Prevent updates to default roles
-        if($this->roleService->isRoleInDefaultRoles(roleId: $requestRoleId)){
+        if ($this->roleService->isDefaultRole(roleId: $requestRoleId)) {
             return false;
         }
 
@@ -38,6 +39,12 @@ class RolePolicy
 
     public function delete(User $user): bool
     {
+        $requestRoleId = (int) request()->route('id');
+
+        if ($this->roleService->isDefaultRole(roleId: $requestRoleId)) {
+            return false;
+        }
+
         return $user->hasPermissionTo(Permission::DELETE_ROLE);
     }
 }

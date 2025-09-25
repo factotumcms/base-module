@@ -9,7 +9,7 @@ class MediaPolicy
 {
     public function read(User $user): bool
     {
-        return $user->hasPermissionTo(Permission::VIEW_MEDIA);
+        return $user->hasPermissionTo(Permission::READ_MEDIA);
     }
 
     public function upload(User $user): bool

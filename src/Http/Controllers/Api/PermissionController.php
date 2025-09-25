@@ -2,10 +2,8 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Gate;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
-use Wave8\Factotum\Base\Models\Permission;
 use Wave8\Factotum\Base\Resources\PermissionResource;
 
 final readonly class PermissionController
@@ -16,7 +14,6 @@ final readonly class PermissionController
 
     public function index(): ApiResponse
     {
-        Gate::authorize('read', Permission::class);
         $permissions = $this->permissionService->getAll();
 
         return ApiResponse::make(
@@ -26,8 +23,6 @@ final readonly class PermissionController
 
     public function show(int $id): ApiResponse
     {
-        Gate::authorize('read', Permission::class);
-
         $permission = $this->permissionService->show(
             id: $id
         );

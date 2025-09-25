@@ -88,14 +88,19 @@ class RoleService implements RoleServiceInterface
         return $role;
     }
 
-    public function isRoleInDefaultRoles(int $roleId): bool
+    /**
+     * Check if the role is a default system role.
+     */
+    public function isDefaultRole(int $roleId): bool
     {
         try {
-            Role::findOrFail($roleId);
+            $role = Role::findOrFail($roleId)->name;
+            $defaultRole = \Wave8\Factotum\Base\Enums\Role::tryFrom($role);
+
         } catch (\Exception $e) {
             return false;
         }
 
-        return true;
+        return ! is_null($defaultRole);
     }
 }

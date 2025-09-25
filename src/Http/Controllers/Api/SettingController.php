@@ -2,10 +2,8 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Gate;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
-use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Resources\SettingResource;
 
 final readonly class SettingController
@@ -16,7 +14,6 @@ final readonly class SettingController
 
     public function index(): ApiResponse
     {
-        Gate::authorize('read', Setting::class);
         $settings = $this->settingService->getAll();
 
         return ApiResponse::make(
@@ -26,7 +23,6 @@ final readonly class SettingController
 
     public function show(int $id): ApiResponse
     {
-        Gate::authorize('read', Setting::class);
         $setting = $this->settingService->show(
             id: $id
         );
