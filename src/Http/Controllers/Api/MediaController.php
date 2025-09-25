@@ -7,12 +7,23 @@ use Wave8\Factotum\Base\Dtos\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enums\MediaPreset;
 use Wave8\Factotum\Base\Http\Requests\Api\Media\UploadMediaRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Resources\MediaResource;
 
 final readonly class MediaController
 {
     public function __construct(
         private MediaServiceInterface $mediaService,
     ) {}
+
+    public function index(): ApiResponse
+    {
+        $media = $this->mediaService->getAll();
+
+        return ApiResponse::make(
+            data: MediaResource::collect($media),
+            //            data: $media->map(fn ($el) => MediaResource::from($el)),
+        );
+    }
 
     public function create(UploadMediaRequest $request): ApiResponse
     {

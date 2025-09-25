@@ -8,6 +8,7 @@ Route::prefix('media')
     ->controller(MediaController::class)
 
     ->group(function () {
-        Route::post('', 'create')->can('upload', Media::class);
+        Route::get('', 'index')->can('read', Media::class);
         Route::get('{id}', 'show')->can('read', Media::class);
+        Route::post('', 'create')->can('upload', Media::class);
     });
