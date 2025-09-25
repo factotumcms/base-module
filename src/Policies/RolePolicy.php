@@ -2,11 +2,18 @@
 
 namespace Wave8\Factotum\Base\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
+use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Enums\Permission;
 use Wave8\Factotum\Base\Models\User;
+use Wave8\Factotum\Base\Services\RoleService;
 
 class RolePolicy
 {
+    /**@var RoleService $roleService */
+    function __construct(private RoleServiceInterface $roleService)
+    {}
+    use HandlesAuthorization;
     public function create(User $user): bool
     {
         return $user->hasPermissionTo(Permission::CREATE_ROLE);
@@ -19,6 +26,13 @@ class RolePolicy
 
     public function update(User $user): bool
     {
+        $requestRoleId = (int) request()->route('id');
+
+        // Prevent updates to default roles
+        if($this->roleService->isRoleInDefaultRoles(roleId: $requestRoleId)){
+            return false;
+        }
+
         return $user->hasPermissionTo(Permission::UPDATE_ROLE);
     }
 

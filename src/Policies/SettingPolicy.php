@@ -11,9 +11,4 @@ class SettingPolicy
     {
         return $user->hasPermissionTo(Permission::UPDATE_SETTINGS);
     }
-
-    public function delete(): bool
-    {
-        return false;
-    }
 }

@@ -16,7 +16,7 @@ final readonly class MediaController
         private MediaServiceInterface $mediaService,
     ) {}
 
-    public function upload(UploadMediaRequest $request): ApiResponse
+    public function create(UploadMediaRequest $request): ApiResponse
     {
         Gate::authorize('upload', Media::class);
 

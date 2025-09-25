@@ -87,4 +87,15 @@ class RoleService implements RoleServiceInterface
 
         return $role;
     }
+
+    public function isRoleInDefaultRoles(int $roleId): bool
+    {
+        try {
+            Role::findOrFail($roleId);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
 }

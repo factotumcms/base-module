@@ -20,7 +20,6 @@ final readonly class RoleController
 
     public function index(): ApiResponse
     {
-        Gate::authorize('read', Role::class);
         $roles = $this->roleService->getAll();
 
         return ApiResponse::make(
@@ -30,7 +29,6 @@ final readonly class RoleController
 
     public function store(CreateRoleRequest $request): ApiResponse
     {
-        Gate::authorize('create', Role::class);
         $role = $this->roleService->create(
             data: CreateRoleDto::from($request->all())
         );
@@ -42,7 +40,6 @@ final readonly class RoleController
 
     public function show(int $id): ApiResponse
     {
-        Gate::authorize('read', Role::class);
         $role = $this->roleService->show(
             id: $id
         );
@@ -54,7 +51,6 @@ final readonly class RoleController
 
     public function update(int $id, UpdateRoleRequest $request): ApiResponse
     {
-        Gate::authorize('update', Role::class);
         $role = $this->roleService->update(
             id: $id,
             data: UpdateRoleDto::from($request->all())

@@ -22,12 +22,12 @@ class AppServiceProvider extends LaravelServiceProvider
 {
     public function register()
     {
-        $this->app->bind(AuthServiceInterface::class, AuthService::class);
-        $this->app->bind(SettingServiceInterface::class, SettingService::class);
-        $this->app->bind(UserServiceInterface::class, UserService::class);
-        $this->app->bind(RoleServiceInterface::class, RoleService::class);
-        $this->app->bind(PermissionServiceInterface::class, PermissionService::class);
-        $this->app->bind(MediaServiceInterface::class, MediaService::class);
-        $this->app->bind(LanguageServiceInterface::class, LanguageService::class);
+        $this->app->singleton(AuthServiceInterface::class, AuthService::class);
+        $this->app->singleton(SettingServiceInterface::class, SettingService::class);
+        $this->app->singleton(UserServiceInterface::class, UserService::class);
+        $this->app->singleton(RoleServiceInterface::class, RoleService::class);
+        $this->app->singleton(PermissionServiceInterface::class, PermissionService::class);
+        $this->app->singleton(MediaServiceInterface::class, MediaService::class);
+        $this->app->singleton(LanguageServiceInterface::class, LanguageService::class);
     }
 }

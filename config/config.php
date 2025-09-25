@@ -1,5 +1,8 @@
 <?php
 
+use Wave8\Factotum\Base\Enums\Disk;
+use Wave8\Factotum\Base\Enums\Locale;
+
 return [
     'module_name' => 'Base',
     'admin_default' => [
@@ -16,11 +19,11 @@ return [
     ],
 
     'locale' => [
-        'default' => env('APP_LOCALE', \Wave8\Factotum\Base\Enums\Locale::EN),
+        'default' => env('APP_LOCALE', Locale::EN),
     ],
 
     'media' => [
-        'disk' => env('FILESYSTEM_DISK', \Wave8\Factotum\Base\Enums\Disk::PUBLIC), // Options: public, s3, local. (must be configured in config/filesystems.php)
+        'disk' => env('FILESYSTEM_DISK', Disk::PUBLIC), // Options: public, s3, local. (must be configured in config/filesystems.php)
         'base_path' => env('MEDIA_BASE_PATH', 'media'),
         'profile_picture_preset' => [
             'width' => 300,

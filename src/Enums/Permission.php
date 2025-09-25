@@ -8,9 +8,10 @@ enum Permission: string
 {
     use ListCases;
     case CREATE_USER = 'create_user';
-    case READ_USER = 'read_user';
-    case UPDATE_USER = 'edit_user';
-    case DELETE_USER = 'delete_user';
+    case READ_USERS = 'read_user';
+    case UPDATE_USERS = 'edit_users';
+    case UPDATE_OWN_USER = 'edit_own_user';
+    case DELETE_USERS = 'delete_users';
     case UPLOAD_MEDIA = 'upload_media';
     case READ_MEDIA = 'read_media';
     case READ_SETTINGS = 'read_settings';
