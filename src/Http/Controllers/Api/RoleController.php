@@ -3,8 +3,11 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Dtos\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Role\UpdateRoleDto;
+use Wave8\Factotum\Base\Helpers\Utility;
+use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\CreateRoleRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\UpdateRoleRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
@@ -16,12 +19,16 @@ final readonly class RoleController
         private RoleServiceInterface $roleService,
     ) {}
 
-    public function index(): ApiResponse
+    public function index(QueryFiltersRequest $request): ApiResponse
     {
-        $roles = $this->roleService->getAll();
+        $roles = $this->roleService->filter(
+            QueryFiltersDto::make(
+                ...Utility::sanitizeQueryString($request->query())
+            )
+        );
 
         return ApiResponse::make(
-            data: $roles->map(fn ($el) => RoleResource::from($el)),
+            data: RoleResource::collect($roles),
         );
     }
 

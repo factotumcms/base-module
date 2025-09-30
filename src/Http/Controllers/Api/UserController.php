@@ -3,8 +3,11 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\User\UpdateUserDto;
+use Wave8\Factotum\Base\Helpers\Utility;
+use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
@@ -16,12 +19,17 @@ final readonly class UserController
         private UserServiceInterface $userService,
     ) {}
 
-    public function index(): ApiResponse
+    public function index(QueryFiltersRequest $request): ApiResponse
     {
-        $users = $this->userService->getAll();
+        $users = $this->userService
+            ->filter(
+                QueryFiltersDto::make(
+                    ...Utility::sanitizeQueryString($request->query())
+                )
+            );;
 
         return ApiResponse::make(
-            data: $users->map(fn ($el) => UserResource::from($el)),
+            data: UserResource::collect($users)
         );
     }
 

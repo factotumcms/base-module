@@ -2,8 +2,10 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
@@ -11,9 +13,12 @@ use Wave8\Factotum\Base\Dtos\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Enums\Permission;
 use Wave8\Factotum\Base\Models\Role;
+use Wave8\Factotum\Base\Traits\Filterable;
+use Wave8\Factotum\Base\Traits\Sortable;
 
 class RoleService implements RoleServiceInterface
 {
+    use Sortable, Filterable;
     /**
      * Create a new role.
      */
@@ -22,14 +27,6 @@ class RoleService implements RoleServiceInterface
         return Role::create(
             attributes: $data->toArray()
         );
-    }
-
-    /**
-     * Retrieve all roles.
-     */
-    public function getAll(): Collection
-    {
-        return Role::all();
     }
 
     /**
@@ -62,16 +59,17 @@ class RoleService implements RoleServiceInterface
         return $role->delete();
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Collection
+    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
     {
         $query = Role::query();
-        // todo:: da refactor
-        foreach ($queryFilters as $filter) {
-            [$key, $condition, $value] = $filter;
-            $query->where($key, $condition, $value);
-        }
 
-        return $query->get();
+        $this->applyFilters($query, $queryFilters->search);
+        $this->applySorting($query, $queryFilters);
+
+        return $query->simplePaginate(
+            perPage: $queryFilters->perPage ?? 15,
+            page: $queryFilters->page
+        );
     }
 
     /**
@@ -103,10 +101,5 @@ class RoleService implements RoleServiceInterface
         }
 
         return ! is_null($defaultRole);
-    }
-
-    public function applyFilters($query, QueryFiltersDto $queryFilters)
-    {
-        // TODO: Implement applyFilters() method.
     }
 }

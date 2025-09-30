@@ -16,11 +16,19 @@ trait Filterable
                 throw new BadRequestHttpException("Field '$field' does not exist or is not fillable.");
             }
 
-            if (is_array($value)) {
-                $query = $query->whereIn($field, $value);
-            } else {
-                $query = $query->where($field, $value);
+            $operator = substr($value, 0, 1);
+            if (in_array($operator, ['<', '>'])) {
+
+                $value = substr($value, 1);
+                $query = $query->where($field, $operator, $value);
+
+            }else{
+                $query = $query->where($field, 'LIKE', "%$value%");
             }
+
+
+
+
         }
     }
 }

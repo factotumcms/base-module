@@ -23,7 +23,7 @@ class QueryFiltersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page' => ['required', 'integer', 'min:1'],
+            'page' => ['sometimes', 'integer', 'min:1'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:30'],
             'sort_by' => ['sometimes', 'string'],
             'sort_order' => ['sometimes', 'in:asc,desc'],
