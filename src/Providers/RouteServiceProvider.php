@@ -12,13 +12,20 @@ use Symfony\Component\Finder\Finder;
 class RouteServiceProvider extends LaravelRouteServiceProvider
 {
     protected string $apiPrefix = 'api/v1/base';
-    protected array $apiContexts = ['backoffice', 'mobile'];
+    protected array $apiContexts = [];
 
     /**
      * Define your route model bindings, pattern filters, etc.
      */
     public function boot(): void
     {
+        if(env('ENABLE_BACKOFFICE_API')){
+            $this->apiContexts[] = 'backoffice';
+        }
+        if(env('ENABLE_MOBILE_API')){
+            $this->apiContexts[] = 'mobile';
+        }
+
         $this->configureRateLimiting();
 
         $this->routes(function () {

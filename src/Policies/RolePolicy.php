@@ -3,14 +3,13 @@
 namespace Wave8\Factotum\Base\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
 use Wave8\Factotum\Base\Enums\Permission;
 use Wave8\Factotum\Base\Models\User;
-use Wave8\Factotum\Base\Services\Api\Backoffice\RoleService;
+
 
 class RolePolicy
 {
-    /** @var RoleService */
     public function __construct(private RoleServiceInterface $roleService) {}
 
     use HandlesAuthorization;

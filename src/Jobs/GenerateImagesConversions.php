@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Enums\MediaType;
 use Wave8\Factotum\Base\Services\Api\Backoffice\MediaService;
 

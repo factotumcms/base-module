@@ -6,13 +6,16 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
 use Wave8\Factotum\Base\Console\Commands\ModuleInstall;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Services\Api\Backoffice\SettingService;
 
 class ModuleServiceProvider extends LaravelServiceProvider
 {
     public function register(): void
     {
         // Register DI services
-        $this->app->register(AppServiceProvider::class);
+        $this->app->register(BackofficeServiceProvider::class);
+        $this->app->register(MobileServiceProvider::class);
 
         // Register app required service providers
         $this->app->register(ConfigServiceProvider::class);

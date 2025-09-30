@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Contracts\Services;
+namespace Wave8\Factotum\Base\Contracts\Api\Backoffice;
 
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
