@@ -2,16 +2,23 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\User\UpdateUserDto;
 use Wave8\Factotum\Base\Models\User;
+use Wave8\Factotum\Base\Traits\Filterable;
+use Wave8\Factotum\Base\Traits\Sortable;
 
 class UserService implements UserServiceInterface
 {
+    use Filterable, Sortable;
+
     /**
      * @throws \Exception
      */
@@ -74,5 +81,16 @@ class UserService implements UserServiceInterface
         }
     }
 
-    public function filter(array $filters): Collection {}
+    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    {
+        $query = User::query();
+
+        $this->applyFilters($query, $queryFilters->search);
+        $this->applySorting($query, $queryFilters);
+
+        return $query->simplePaginate(
+            perPage: $queryFilters->perPage ?? 15,
+            page: $queryFilters->page
+        );
+    }
 }

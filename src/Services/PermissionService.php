@@ -2,19 +2,22 @@
 
 namespace Wave8\Factotum\Base\Services;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\Permission\UpdatePermissionDto;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Models\Permission;
+use Wave8\Factotum\Base\Traits\Filterable;
+use Wave8\Factotum\Base\Traits\Sortable;
 
 class PermissionService implements PermissionServiceInterface
 {
-    /**
-     * Create a new permission
-     */
+    use Filterable, Sortable;
+
     public function create(CreatePermissionDto|Data $data): Model
     {
         return Permission::create(
@@ -22,25 +25,12 @@ class PermissionService implements PermissionServiceInterface
         );
     }
 
-    /**
-     * Get all permissions
-     */
-    public function getAll(): Collection
-    {
-        return Permission::all();
-    }
-
-    /**
-     * Get a permission by id
-     */
     public function show(int $id): ?Model
     {
         return Permission::findOrFail($id);
     }
 
     /**
-     * Update a permission
-     *
      * @throws \Exception
      */
     public function update(int $id, UpdatePermissionDto|Data $data): Model
@@ -52,9 +42,6 @@ class PermissionService implements PermissionServiceInterface
         return $permission;
     }
 
-    /**
-     * Delete a permission
-     */
     public function delete(int $id): bool
     {
         $permission = Permission::findOrFail($id);
@@ -62,8 +49,16 @@ class PermissionService implements PermissionServiceInterface
         return $permission->delete();
     }
 
-    public function filter(array $filters): Collection
+    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
     {
-        // TODO: Implement filter() method.
+        $query = Permission::query();
+
+        $this->applyFilters($query, $queryFilters->search);
+        $this->applySorting($query, $queryFilters);
+
+        return $query->simplePaginate(
+            perPage: $queryFilters->perPage ?? 15,
+            page: $queryFilters->page
+        );
     }
 }

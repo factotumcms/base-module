@@ -11,4 +11,5 @@ enum SettingGroup: string
     case MEDIA = 'media';
     case AUTH = 'auth';
     case LOCALE = 'locale';
+    case PAGINATION = 'pagination';
 }

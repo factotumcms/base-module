@@ -3,6 +3,9 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
+use Wave8\Factotum\Base\Helpers\Utility;
+use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\PermissionResource;
 
@@ -12,12 +15,17 @@ final readonly class PermissionController
         private PermissionServiceInterface $permissionService,
     ) {}
 
-    public function index(): ApiResponse
+    public function index(QueryFiltersRequest $request): ApiResponse
     {
-        $permissions = $this->permissionService->getAll();
+        $permissions = $this->permissionService
+            ->filter(
+                QueryFiltersDto::make(
+                    ...Utility::sanitizeQueryString($request->query())
+                )
+            );
 
         return ApiResponse::make(
-            data: $permissions->map(fn ($el) => PermissionResource::from($el)),
+            data: PermissionResource::collect($permissions)
         );
     }
 

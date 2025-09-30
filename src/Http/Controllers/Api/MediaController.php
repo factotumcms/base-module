@@ -4,8 +4,11 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
 use Wave8\Factotum\Base\Dtos\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\MediaPreset;
+use Wave8\Factotum\Base\Helpers\Utility;
 use Wave8\Factotum\Base\Http\Requests\Api\Media\UploadMediaRequest;
+use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\MediaResource;
 
@@ -15,13 +18,17 @@ final readonly class MediaController
         private MediaServiceInterface $mediaService,
     ) {}
 
-    public function index(): ApiResponse
+    public function index(QueryFiltersRequest $request): ApiResponse
     {
-        $media = $this->mediaService->getAll();
+        $media = $this->mediaService
+            ->filter(
+                QueryFiltersDto::make(
+                    ...Utility::sanitizeQueryString($request->query())
+                )
+            );
 
         return ApiResponse::make(
             data: MediaResource::collect($media),
-            //            data: $media->map(fn ($el) => MediaResource::from($el)),
         );
     }
 
