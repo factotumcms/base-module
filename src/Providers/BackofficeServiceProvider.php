@@ -10,7 +10,6 @@ use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\UserServiceInterface;
-
 use Wave8\Factotum\Base\Services\Api\Backoffice\AuthService;
 use Wave8\Factotum\Base\Services\Api\Backoffice\LanguageService;
 use Wave8\Factotum\Base\Services\Api\Backoffice\MediaService;
@@ -18,7 +17,6 @@ use Wave8\Factotum\Base\Services\Api\Backoffice\PermissionService;
 use Wave8\Factotum\Base\Services\Api\Backoffice\RoleService;
 use Wave8\Factotum\Base\Services\Api\Backoffice\SettingService;
 use Wave8\Factotum\Base\Services\Api\Backoffice\UserService;
-
 
 class BackofficeServiceProvider extends LaravelServiceProvider
 {

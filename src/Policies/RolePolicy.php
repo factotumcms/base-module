@@ -7,7 +7,6 @@ use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
 use Wave8\Factotum\Base\Enums\Permission;
 use Wave8\Factotum\Base\Models\User;
 
-
 class RolePolicy
 {
     public function __construct(private RoleServiceInterface $roleService) {}

@@ -12,6 +12,7 @@ use Symfony\Component\Finder\Finder;
 class RouteServiceProvider extends LaravelRouteServiceProvider
 {
     protected string $apiPrefix = 'api/v1/base';
+
     protected array $apiContexts = [];
 
     /**
@@ -19,10 +20,10 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
      */
     public function boot(): void
     {
-        if(env('ENABLE_BACKOFFICE_API')){
+        if (env('ENABLE_BACKOFFICE_API')) {
             $this->apiContexts[] = 'backoffice';
         }
-        if(env('ENABLE_MOBILE_API')){
+        if (env('ENABLE_MOBILE_API')) {
             $this->apiContexts[] = 'mobile';
         }
 
@@ -54,7 +55,7 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
     {
         Route::group([
             'middleware' => ['api'],
-            'prefix' => $context
+            'prefix' => $context,
         ], function () use ($context) {
             $this->mapRoutes(__DIR__."/../../routes/api/$context/public");
         });
@@ -64,7 +65,7 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
     {
         Route::group([
             'middleware' => ['api', 'auth:sanctum'],
-            'prefix' => $context
+            'prefix' => $context,
         ], function () use ($context) {
             $this->mapRoutes(__DIR__."/../../routes/api/$context/protected");
         });

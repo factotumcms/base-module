@@ -9,7 +9,6 @@ use Wave8\Factotum\Base\Dtos\Api\Mobile\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Enums\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\SettingGroup;
 use Wave8\Factotum\Base\Models\User;
-use Wave8\Factotum\Base\Services\Api\Mobile\SettingService;
 
 class AuthService implements AuthServiceInterface
 {
@@ -38,12 +37,13 @@ class AuthService implements AuthServiceInterface
             },
             'roles.permissions' => function ($query) {
                 $query->select(['id', 'name']);
-            }
+            },
         ])->setRelation(
             'roles',
             Auth::user()->roles->map(function ($role) {
                 $role->makeHidden('pivot');
                 $role->permissions->makeHidden('pivot');
+
                 return $role;
             })
         );

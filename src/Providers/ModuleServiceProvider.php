@@ -6,8 +6,6 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
 use Wave8\Factotum\Base\Console\Commands\ModuleInstall;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
-use Wave8\Factotum\Base\Services\Api\Backoffice\SettingService;
 
 class ModuleServiceProvider extends LaravelServiceProvider
 {
