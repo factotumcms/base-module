@@ -16,7 +16,7 @@ use Wave8\Factotum\Base\Traits\Sortable;
 
 class PermissionService implements PermissionServiceInterface
 {
-    use Sortable, Filterable;
+    use Filterable, Sortable;
 
     public function create(CreatePermissionDto|Data $data): Model
     {
@@ -57,9 +57,8 @@ class PermissionService implements PermissionServiceInterface
         $this->applySorting($query, $queryFilters);
 
         return $query->simplePaginate(
-            perPage: $queryFilters->per_page ?? 15,
+            perPage: $queryFilters->perPage ?? 15,
             page: $queryFilters->page
         );
     }
-
 }

@@ -13,9 +13,9 @@ class QueryFiltersDto extends Data
 {
     public function __construct(
         public readonly int $page,
-        public readonly ?int $per_page,
-        public readonly ?string $sort_by,
-        public readonly ?string $sort_order,
+        public readonly ?int $perPage,
+        public readonly ?string $sortBy,
+        public readonly ?string $sortOrder,
         public readonly array $search = [],
     ) {}
 
@@ -25,23 +25,23 @@ class QueryFiltersDto extends Data
      */
     public static function make(
         int $page,
-        ?int $per_page = null,
-        ?string $sort_by = null,
-        ?string $sort_order = null,
+        ?int $perPage = null,
+        ?string $sortBy = null,
+        ?string $sortOrder = null,
         array $search = [],
     ): static {
         /** @var SettingService $settingService */
-        $settingService  = app()->make(SettingServiceInterface::class);
+        $settingService = app()->make(SettingServiceInterface::class);
 
-        $per_page = $per_page ?? $settingService->getSystemSettingValue(Setting::PAGINATION_PER_PAGE, SettingGroup::PAGINATION);
-        $sort_by = $sort_by ?? $settingService->getSystemSettingValue(Setting::PAGINATION_DEFAULT_ORDER_BY, SettingGroup::PAGINATION);
-        $sort_order = $sort_order ?? $settingService->getSystemSettingValue(Setting::PAGINATION_DEFAULT_ORDER_DIRECTION, SettingGroup::PAGINATION);
+        $perPage = $perPage ?? $settingService->getSystemSettingValue(Setting::PAGINATION_PER_PAGE, SettingGroup::PAGINATION);
+        $sortBy = $sortBy ?? $settingService->getSystemSettingValue(Setting::PAGINATION_DEFAULT_ORDER_BY, SettingGroup::PAGINATION);
+        $sortOrder = $sortOrder ?? $settingService->getSystemSettingValue(Setting::PAGINATION_DEFAULT_ORDER_DIRECTION, SettingGroup::PAGINATION);
 
         return new static(
             $page,
-            $per_page,
-            $sort_by,
-            $sort_order,
+            $perPage,
+            $sortBy,
+            $sortOrder,
             $search,
         );
     }

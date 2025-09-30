@@ -17,9 +17,13 @@ use Wave8\Factotum\Base\Enums\SettingDataType;
 use Wave8\Factotum\Base\Enums\SettingGroup;
 use Wave8\Factotum\Base\Enums\SettingScope;
 use Wave8\Factotum\Base\Models\Setting;
+use Wave8\Factotum\Base\Traits\Filterable;
+use Wave8\Factotum\Base\Traits\Sortable;
 
 class SettingService implements SettingServiceInterface
 {
+    use Filterable, Sortable;
+
     public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
 
     /**
@@ -116,9 +120,9 @@ class SettingService implements SettingServiceInterface
     {
         // TODO: Implement applyFilters() method.
     }
+
     public function filter(QueryFiltersDto $queryFilters): LengthAwarePaginator
     {
         // TODO: Implement filter() method.
     }
-
 }

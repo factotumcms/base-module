@@ -65,7 +65,7 @@ class RoleService implements RoleServiceInterface
     public function filter(QueryFiltersDto $queryFilters): Collection
     {
         $query = Role::query();
-        //todo:: da refactor
+        // todo:: da refactor
         foreach ($queryFilters as $filter) {
             [$key, $condition, $value] = $filter;
             $query->where($key, $condition, $value);
@@ -105,7 +105,7 @@ class RoleService implements RoleServiceInterface
         return ! is_null($defaultRole);
     }
 
-    function applyFilters($query, QueryFiltersDto $queryFilters)
+    public function applyFilters($query, QueryFiltersDto $queryFilters)
     {
         // TODO: Implement applyFilters() method.
     }

@@ -9,6 +9,6 @@ class PermissionResource extends Resource
     public function __construct(
         public int $id,
         public string $name,
-//        public ?string $guard_name
+        //        public ?string $guard_name
     ) {}
 }

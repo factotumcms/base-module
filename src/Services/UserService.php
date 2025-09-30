@@ -77,7 +77,7 @@ class UserService implements UserServiceInterface
 
     public function filter(QueryFiltersDto $queryFilters): Collection {}
 
-    function applyFilters($query, QueryFiltersDto $queryFilters)
+    public function applyFilters($query, QueryFiltersDto $queryFilters)
     {
         // TODO: Implement applyFilters() method.
     }

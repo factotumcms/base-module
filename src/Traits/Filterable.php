@@ -2,14 +2,20 @@
 
 namespace Wave8\Factotum\Base\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait Filterable
 {
-    public function applyFilters(&$query, ?array $searchFilters):void
+    public function applyFilters(&$query, ?array $searchFilters): void
     {
+        $model = $query->getModel();
+
         foreach ($searchFilters as $field => $value) {
+
+            if (! $model->isFillable($field)) {
+                throw new BadRequestHttpException("Field '$field' does not exist or is not fillable.");
+            }
+
             if (is_array($value)) {
                 $query = $query->whereIn($field, $value);
             } else {

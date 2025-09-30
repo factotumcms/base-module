@@ -12,10 +12,16 @@ use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 interface EntityServiceInterface
 {
     public function create(Data $data): Model;
+
     public function show(int $id): ?Model;
+
     public function update(int $id, Data $data): Model;
+
     public function delete(int $id): bool;
+
     public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator;
-    function applyFilters(Builder &$query, array $searchFilters):void;
-    function applySorting(Builder &$query, QueryFiltersDto $queryFilters): void;
+
+    public function applyFilters(Builder &$query, array $searchFilters): void;
+
+    public function applySorting(Builder &$query, QueryFiltersDto $queryFilters): void;
 }

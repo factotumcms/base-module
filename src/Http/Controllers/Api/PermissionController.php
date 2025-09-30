@@ -4,6 +4,7 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
+use Wave8\Factotum\Base\Helpers\Utility;
 use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\PermissionResource;
@@ -19,7 +20,7 @@ final readonly class PermissionController
         $permissions = $this->permissionService
             ->filter(
                 QueryFiltersDto::make(
-                    ...$request->query()
+                    ...Utility::sanitizeQueryString($request->query())
                 )
             );
 

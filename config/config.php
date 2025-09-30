@@ -44,5 +44,5 @@ return [
         'per_page' => 15,
         'default_order_by' => 'id',
         'default_order_direction' => 'DESC', // Options: ASC, DESC
-    ]
+    ],
 ];

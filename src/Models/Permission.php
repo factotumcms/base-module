@@ -6,4 +6,10 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Wave8\Factotum\Base\Policies\PermissionPolicy;
 
 #[UsePolicy(PermissionPolicy::class)]
-class Permission extends \Spatie\Permission\Models\Permission {}
+class Permission extends \Spatie\Permission\Models\Permission
+{
+    protected $fillable = [
+        'name',
+        'guard_name',
+    ];
+}
