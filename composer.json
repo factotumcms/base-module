@@ -1,7 +1,7 @@
 {
     "name": "wave8/factotum-base",
     "type": "library",
-    "version": "1.0.0-beta.4",
+    "version": "1.0.0-beta.5",
     "description": "Factotum V8 - Base Module",
     "license": "proprietary",
     "minimum-stability": "stable",

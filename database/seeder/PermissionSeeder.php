@@ -6,9 +6,10 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
-use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Permission;
+use Wave8\Factotum\Base\Enums\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -27,7 +28,7 @@ class PermissionSeeder extends Seeder
 
         $adminRole = $this->roleService->filter(
             QueryFiltersDto::make(
-                search: ['name' => \Wave8\Factotum\Base\Enums\Role::ADMIN->value]
+                search: ['name' => Role::ADMIN->value]
             )
         );
 
