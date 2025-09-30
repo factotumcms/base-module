@@ -6,7 +6,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Permission\UpdatePermissionDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;

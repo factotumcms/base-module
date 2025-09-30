@@ -1,12 +1,12 @@
 <?php
 
-namespace Wave8\Factotum\Base\Http\Controllers\Api\Backoffice;
+namespace Wave8\Factotum\Base\Http\Controllers\Api\Mobile;
 
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\AuthServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Auth\LoginUserDto;
-use Wave8\Factotum\Base\Http\Requests\Api\Backoffice\Auth\LoginRequest;
-use Wave8\Factotum\Base\Http\Responses\Api\Backoffice\ApiResponse;
-use Wave8\Factotum\Base\Resources\Api\Backoffice\UserResource;
+use Wave8\Factotum\Base\Contracts\Api\Mobile\AuthServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Mobile\Auth\LoginUserDto;
+use Wave8\Factotum\Base\Http\Requests\Api\Mobile\Auth\LoginRequest;
+use Wave8\Factotum\Base\Http\Responses\Api\Mobile\ApiResponse;
+use Wave8\Factotum\Base\Resources\Api\Mobile\UserResource;
 
 final readonly class AuthController
 {

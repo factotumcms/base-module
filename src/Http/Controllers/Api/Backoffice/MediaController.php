@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api\Backoffice;
 
-use Wave8\Factotum\Base\Contracts\Services\MediaServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\MediaPreset;

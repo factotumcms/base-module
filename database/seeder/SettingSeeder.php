@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
-use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaPresetConfigDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Enums\Disk;

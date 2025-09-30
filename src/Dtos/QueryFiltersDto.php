@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Dtos;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
 use Wave8\Factotum\Base\Enums\Setting;
 use Wave8\Factotum\Base\Enums\SettingGroup;
 use Wave8\Factotum\Base\Services\Api\Backoffice\SettingService;

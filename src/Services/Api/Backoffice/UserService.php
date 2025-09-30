@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Backoffice\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\UpdateUserDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;

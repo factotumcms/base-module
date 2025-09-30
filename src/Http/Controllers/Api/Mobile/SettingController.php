@@ -1,10 +1,10 @@
 <?php
 
-namespace Wave8\Factotum\Base\Http\Controllers\Api\Backoffice;
+namespace Wave8\Factotum\Base\Http\Controllers\Api\Mobile;
 
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
-use Wave8\Factotum\Base\Http\Responses\Api\Backoffice\ApiResponse;
-use Wave8\Factotum\Base\Resources\Api\Backoffice\SettingResource;
+use Wave8\Factotum\Base\Contracts\Api\Mobile\SettingServiceInterface;
+use Wave8\Factotum\Base\Http\Responses\Api\Mobile\ApiResponse;
+use Wave8\Factotum\Base\Resources\Api\Mobile\SettingResource;
 
 final readonly class SettingController
 {

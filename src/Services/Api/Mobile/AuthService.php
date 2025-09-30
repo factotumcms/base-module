@@ -1,11 +1,11 @@
 <?php
 
-namespace Wave8\Factotum\Base\Services\Api\Backoffice;
+namespace Wave8\Factotum\Base\Services\Api\Mobile;
 
 use Illuminate\Support\Facades\Auth;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\AuthServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Auth\LoginUserDto;
+use Wave8\Factotum\Base\Contracts\Api\Mobile\AuthServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\Mobile\SettingServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Mobile\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Enums\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\SettingGroup;
 use Wave8\Factotum\Base\Models\User;

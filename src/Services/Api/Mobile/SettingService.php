@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Services\Api\Backoffice;
+namespace Wave8\Factotum\Base\Services\Api\Mobile;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\UpdateSettingDto;
+use Wave8\Factotum\Base\Contracts\Api\Mobile\SettingServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Mobile\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dtos\Api\Mobile\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\SettingDataType;
