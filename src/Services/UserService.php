@@ -11,7 +11,6 @@ use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\User\UpdateUserDto;
-use Wave8\Factotum\Base\Models\Permission;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Traits\Filterable;
 use Wave8\Factotum\Base\Traits\Sortable;
@@ -19,6 +18,7 @@ use Wave8\Factotum\Base\Traits\Sortable;
 class UserService implements UserServiceInterface
 {
     use Filterable, Sortable;
+
     /**
      * @throws \Exception
      */

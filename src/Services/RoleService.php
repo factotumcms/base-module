@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Services;
 
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
@@ -18,7 +17,8 @@ use Wave8\Factotum\Base\Traits\Sortable;
 
 class RoleService implements RoleServiceInterface
 {
-    use Sortable, Filterable;
+    use Filterable, Sortable;
+
     /**
      * Create a new role.
      */

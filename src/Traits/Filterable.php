@@ -22,12 +22,9 @@ trait Filterable
                 $value = substr($value, 1);
                 $query = $query->where($field, $operator, $value);
 
-            }else{
+            } else {
                 $query = $query->where($field, 'LIKE', "%$value%");
             }
-
-
-
 
         }
     }

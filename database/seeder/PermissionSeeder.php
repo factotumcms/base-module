@@ -9,7 +9,6 @@ use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Permission;
-use Wave8\Factotum\Base\Models\Role;
 
 class PermissionSeeder extends Seeder
 {

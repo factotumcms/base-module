@@ -26,7 +26,7 @@ final readonly class UserController
                 QueryFiltersDto::make(
                     ...Utility::sanitizeQueryString($request->query())
                 )
-            );;
+            );
 
         return ApiResponse::make(
             data: UserResource::collect($users)

@@ -2,9 +2,11 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,15 +17,20 @@ use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\MediaPreset;
 use Wave8\Factotum\Base\Enums\MediaType;
 use Wave8\Factotum\Base\Enums\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
+use Wave8\Factotum\Base\Traits\Filterable;
+use Wave8\Factotum\Base\Traits\Sortable;
 
 class MediaService implements MediaServiceInterface
 {
+    use Filterable, Sortable;
+
     public function __construct(
         /** @var SettingService $settingService */
         private readonly SettingServiceInterface $settingService,
@@ -57,16 +64,17 @@ class MediaService implements MediaServiceInterface
         return Media::all();
     }
 
-    public function filter(array $filters): Collection
+    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
     {
         $query = Media::query();
 
-        foreach ($filters as $filter) {
-            [$key, $condition, $value] = $filter;
-            $query->where($key, $condition, $value);
-        }
+        $this->applyFilters($query, $queryFilters->search);
+        $this->applySorting($query, $queryFilters);
 
-        return $query->get();
+        return $query->simplePaginate(
+            perPage: $queryFilters->perPage ?? 15,
+            page: $queryFilters->page
+        );
     }
 
     /**

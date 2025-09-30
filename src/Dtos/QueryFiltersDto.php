@@ -12,7 +12,7 @@ use Wave8\Factotum\Base\Services\SettingService;
 class QueryFiltersDto extends Data
 {
     public function __construct(
-        public readonly int $page = 1,
+        public readonly int $page,
         public readonly ?int $perPage,
         public readonly ?string $sortBy,
         public readonly ?string $sortOrder,
