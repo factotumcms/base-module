@@ -5,7 +5,7 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
-use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\CreateUserDto;
 use Wave8\Factotum\Base\Enums\Role;
 use Wave8\Factotum\Base\Models\User;
 

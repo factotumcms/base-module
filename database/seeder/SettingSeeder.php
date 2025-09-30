@@ -5,8 +5,8 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
-use Wave8\Factotum\Base\Dtos\Media\MediaPresetConfigDto;
-use Wave8\Factotum\Base\Dtos\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaPresetConfigDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
 use Wave8\Factotum\Base\Enums\Setting;
@@ -115,16 +115,6 @@ class SettingSeeder extends Seeder
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_BASE_PATH,
                 value: config('factotum-base.media.base_path')
-            )
-        );
-
-        $this->settingService->create(
-            data: CreateSettingDto::make(
-                scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::STRING,
-                group: SettingGroup::PAGINATION,
-                key: Setting::PAGINATION_TYPE,
-                value: config('factotum-base.pagination.type')
             )
         );
 

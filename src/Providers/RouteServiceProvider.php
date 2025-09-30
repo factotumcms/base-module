@@ -45,7 +45,7 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
         Route::group([
             'middleware' => ['api'],
         ], function () {
-            $this->mapRoutes(__DIR__.'/../../routes/api/public');
+            $this->mapRoutes(__DIR__.'/../../routes/api/backoffice/public');
         });
     }
 
@@ -54,7 +54,7 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
         Route::group([
             'middleware' => ['api', 'auth:sanctum'],
         ], function () {
-            $this->mapRoutes(__DIR__.'/../../routes/api/protected');
+            $this->mapRoutes(__DIR__.'/../../routes/api/backoffice/protected');
         });
     }
 

@@ -7,7 +7,7 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Enums\Setting;
 use Wave8\Factotum\Base\Enums\SettingGroup;
-use Wave8\Factotum\Base\Services\SettingService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\SettingService;
 
 class QueryFiltersDto extends Data
 {

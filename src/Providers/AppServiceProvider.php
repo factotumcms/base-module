@@ -10,13 +10,13 @@ use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
-use Wave8\Factotum\Base\Services\AuthService;
-use Wave8\Factotum\Base\Services\LanguageService;
-use Wave8\Factotum\Base\Services\MediaService;
-use Wave8\Factotum\Base\Services\PermissionService;
-use Wave8\Factotum\Base\Services\RoleService;
-use Wave8\Factotum\Base\Services\SettingService;
-use Wave8\Factotum\Base\Services\UserService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\AuthService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\LanguageService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\MediaService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\PermissionService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\RoleService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\SettingService;
+use Wave8\Factotum\Base\Services\Api\Backoffice\UserService;
 
 class AppServiceProvider extends LaravelServiceProvider
 {
