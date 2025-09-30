@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\UserServiceInterface;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Dtos\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\User\UpdateUserDto;
 use Wave8\Factotum\Base\Models\User;
@@ -74,5 +75,10 @@ class UserService implements UserServiceInterface
         }
     }
 
-    public function filter(array $filters): Collection {}
+    public function filter(QueryFiltersDto $queryFilters): Collection {}
+
+    function applyFilters($query, QueryFiltersDto $queryFilters)
+    {
+        // TODO: Implement applyFilters() method.
+    }
 }

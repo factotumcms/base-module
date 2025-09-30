@@ -2,12 +2,15 @@
 
 namespace Wave8\Factotum\Base\Services;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\Permission\UpdatePermissionDto;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Models\Permission;
 
 class PermissionService implements PermissionServiceInterface
@@ -20,14 +23,6 @@ class PermissionService implements PermissionServiceInterface
         return Permission::create(
             attributes: $data->toArray()
         );
-    }
-
-    /**
-     * Get all permissions
-     */
-    public function getAll(): Collection
-    {
-        return Permission::all();
     }
 
     /**
@@ -62,8 +57,33 @@ class PermissionService implements PermissionServiceInterface
         return $permission->delete();
     }
 
-    public function filter(array $filters): Collection
+    public function filter(QueryFiltersDto $queryFilters): LengthAwarePaginator
     {
-        // TODO: Implement filter() method.
+        $query = Permission::query();
+
+        $this->applyFilters($query, $queryFilters->search);
+        $this->applySorting($query, $queryFilters);
+
+
+        return $query->paginate($queryFilters->per_page ?? 15, ['*'], 'page', $queryFilters->page);
     }
+
+    public function applyFilters(&$query, ?array $searchFilters):void
+    {
+        foreach ($searchFilters as $field => $value) {
+            if (is_array($value)) {
+                $query = $query->whereIn($field, $value);
+            } else {
+                $query = $query->where($field, $value);
+            }
+        }
+    }
+
+    public function applySorting(Builder &$query, QueryFiltersDto $queryFilters)
+    {
+        if($queryFilters->sort_by) {
+            $query = $query->orderBy($queryFilters->sort_by, $queryFilters->sort_order);
+        }
+    }
+
 }

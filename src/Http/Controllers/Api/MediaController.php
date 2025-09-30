@@ -21,7 +21,6 @@ final readonly class MediaController
 
         return ApiResponse::make(
             data: MediaResource::collect($media),
-            //            data: $media->map(fn ($el) => MediaResource::from($el)),
         );
     }
 

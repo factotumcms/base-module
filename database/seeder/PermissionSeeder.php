@@ -8,6 +8,7 @@ use Wave8\Factotum\Base\Contracts\Services\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Enums\Permission;
+use Wave8\Factotum\Base\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -24,9 +25,12 @@ class PermissionSeeder extends Seeder
         // Create admin default user
         Log::info('Creating default permission..');
 
-        $adminRole = $this->roleService->filter([
-            ['name', '=', 'admin'],
-        ])->firstOrFail();
+
+//        $adminRole = $this->roleService->filter([
+//            ['name', '=', 'admin'],
+//        ])->firstOrFail();
+
+        $adminRole = Role::where('name', 'admin')->firstOrFail();
 
         foreach (Permission::getValues() as $permission) {
             $this->permissionService->create(

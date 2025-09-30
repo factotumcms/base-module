@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Services\RoleServiceInterface;
+use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Dtos\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Enums\Permission;
@@ -61,11 +62,11 @@ class RoleService implements RoleServiceInterface
         return $role->delete();
     }
 
-    public function filter(array $filters): Collection
+    public function filter(QueryFiltersDto $queryFilters): Collection
     {
         $query = Role::query();
-
-        foreach ($filters as $filter) {
+        //todo:: da refactor
+        foreach ($queryFilters as $filter) {
             [$key, $condition, $value] = $filter;
             $query->where($key, $condition, $value);
         }
@@ -102,5 +103,10 @@ class RoleService implements RoleServiceInterface
         }
 
         return ! is_null($defaultRole);
+    }
+
+    function applyFilters($query, QueryFiltersDto $queryFilters)
+    {
+        // TODO: Implement applyFilters() method.
     }
 }

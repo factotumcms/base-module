@@ -117,5 +117,45 @@ class SettingSeeder extends Seeder
                 value: config('factotum-base.media.base_path')
             )
         );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::STRING,
+                group: SettingGroup::PAGINATION,
+                key: Setting::PAGINATION_TYPE,
+                value: config('factotum-base.pagination.type')
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::INTEGER,
+                group: SettingGroup::PAGINATION,
+                key: Setting::PAGINATION_PER_PAGE,
+                value: config('factotum-base.pagination.per_page')
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::INTEGER,
+                group: SettingGroup::PAGINATION,
+                key: Setting::PAGINATION_DEFAULT_ORDER_BY,
+                value: config('factotum-base.pagination.default_order_by')
+            )
+        );
+
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::INTEGER,
+                group: SettingGroup::PAGINATION,
+                key: Setting::PAGINATION_DEFAULT_ORDER_DIRECTION,
+                value: config('factotum-base.pagination.default_order_direction')
+            )
+        );
     }
 }
