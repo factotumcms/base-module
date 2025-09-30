@@ -11,7 +11,7 @@ use Wave8\Factotum\Base\Http\Requests\Api\Backoffice\Role\CreateRoleRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Backoffice\Role\UpdateRoleRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\Backoffice\ApiResponse;
-use Wave8\Factotum\Base\Resources\RoleResource;
+use Wave8\Factotum\Base\Resources\Api\Backoffice\RoleResource;
 
 final readonly class RoleController
 {

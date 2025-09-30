@@ -10,7 +10,7 @@ use Wave8\Factotum\Base\Helpers\Utility;
 use Wave8\Factotum\Base\Http\Requests\Api\Backoffice\Media\UploadMediaRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\Backoffice\ApiResponse;
-use Wave8\Factotum\Base\Resources\MediaResource;
+use Wave8\Factotum\Base\Resources\Api\Backoffice\MediaResource;
 
 final readonly class MediaController
 {

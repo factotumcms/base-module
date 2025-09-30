@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Resources;
+namespace Wave8\Factotum\Base\Resources\Api\Backoffice;
 
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelData\Resource;

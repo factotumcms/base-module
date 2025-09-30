@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Resources;
+namespace Wave8\Factotum\Base\Resources\Api\Backoffice;
 
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\LaravelData\Resource;

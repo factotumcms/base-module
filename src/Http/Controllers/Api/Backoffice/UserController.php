@@ -11,7 +11,7 @@ use Wave8\Factotum\Base\Http\Requests\Api\Backoffice\User\CreateUserRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Backoffice\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\Backoffice\ApiResponse;
-use Wave8\Factotum\Base\Resources\UserResource;
+use Wave8\Factotum\Base\Resources\Api\Backoffice\UserResource;
 
 final readonly class UserController
 {

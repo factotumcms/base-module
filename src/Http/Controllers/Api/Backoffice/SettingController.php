@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api\Backoffice;
 
 use Wave8\Factotum\Base\Contracts\Services\SettingServiceInterface;
 use Wave8\Factotum\Base\Http\Responses\Api\Backoffice\ApiResponse;
-use Wave8\Factotum\Base\Resources\SettingResource;
+use Wave8\Factotum\Base\Resources\Api\Backoffice\SettingResource;
 
 final readonly class SettingController
 {
