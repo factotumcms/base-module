@@ -58,6 +58,13 @@ php artisan vendor:publish --tag=factotum-base-config
 # php
 php artisan factotum-base:install
 ```
+
+5. Configure the application based on your needs. Set this env variables in your `.env` file:
+```bash
+# .env
+ENABLE_BACKOFFICE_API=true
+ENABLE_MOBILE_API=true
+```
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
