@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Contracts\Services;
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,6 +15,7 @@ interface EntityServiceInterface
     public function show(int $id): ?Model;
     public function update(int $id, Data $data): Model;
     public function delete(int $id): bool;
-    public function filter(QueryFiltersDto $queryFilters): LengthAwarePaginator;
+    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator;
     function applyFilters(Builder &$query, array $searchFilters):void;
+    function applySorting(Builder &$query, QueryFiltersDto $queryFilters): void;
 }
