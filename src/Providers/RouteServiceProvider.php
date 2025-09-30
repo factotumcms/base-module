@@ -12,6 +12,7 @@ use Symfony\Component\Finder\Finder;
 class RouteServiceProvider extends LaravelRouteServiceProvider
 {
     protected string $apiPrefix = 'api/v1/base';
+    protected array $apiContexts = ['backoffice', 'mobile'];
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -24,8 +25,10 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
 
             Route::prefix($this->apiPrefix)
                 ->group(function () {
-                    $this->registerProtectedApiRoutes();
-                    $this->registerPublicApiRoutes();
+                    foreach ($this->apiContexts as $context) {
+                        $this->registerProtectedApiRoutes($context);
+                        $this->registerPublicApiRoutes($context);
+                    }
                 });
         });
     }
@@ -40,21 +43,23 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
         });
     }
 
-    protected function registerPublicApiRoutes(): void
+    protected function registerPublicApiRoutes($context): void
     {
         Route::group([
             'middleware' => ['api'],
-        ], function () {
-            $this->mapRoutes(__DIR__.'/../../routes/api/backoffice/public');
+            'prefix' => $context
+        ], function () use ($context) {
+            $this->mapRoutes(__DIR__."/../../routes/api/$context/public");
         });
     }
 
-    protected function registerProtectedApiRoutes(): void
+    protected function registerProtectedApiRoutes(string $context): void
     {
         Route::group([
             'middleware' => ['api', 'auth:sanctum'],
-        ], function () {
-            $this->mapRoutes(__DIR__.'/../../routes/api/backoffice/protected');
+            'prefix' => $context
+        ], function () use ($context) {
+            $this->mapRoutes(__DIR__."/../../routes/api/$context/protected");
         });
     }
 
