@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Wave8\Factotum\Base\Database\Seeder\DatabaseSeeder;
-use Wave8\Factotum\Base\Models\User;
 
 class ModuleInstall extends Command
 {

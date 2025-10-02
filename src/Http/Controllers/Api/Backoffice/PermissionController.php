@@ -4,7 +4,6 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api\Backoffice;
 
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Helpers\Utility;
 use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\Backoffice\ApiResponse;
 use Wave8\Factotum\Base\Resources\Api\Backoffice\PermissionResource;

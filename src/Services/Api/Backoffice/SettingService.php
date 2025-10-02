@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Services\Api\Backoffice;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -17,13 +17,9 @@ use Wave8\Factotum\Base\Enums\SettingDataType;
 use Wave8\Factotum\Base\Enums\SettingGroup;
 use Wave8\Factotum\Base\Enums\SettingScope;
 use Wave8\Factotum\Base\Models\Setting;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
 class SettingService implements SettingServiceInterface
 {
-    use Filterable, Sortable;
-
     public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
 
     /**
@@ -111,17 +107,7 @@ class SettingService implements SettingServiceInterface
         return false;
     }
 
-    public function getAll(): Collection
-    {
-        return Setting::all();
-    }
-
-    public function applyFilters(Builder $query, array $searchFilters): void
-    {
-        // TODO: Implement applyFilters() method.
-    }
-
-    public function filter(QueryFiltersDto $queryFilters): LengthAwarePaginator
+    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
     {
         // TODO: Implement filter() method.
     }
