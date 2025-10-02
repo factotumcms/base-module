@@ -21,7 +21,7 @@ interface EntityServiceInterface
 
     public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator;
 
-    public function applyFilters(Builder &$query, array $searchFilters): void;
+    public function applyFilters(Builder $query, array $searchFilters): void;
 
     public function applySorting(Builder &$query, QueryFiltersDto $queryFilters): void;
 }

@@ -7,10 +7,10 @@ use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 
 trait Sortable
 {
-    public function applySorting(Builder &$query, QueryFiltersDto $queryFilters): void
+    public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void
     {
         if ($queryFilters->sortBy) {
-            $query = $query->orderBy($queryFilters->sortBy, $queryFilters->sortOrder);
+            $query->orderBy($queryFilters->sortBy, $queryFilters->sortOrder);
         }
     }
 }

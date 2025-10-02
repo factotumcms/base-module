@@ -116,7 +116,7 @@ class SettingService implements SettingServiceInterface
         return Setting::all();
     }
 
-    public function applyFilters(Builder &$query, array $searchFilters): void
+    public function applyFilters(Builder $query, array $searchFilters): void
     {
         // TODO: Implement applyFilters() method.
     }

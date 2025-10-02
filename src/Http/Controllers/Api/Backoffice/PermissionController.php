@@ -20,7 +20,7 @@ final readonly class PermissionController
         $permissions = $this->permissionService
             ->filter(
                 QueryFiltersDto::make(
-                    ...Utility::sanitizeQueryString($request->query())
+                    ...$request->query()
                 )
             );
 
