@@ -82,6 +82,7 @@ class ModuleInstall extends Command
         $this->info("{$this->processStep}) - Publish required vendor migrations..");
 
         $this->call('lang:publish');
+        $this->call('vendor:publish', ['--tag' => 'factotum-base-migrations']);
         $this->call('vendor:publish', ['--provider' => 'Laravel\Sanctum\SanctumServiceProvider', '--tag' => 'sanctum-migrations']);
         $this->call('vendor:publish', ['--provider' => 'Spatie\MediaLibrary\MediaLibraryServiceProvider', '--tag' => 'medialibrary-migrations']);
         $this->call('vendor:publish', ['--provider' => 'Spatie\TranslationLoader\TranslationServiceProvider', '--tag' => 'translation-loader-migrations']);
@@ -99,14 +100,5 @@ class ModuleInstall extends Command
         // Clear previous and Laravel default models
         $directory = app_path('Models');
         File::delete(File::allFiles($directory));
-
-        // Set up default Auth user model
-        // todo:: da implementare
-        //        if ( !is_subclass_of(config('auth.providers.users.model'), User::class) ) {
-        //            $this->mergeConfigFrom(
-        //                __DIR__ . '/../../config/auth-providers.php',
-        //                'auth.providers'
-        //            );
-        //        }
     }
 }
