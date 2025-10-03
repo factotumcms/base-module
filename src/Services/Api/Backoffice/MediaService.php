@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Image\Image;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
@@ -95,6 +96,10 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         );
 
         if ($storedFilename) {
+            // Optimize the image, the uploaded file will be overwritten
+            $optimizerChain = OptimizerChainFactory::create();
+            $optimizerChain->optimize(Storage::disk($disk)->path("$storedFilename"));
+
             $this->create(
                 data: CreateMediaDto::make(
                     name: $metadata['original_filename'],
@@ -290,5 +295,13 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
                 $query = $query->where($field, 'LIKE', "%$value%");
             }
         }
+    }
+
+    public function getMediaNotConverted(): Collection
+    {
+        return Media::whereNotNull('presets')
+            ->whereNull('conversions')
+            ->where('media_type', MediaType::IMAGE->value)
+            ->get();
     }
 }

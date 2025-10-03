@@ -5,7 +5,6 @@ namespace Wave8\Factotum\Base\Jobs;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
-use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Services\Api\Backoffice\MediaService;
 
 class GenerateImagesConversions implements ShouldQueue
@@ -25,11 +24,7 @@ class GenerateImagesConversions implements ShouldQueue
         /** @var MediaService $mediaService */
         $mediaService = app()->make(MediaServiceInterface::class);
 
-        $media = $mediaService->filter([
-            ['presets', '!=', null],
-            ['conversions', '=', null],
-            ['media_type', '=', MediaType::IMAGE->value],
-        ]);
+        $media = $mediaService->getMediaNotConverted();
 
         foreach ($media as $item) {
             $mediaService->generateConversions($item);
