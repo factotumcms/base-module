@@ -291,4 +291,12 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             }
         }
     }
+
+    public function getMediaNotConverted(): Collection
+    {
+        return Media::whereNotNull('presets')
+            ->whereNull('conversions')
+            ->where('media_type', MediaType::IMAGE->value)
+            ->get();
+    }
 }
