@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\AuthServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Auth\LoginUserDto;
-use Wave8\Factotum\Base\Enums\Setting as SettingType;
-use Wave8\Factotum\Base\Enums\SettingGroup;
+use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Models\User;
 
 class AuthService implements AuthServiceInterface

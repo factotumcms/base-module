@@ -3,6 +3,7 @@
 namespace Wave8\Factotum\Base\Services\Api\Backoffice;
 
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -14,23 +15,21 @@ use Spatie\Image\Image;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\FilterableInterface;
+use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
-use Wave8\Factotum\Base\Enums\MediaPreset;
-use Wave8\Factotum\Base\Enums\MediaType;
-use Wave8\Factotum\Base\Enums\Setting;
+use Wave8\Factotum\Base\Enums\Media\MediaPreset;
+use Wave8\Factotum\Base\Enums\Media\MediaType;
+use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class MediaService implements MediaServiceInterface
+class MediaService implements FilterableInterface, MediaServiceInterface, SortableInterface
 {
-    use Filterable, Sortable;
-
     public function __construct(
         /** @var SettingService $settingService */
         private readonly SettingServiceInterface $settingService,
@@ -268,5 +267,28 @@ class MediaService implements MediaServiceInterface
     private function generateProfilePicture(Model $media): string
     {
         return 'media/toimplement.jpg';
+    }
+
+    public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void
+    {
+        if ($queryFilters->sortBy) {
+            $query->orderBy($queryFilters->sortBy, $queryFilters->sortOrder);
+        }
+    }
+
+    public function applyFilters(Builder $query, ?array $searchFilters): void
+    {
+        foreach ($searchFilters as $field => $value) {
+
+            $operator = substr($value, 0, 1);
+            if (in_array($operator, ['<', '>'])) {
+
+                $value = substr($value, 1);
+                $query = $query->where($field, $operator, $value);
+
+            } else {
+                $query = $query->where($field, 'LIKE', "%$value%");
+            }
+        }
     }
 }

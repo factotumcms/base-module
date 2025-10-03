@@ -12,6 +12,7 @@ use Wave8\Factotum\Base\Console\Commands\ModuleInstall;
 class ModuleServiceProvider extends LaravelServiceProvider
 {
     public int $migrationCounter = 0;
+
     public function register(): void
     {
         // Register DI services
@@ -46,7 +47,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
 
     private function registerMigrations(): void
     {
-//        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+        //        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         $this->publishes([
             __DIR__.'/../../database/migrations/create_users_table.php.stub' => $this->getMigrationFileName('create_users_table.php'),

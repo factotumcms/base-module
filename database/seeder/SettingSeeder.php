@@ -9,10 +9,10 @@ use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaPresetConfigDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
-use Wave8\Factotum\Base\Enums\Setting;
-use Wave8\Factotum\Base\Enums\SettingDataType;
-use Wave8\Factotum\Base\Enums\SettingGroup;
-use Wave8\Factotum\Base\Enums\SettingScope;
+use Wave8\Factotum\Base\Enums\Setting\Setting;
+use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
+use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 
 class SettingSeeder extends Seeder
 {

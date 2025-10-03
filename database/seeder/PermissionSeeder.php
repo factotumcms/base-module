@@ -8,7 +8,11 @@ use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Enums\Permission;
+use Wave8\Factotum\Base\Enums\Permission\MediaPermission;
+use Wave8\Factotum\Base\Enums\Permission\Permission;
+use Wave8\Factotum\Base\Enums\Permission\RolePermission;
+use Wave8\Factotum\Base\Enums\Permission\SettingPermission;
+use Wave8\Factotum\Base\Enums\Permission\UserPermission;
 use Wave8\Factotum\Base\Enums\Role;
 
 class PermissionSeeder extends Seeder
@@ -32,14 +36,24 @@ class PermissionSeeder extends Seeder
             )
         );
 
-        foreach (Permission::getValues() as $permission) {
-            $this->permissionService->create(
-                data: CreatePermissionDto::make(
-                    name: $permission
-                )
-            );
+        $entities = [
+            UserPermission::class,
+            MediaPermission::class,
+            Permission::class,
+            RolePermission::class,
+            SettingPermission::class,
+        ];
 
-            $adminRole->firstOrFail()->givePermissionTo($permission);
+        foreach ($entities as $entity) {
+            foreach ($entity::getValues() as $permission) {
+                $this->permissionService->create(
+                    data: CreatePermissionDto::make(
+                        name: $permission
+                    )
+                );
+
+                $adminRole->firstOrFail()->givePermissionTo($permission);
+            }
         }
 
     }

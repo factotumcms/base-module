@@ -3,23 +3,22 @@
 namespace Wave8\Factotum\Base\Services\Api\Backoffice;
 
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
+use Wave8\Factotum\Base\Contracts\FilterableInterface;
+use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Enums\Permission;
+use Wave8\Factotum\Base\Enums\Permission\Permission;
 use Wave8\Factotum\Base\Models\Role;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class RoleService implements RoleServiceInterface
+class RoleService implements FilterableInterface, RoleServiceInterface, SortableInterface
 {
-    use Filterable, Sortable;
-
     /**
      * Create a new role.
      */
@@ -102,5 +101,28 @@ class RoleService implements RoleServiceInterface
         }
 
         return ! is_null($defaultRole);
+    }
+
+    public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void
+    {
+        if ($queryFilters->sortBy) {
+            $query->orderBy($queryFilters->sortBy, $queryFilters->sortOrder);
+        }
+    }
+
+    public function applyFilters(Builder $query, ?array $searchFilters): void
+    {
+        foreach ($searchFilters as $field => $value) {
+
+            $operator = substr($value, 0, 1);
+            if (in_array($operator, ['<', '>'])) {
+
+                $value = substr($value, 1);
+                $query = $query->where($field, $operator, $value);
+
+            } else {
+                $query = $query->where($field, 'LIKE', "%$value%");
+            }
+        }
     }
 }

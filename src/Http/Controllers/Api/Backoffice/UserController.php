@@ -24,7 +24,8 @@ final readonly class UserController
         $users = $this->userService
             ->filter(
                 QueryFiltersDto::make(
-                    ...Utility::sanitizeQueryString($request->query())
+                    ...Utility::sanitizeQueryString(
+                        $request->query())
                 )
             );
 

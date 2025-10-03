@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Dtos\Api\Backoffice\Media;
 
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Enums\Disk;
-use Wave8\Factotum\Base\Enums\MediaType;
+use Wave8\Factotum\Base\Enums\Media\MediaType;
 
 class CreateMediaDto extends Data
 {

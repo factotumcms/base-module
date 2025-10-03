@@ -2,6 +2,8 @@
 
 namespace Wave8\Factotum\Base\Helpers;
 
+use Illuminate\Support\Str;
+
 class Utility
 {
     public static function sanitizeQueryString(array $queryStrings = []): array
@@ -16,6 +18,6 @@ class Utility
 
     public static function toCamelCase(string $string): string
     {
-        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $string))));
+        return Str::camel($string);
     }
 }
