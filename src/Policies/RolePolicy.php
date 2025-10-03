@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
-use Wave8\Factotum\Base\Enums\Permission;
+use Wave8\Factotum\Base\Enums\Permission\RolePermission;
 use Wave8\Factotum\Base\Models\User;
 
 class RolePolicy
@@ -15,12 +15,12 @@ class RolePolicy
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(Permission::CREATE_ROLE);
+        return $user->hasPermissionTo(RolePermission::CREATE_ROLE);
     }
 
     public function read(User $user): bool
     {
-        return $user->hasPermissionTo(Permission::READ_ROLE);
+        return $user->hasPermissionTo(RolePermission::READ_ROLE);
     }
 
     public function update(User $user): bool
@@ -32,7 +32,7 @@ class RolePolicy
             return false;
         }
 
-        return $user->hasPermissionTo(Permission::UPDATE_ROLE);
+        return $user->hasPermissionTo(RolePermission::UPDATE_ROLE);
     }
 
     public function delete(User $user): bool
@@ -43,6 +43,6 @@ class RolePolicy
             return false;
         }
 
-        return $user->hasPermissionTo(Permission::DELETE_ROLE);
+        return $user->hasPermissionTo(RolePermission::DELETE_ROLE);
     }
 }

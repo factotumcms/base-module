@@ -14,7 +14,7 @@ use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Enums\Permission;
+use Wave8\Factotum\Base\Enums\Permission\Permission;
 use Wave8\Factotum\Base\Models\Role;
 
 class RoleService implements FilterableInterface, RoleServiceInterface, SortableInterface

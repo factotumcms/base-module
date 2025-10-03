@@ -13,10 +13,10 @@ use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Mobile\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Dtos\Api\Mobile\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Enums\Setting as SettingType;
-use Wave8\Factotum\Base\Enums\SettingDataType;
-use Wave8\Factotum\Base\Enums\SettingGroup;
-use Wave8\Factotum\Base\Enums\SettingScope;
+use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
+use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
+use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Traits\Filterable;
 

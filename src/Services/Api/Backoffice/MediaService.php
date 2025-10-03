@@ -22,9 +22,9 @@ use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
-use Wave8\Factotum\Base\Enums\MediaPreset;
-use Wave8\Factotum\Base\Enums\MediaType;
-use Wave8\Factotum\Base\Enums\Setting;
+use Wave8\Factotum\Base\Enums\Media\MediaPreset;
+use Wave8\Factotum\Base\Enums\Media\MediaType;
+use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
 
