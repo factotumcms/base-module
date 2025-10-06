@@ -75,7 +75,7 @@ Feel free to open issues and submit pull requests.
 
 ## Security
 
-If you discover any security related issues, please email [assistenza@8wave.it](mailto:assistenza@8wave.it) or use the issue tracker.
+If you discover any security related issues, please feel free to open issues and submit pull requests.
 
 ## Credits
 
