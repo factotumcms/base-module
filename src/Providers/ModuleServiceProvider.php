@@ -47,14 +47,11 @@ class ModuleServiceProvider extends LaravelServiceProvider
 
     private function registerMigrations(): void
     {
-        //        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
-        $this->publishes([
-            __DIR__.'/../../database/migrations/create_users_table.php.stub' => $this->getMigrationFileName('create_users_table.php'),
-            __DIR__.'/../../database/migrations/create_settings_table.php.stub' => $this->getMigrationFileName('create_settings_table.php'),
-            __DIR__.'/../../database/migrations/create_media_table.php.stub' => $this->getMigrationFileName('create_media_table.php'),
-            __DIR__.'/../../database/migrations/create_jobs_table.php.stub' => $this->getMigrationFileName('create_jobs_table.php'),
+        $this->publishesMigrations([
+            __DIR__.'/../../database/migrations' => database_path('migrations'),
         ], 'factotum-base-migrations');
+
     }
 
     private function registerTranslations(): void

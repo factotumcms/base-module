@@ -16,6 +16,7 @@ class CreateSettingDto extends Data
         public SettingGroup $group,
         public Setting $key,
         public ?string $value = null,
+        public ?string $description = null,
     ) {}
 
     public static function make(
@@ -24,6 +25,7 @@ class CreateSettingDto extends Data
         SettingGroup $group,
         Setting $key,
         ?string $value = null,
+        ?string $description = null,
     ): static {
         return new static(
             scope: $scope,
@@ -31,6 +33,7 @@ class CreateSettingDto extends Data
             group: $group,
             key: $key,
             value: $value,
+            description: $description,
         );
     }
 }
