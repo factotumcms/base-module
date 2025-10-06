@@ -44,14 +44,18 @@ composer require wave8/factotum-base
 # config
 php artisan vendor:publish --tag=factotum-base-config
 ```
-3. Subsistute the User model with the Factotum User model. You can do this either by changing the `model` key in the `config/auth.php` file or set an ENV variable.
-```bash
-# config/auth.php
-'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', \Wave8\Factotum\Base\Models\User::class),
-        ],
+3. On the default User laravel model, you need to extend the `\Wave8\Factotum\Base\Models\User` model and add SoftDeletes trait. 
+```diff
+app/Models/User.php
+
+-class User extends Authenticatable
++class User extends \Wave8\Factotum\Base\Models\User
+{
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+-   use HasFactory, Notifiable;
++   use HasFactory, Notifiable, SoftDeletes;
+ ...
+}
 ```
 4. Install the Factotum Base Module. This procedure will run the migrations, seed the initial data and publish the assets.
 ```bash
