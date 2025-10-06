@@ -4,7 +4,6 @@ namespace Wave8\Factotum\Base\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
 use Laravel\Sanctum\SanctumServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
@@ -42,8 +41,6 @@ class ModuleInstall extends Command
         }
 
         $this->info('*** Factotum Base Module installation started ***');
-
-        $this->setUpEnvironment();
 
         $this->publishVendorMigrations();
         $this->runMigration();
@@ -91,16 +88,5 @@ class ModuleInstall extends Command
         $this->call('vendor:publish', ['--provider' => PermissionServiceProvider::class, '--tag' => 'permission-migrations']);
 
         $this->processStep++;
-    }
-
-    private function setUpEnvironment()
-    {
-        // Clear previous and Laravel default published migrations
-        $directory = database_path('migrations');
-        File::delete(File::allFiles($directory));
-
-        // Clear previous and Laravel default models
-        $directory = app_path('Models');
-        File::delete(File::allFiles($directory));
     }
 }
