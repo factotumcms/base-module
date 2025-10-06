@@ -35,6 +35,7 @@ class SettingSeeder extends Seeder
                 group: SettingGroup::AUTH,
                 key: Setting::AUTH_TYPE,
                 value: 'basic',
+                description: 'Authentication type (e.g., basic, microsoft)'
             )
         );
 
