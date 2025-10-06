@@ -44,7 +44,7 @@ composer require wave8/factotum-base
 # config
 php artisan vendor:publish --tag=factotum-base-config
 ```
-3. On the default User laravel model, you need to extend the `\Wave8\Factotum\Base\Models\User` model and add SoftDeletes trait. 
+3. On the default User laravel model, you need to extend the `\Wave8\Factotum\Base\Models\User` model. 
 ```diff
 app/Models/User.php
 
@@ -52,10 +52,7 @@ app/Models/User.php
 +class User extends \Wave8\Factotum\Base\Models\User
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
--   use HasFactory, Notifiable;
-+   use HasFactory, Notifiable, SoftDeletes;
- ...
-}
+    use HasFactory, Notifiable;
 ```
 4. Install the Factotum Base Module. This procedure will run the migrations, seed the initial data and publish the assets.
 ```bash
