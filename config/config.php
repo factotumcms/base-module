@@ -35,14 +35,14 @@ return [
                 'optimize' => true,
                 'resize' => null,
                 'fit' => [
-                    'method' => Fit::Crop,
+                    'method' => Fit::Crop->value,
                     'width' => 300,
                     'height' => 300,
                 ],
                 'crop' => [
                     'width' => 300,
                     'height' => 300,
-                    'position' => CropPosition::Center,
+                    'position' => CropPosition::Center->value,
                 ],
             ],
             MediaPreset::THUMBNAIL->value => [
@@ -53,14 +53,14 @@ return [
                     'height' => 300,
                 ],
                 'fit' => [
-                    'method' => Fit::Crop,
+                    'method' => Fit::Crop->value,
                     'width' => 300,
                     'height' => 300,
                 ],
                 'crop' => [
                     'width' => 300,
                     'height' => 300,
-                    'position' => CropPosition::Center,
+                    'position' => CropPosition::Center->value,
                 ],
             ],
         ],

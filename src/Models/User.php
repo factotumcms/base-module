@@ -85,7 +85,7 @@ class User extends Authenticatable
     /**
      * Get the user's profile picture media relation.
      *
-     * @return HasOne The HasOne relation to the Media model representing the user's profile picture.
+     * @return BelongsTo The HasOne relation to the Media model representing the user's profile picture.
      */
     public function profile_picture(): BelongsTo
     {
