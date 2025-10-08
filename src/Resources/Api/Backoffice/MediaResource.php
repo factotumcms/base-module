@@ -44,7 +44,7 @@ class MediaResource extends Resource
     public function with(): array
     {
         return [
-            'url' => Storage::disk($this->disk)->url($this->path.'/'.$this->file_name),
+            'url' => Storage::disk($this->disk->value)->url($this->path.'/'.$this->file_name),
         ];
     }
 }

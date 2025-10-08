@@ -22,11 +22,11 @@ return [
     ],
 
     'locale' => [
-        'default' => env('APP_LOCALE', Locale::EN),
+        'default' => env('APP_LOCALE', Locale::EN->value),
     ],
 
     'media' => [
-        'disk' => env('FILESYSTEM_DISK', Disk::PUBLIC), // Options: public, s3, local. (must be configured in config/filesystems.php)
+        'disk' => env('FILESYSTEM_DISK', Disk::PUBLIC->value), // Options: public, s3, local. (must be configured in config/filesystems.php)
         'base_path' => env('MEDIA_BASE_PATH', 'media'),
         'conversions_path' => 'conversions',
         'presets' => [

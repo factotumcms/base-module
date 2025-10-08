@@ -6,8 +6,8 @@ namespace Wave8\Factotum\Base\Models;
 
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -86,8 +86,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne The HasOne relation to the Media model representing the user's profile picture.
      */
-    public function profile_picture(): HasOne
+    public function profile_picture(): BelongsTo
     {
-        return $this->hasOne(Media::class, 'id', 'media_id');
+        return $this->belongsTo(Media::class, 'media_id');
     }
 }
