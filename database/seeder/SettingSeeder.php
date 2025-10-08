@@ -5,7 +5,10 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCropDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaFitDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaPresetConfigDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaResizeDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
@@ -69,33 +72,25 @@ class SettingSeeder extends Seeder
             )
         );
 
-        $this->settingService->create(
-            data: CreateSettingDto::make(
-                scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::JSON,
-                group: SettingGroup::MEDIA,
-                key: Setting::PROFILE_PICTURE_PRESET,
-                value: json_encode(MediaPresetConfigDto::make(
-                    width: config('factotum-base.media.profile_picture_preset.width'),
-                    height: config('factotum-base.media.profile_picture_preset.height'),
-                    fit: config('factotum-base.media.profile_picture_preset.fit'),
-                )),
-            )
-        );
 
-        $this->settingService->create(
-            data: CreateSettingDto::make(
-                scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::JSON,
-                group: SettingGroup::MEDIA,
-                key: Setting::THUMBNAIL_PRESET,
-                value: json_encode(MediaPresetConfigDto::make(
-                    width: config('factotum-base.media.thumbnail_preset.width'),
-                    height: config('factotum-base.media.thumbnail_preset.height'),
-                    fit: config('factotum-base.media.thumbnail_preset.fit'),
-                )),
-            )
-        );
+        // Media presets
+        foreach (config('factotum-base.media.presets') as $key => $preset){
+
+            $this->settingService->create(
+                data: CreateSettingDto::make(
+                    scope: SettingScope::SYSTEM,
+                    data_type: SettingDataType::JSON,
+                    group: SettingGroup::MEDIA,
+                    key: Setting::tryFrom($key),
+                    value: json_encode(MediaPresetConfigDto::make(
+                        suffix: $preset['suffix'],
+                        resize: isset($preset['resize']) ? MediaResizeDto::from($preset['resize']) : null,
+                        fit: isset($preset['fit']) ? MediaFitDto::from($preset['fit']) : null,
+                        crop: isset($preset['fit']) ? MediaCropDto::from($preset['crop']) : null,
+                    )),
+                )
+            );
+        }
 
         $this->settingService->create(
             data: CreateSettingDto::make(

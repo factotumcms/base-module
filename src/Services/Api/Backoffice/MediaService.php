@@ -11,6 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
@@ -178,52 +179,54 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         $conversions = [];
         foreach (json_decode($media->presets) as $preset) {
 
-            match ($preset) {
-                MediaPreset::PROFILE_PICTURE->value => $path = $this->generateProfilePicture($media),
-                MediaPreset::THUMBNAIL->value => $path = $this->generateImageThumbnail($media),
-            };
+            //Load preset config
+            $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset)));
 
-            $conversions[$preset] = $path;
+            $fileName = File::name($media->file_name);
+            $fileExtension = '.'.File::extension($media->file_name);
+
+            $fullMediaPath = $media->fullMediaPath();
+            $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
+
+            $destPath = $fullMediaDirectory.'/conversions';
+
+            if (! is_dir($destPath)) {
+                File::makeDirectory($destPath, 0755, true);
+            }
+
+            $destPath .= '/'.$fileName.$presetProps->suffix.$fileExtension;
+
+            if (is_file($fullMediaPath)) {
+                try {
+                    $image = Image::load($fullMediaPath);
+                    if(isset($presetProps->resize)){
+                        $image->resize($presetProps->resize->width, $presetProps->resize->height);
+                    }
+
+                    if(isset($presetProps->fit)){
+                        $image->fit(Fit::tryFrom($presetProps->fit->method), $presetProps->fit->width, $presetProps->fit->height);
+                    }
+
+                    if(isset($presetProps->crop)){
+                        $image->crop($presetProps->crop->width, $presetProps->crop->height, CropPosition::tryFrom($presetProps->crop->position));
+                    }
+
+                    if($presetProps->optimize){
+                        $image->optimize();
+                    }
+
+                    $image->save($destPath);
+
+                } catch (\Exception $e) {
+                    dd($e->getMessage());
+                }
+            }
+
+            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/conversions/'.$fileName.$presetProps->suffix.$fileExtension);;
         }
 
         $media->conversions = $conversions;
         $media->save();
-    }
-
-    private function generateImageThumbnail(Model $media): string
-    {
-        $fileName = File::name($media->file_name);
-        $fileExtension = '.'.File::extension($media->file_name);
-
-        $fullMediaPath = $media->fullMediaPath();
-        $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
-
-        $destPath = $fullMediaDirectory.'/conversions';
-
-        if (! is_dir($destPath)) {
-            File::makeDirectory($destPath, 0755, true);
-        }
-
-        $thumbSuffix = '_thumb';
-        $destPath .= '/'.$fileName.$thumbSuffix.$fileExtension;
-
-        if (is_file($fullMediaPath)) {
-            $props = json_decode($this->settingService->getSystemSettingValue(Setting::THUMBNAIL_PRESET));
-
-            try {
-
-                Image::load($fullMediaPath)
-                    ->width($props->width)
-                    ->height($props->height)
-                    ->fit(Fit::tryFrom($props->fit), $props->width, $props->height)
-                    ->save($destPath);
-
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-            }
-        }
-
-        return Storage::disk($media->disk)->url($media->path.'/conversions/'.$fileName.$thumbSuffix.$fileExtension);
     }
 
     private function setDefaultCustomProperties(array $metadata): MediaCustomPropertiesDto
@@ -264,42 +267,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             $basePath, date('Y'), date('m'), date('d'),
         ]);
 
-    }
-
-    private function generateProfilePicture(Model $media): string
-    {
-        $fileName = File::name($media->file_name);
-        $fileExtension = '.'.File::extension($media->file_name);
-
-        $fullMediaPath = $media->fullMediaPath();
-        $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
-
-        $destPath = $fullMediaDirectory.'/conversions';
-
-        if (! is_dir($destPath)) {
-            File::makeDirectory($destPath, 0755, true);
-        }
-
-        $thumbSuffix = '_profile';
-        $destPath .= '/'.$fileName.$thumbSuffix.$fileExtension;
-
-        if (is_file($fullMediaPath)) {
-            $props = json_decode($this->settingService->getSystemSettingValue(Setting::PROFILE_PICTURE_PRESET));
-
-            try {
-
-                Image::load($fullMediaPath)
-                    ->width($props->width)
-                    ->height($props->height)
-                    ->fit(Fit::tryFrom($props->fit), $props->width, $props->height)
-                    ->save($destPath);
-
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-            }
-        }
-
-        return Storage::disk($media->disk)->url($media->path.'/conversions/'.$fileName.$thumbSuffix.$fileExtension);
     }
 
     public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void

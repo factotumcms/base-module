@@ -7,21 +7,31 @@ use Spatie\LaravelData\Data;
 class MediaPresetConfigDto extends Data
 {
     public function __construct(
-        public readonly ?string $width,
-        public readonly ?string $height,
-        public readonly ?string $fit,
+        public readonly string $suffix,
+        public bool $optimize,
+        public readonly ?MediaResizeDto $resize,
+        public readonly ?MediaFitDto $fit,
+        public readonly ?MediaCropDto $crop,
+        // public readonly filter,
+        // public readonly brightness,
+        // public readonly contrast,
+        // public readonly gamma,
+        // public readonly orientation,
     ) {}
 
     public static function make(
-        ?string $width = null,
-        ?string $height = null,
-        ?string $fit = null,
-
+        string $suffix,
+        bool $optimize = true,
+        ?MediaResizeDto $resize = null,
+        ?MediaFitDto $fit = null,
+        ?MediaCropDto $crop = null,
     ): static {
         return new static(
-            width: $width,
-            height: $height,
+            suffix: $suffix,
+            optimize: $optimize,
+            resize: $resize,
             fit: $fit,
+            crop: $crop,
         );
     }
 }

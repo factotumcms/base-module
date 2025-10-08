@@ -25,16 +25,42 @@ return [
     'media' => [
         'disk' => env('FILESYSTEM_DISK', Disk::PUBLIC), // Options: public, s3, local. (must be configured in config/filesystems.php)
         'base_path' => env('MEDIA_BASE_PATH', 'media'),
-        'profile_picture_preset' => [
-            'width' => 300,
-            'height' => 300,
-            'fit' => 'crop',
+        'presets' => [
+            \Wave8\Factotum\Base\Enums\Media\MediaPreset::PROFILE_PICTURE->value => [
+                'suffix' => '_profile',
+                'optimize' => true,
+                'resize' => null,
+                'fit' => [
+                    'method' => \Spatie\Image\Enums\Fit::Crop,
+                    'width' => 300,
+                    'height' => 300,
+                ],
+                'crop' => [
+                    'width' => 300,
+                    'height' => 300,
+                    'position' => \Spatie\Image\Enums\CropPosition::Center,
+                ]
+            ],
+            \Wave8\Factotum\Base\Enums\Media\MediaPreset::THUMBNAIL->value => [
+                'suffix' => '_thumb',
+                'optimize' => true,
+                'resize' => [
+                    'width' => 300,
+                    'height' => 300,
+                ],
+                'fit' => [
+                    'method' => \Spatie\Image\Enums\Fit::Crop,
+                    'width' => 300,
+                    'height' => 300,
+                ],
+                'crop' => [
+                    'width' => 300,
+                    'height' => 300,
+                    'position' => \Spatie\Image\Enums\CropPosition::Center,
+                ]
+            ],
         ],
-        'thumbnail_preset' => [
-            'width' => 300,
-            'height' => 300,
-            'fit' => 'crop',
-        ],
+
     ],
 
     'pagination' => [

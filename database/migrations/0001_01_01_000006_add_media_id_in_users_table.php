@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('media_id')->after('id')->constrained()->nullOnDelete();
+            $table->unsignedBigInteger('media_id')->nullable()->after('id');
+            $table->foreign('media_id')->references('id')->on('media')->nullOnDelete();
         });
     }
 
