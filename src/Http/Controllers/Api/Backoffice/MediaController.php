@@ -51,7 +51,7 @@ final readonly class MediaController
         $media = $this->mediaService->show($id);
 
         return response()->file(
-            $this->mediaService->getFullMediaPath($media),
+            $media->fullMediaPath(),
             ['Content-Type' => $media->mime_type]
         );
     }

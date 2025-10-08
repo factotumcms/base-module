@@ -10,20 +10,18 @@ class MediaPresetConfigDto extends Data
         public readonly ?string $width,
         public readonly ?string $height,
         public readonly ?string $fit,
-        public readonly ?string $position,
     ) {}
 
     public static function make(
         ?string $width = null,
         ?string $height = null,
         ?string $fit = null,
-        ?string $position = null,
+
     ): static {
         return new static(
             width: $width,
             height: $height,
             fit: $fit,
-            position: $position
         );
     }
 }

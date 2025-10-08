@@ -29,13 +29,11 @@ return [
             'width' => 300,
             'height' => 300,
             'fit' => 'crop',
-            'position' => 'center',
         ],
         'thumbnail_preset' => [
             'width' => 300,
             'height' => 300,
             'fit' => 'crop',
-            'position' => 'center',
         ],
     ],
 

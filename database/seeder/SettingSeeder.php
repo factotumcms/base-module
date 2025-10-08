@@ -79,7 +79,6 @@ class SettingSeeder extends Seeder
                     width: config('factotum-base.media.profile_picture_preset.width'),
                     height: config('factotum-base.media.profile_picture_preset.height'),
                     fit: config('factotum-base.media.profile_picture_preset.fit'),
-                    position: config('factotum-base.media.profile_picture_preset.position'),
                 )),
             )
         );
@@ -94,7 +93,6 @@ class SettingSeeder extends Seeder
                     width: config('factotum-base.media.thumbnail_preset.width'),
                     height: config('factotum-base.media.thumbnail_preset.height'),
                     fit: config('factotum-base.media.thumbnail_preset.fit'),
-                    position: config('factotum-base.media.thumbnail_preset.position'),
                 )),
             )
         );

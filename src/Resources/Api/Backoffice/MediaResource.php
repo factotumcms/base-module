@@ -14,12 +14,18 @@ class MediaResource extends Resource
         public ?string $uuid,
         public string $name,
         public string $file_name,
+        public string $path,
         public string $mime_type,
         public Disk $disk,
         public MediaType $media_type,
         public int $size,
-    ) {
-        $this->file_name = url(Storage::disk($disk)->url($this->file_name));
-    }
+        public ?array $conversions,
+    ) {}
 
+    public function with(): array
+    {
+        return [
+            'url' => Storage::disk($this->disk)->url($this->path.'/'.$this->file_name),
+        ];
+    }
 }

@@ -7,6 +7,7 @@ namespace Wave8\Factotum\Base\Models;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -73,5 +74,10 @@ class User extends Authenticatable
     public function settings(): BelongsToMany
     {
         return $this->belongsToMany(Setting::class);
+    }
+
+    public function profile_picture(): HasOne
+    {
+        return $this->hasOne(Media::class, 'id', 'media_id');
     }
 }

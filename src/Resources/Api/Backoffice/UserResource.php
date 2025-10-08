@@ -15,5 +15,6 @@ class UserResource extends Resource
         public ?string $username,
         public \DateTime $created_at,
         public ?Collection $roles,
+        public ?MediaResource $profile_picture = null,
     ) {}
 }

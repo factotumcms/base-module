@@ -45,7 +45,7 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     {
         try {
 
-            return User::findOrFail($id);
+            return User::with('profile_picture')->findOrFail($id);
 
         } catch (\Exception $e) {
             throw $e;
