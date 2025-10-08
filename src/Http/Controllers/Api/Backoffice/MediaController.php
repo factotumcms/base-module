@@ -46,6 +46,12 @@ final readonly class MediaController
         );
     }
 
+    /**
+     * Serve the media file identified by the given ID.
+     *
+     * @param int $id The media record identifier.
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse A file response for the media file with the MIME type set in the Content-Type header.
+     */
     public function show(int $id)
     {
         $media = $this->mediaService->show($id);

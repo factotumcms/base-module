@@ -41,6 +41,13 @@ class UserService implements FilterableInterface, SortableInterface, UserService
         return User::all();
     }
 
+    /**
+     * Retrieve a user by ID with its `profile_picture` relationship loaded.
+     *
+     * @param int $id The user's ID.
+     * @return \Illuminate\Database\Eloquent\Model The requested User model with `profile_picture` loaded.
+     * @throws \Exception If the user cannot be retrieved or another error occurs.
+     */
     public function show(int $id): ?Model
     {
         try {

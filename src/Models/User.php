@@ -71,11 +71,21 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the settings associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany A relation linking the user to its `Setting` models.
+     */
     public function settings(): BelongsToMany
     {
         return $this->belongsToMany(Setting::class);
     }
 
+    /**
+     * Get the user's profile picture media relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne The HasOne relation to the Media model representing the user's profile picture.
+     */
     public function profile_picture(): HasOne
     {
         return $this->hasOne(Media::class, 'id', 'media_id');
