@@ -5,7 +5,10 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCropDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaFitDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaPresetConfigDto;
+use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaResizeDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
@@ -21,7 +24,10 @@ class SettingSeeder extends Seeder
     ) {}
 
     /**
-     * Seed the application's database.
+     * Seed default system settings into the database.
+     *
+     * Creates default settings for authentication, locale, media, and pagination,
+     * and registers media presets defined in the application configuration.
      */
     public function run(): void
     {
@@ -72,32 +78,37 @@ class SettingSeeder extends Seeder
         $this->settingService->create(
             data: CreateSettingDto::make(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::JSON,
+                data_type: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
-                key: Setting::PROFILE_PICTURE_PRESET,
-                value: json_encode(MediaPresetConfigDto::make(
-                    width: config('factotum-base.media.profile_picture_preset.width'),
-                    height: config('factotum-base.media.profile_picture_preset.height'),
-                    fit: config('factotum-base.media.profile_picture_preset.fit'),
-                    position: config('factotum-base.media.profile_picture_preset.position'),
-                )),
+                key: Setting::MEDIA_CONVERSIONS_PATH,
+                value: config('factotum-base.media.conversions_path'),
             )
         );
 
-        $this->settingService->create(
-            data: CreateSettingDto::make(
-                scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::JSON,
-                group: SettingGroup::MEDIA,
-                key: Setting::THUMBNAIL_PRESET,
-                value: json_encode(MediaPresetConfigDto::make(
-                    width: config('factotum-base.media.thumbnail_preset.width'),
-                    height: config('factotum-base.media.thumbnail_preset.height'),
-                    fit: config('factotum-base.media.thumbnail_preset.fit'),
-                    position: config('factotum-base.media.thumbnail_preset.position'),
-                )),
-            )
-        );
+        // Media presets
+        foreach (config('factotum-base.media.presets') as $key => $preset) {
+
+            $settingKey = Setting::tryFrom($key);
+                if (!$settingKey) {
+                    continue; // Skip presets that don't map to Setting enum
+            }
+
+            $this->settingService->create(
+                data: CreateSettingDto::make(
+                    scope: SettingScope::SYSTEM,
+                    data_type: SettingDataType::JSON,
+                    group: SettingGroup::MEDIA,
+                    key: $settingKey,
+                    value: json_encode(MediaPresetConfigDto::make(
+                        suffix: $preset['suffix'],
+                        optimize: $preset['optimize'] ?? true,
+                        resize: isset($preset['resize']) ? MediaResizeDto::from($preset['resize']) : null,
+                        fit: isset($preset['fit']) ? MediaFitDto::from($preset['fit']) : null,
+                        crop: isset($preset['crop']) ? MediaCropDto::from($preset['crop']) : null,
+                    )),
+                )
+            );
+        }
 
         $this->settingService->create(
             data: CreateSettingDto::make(

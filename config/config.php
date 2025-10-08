@@ -1,7 +1,10 @@
 <?php
 
+use Spatie\Image\Enums\CropPosition;
+use Spatie\Image\Enums\Fit;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
+use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 
 return [
     'module_name' => 'Base',
@@ -19,24 +22,49 @@ return [
     ],
 
     'locale' => [
-        'default' => env('APP_LOCALE', Locale::EN),
+        'default' => env('APP_LOCALE', Locale::EN->value),
     ],
 
     'media' => [
-        'disk' => env('FILESYSTEM_DISK', Disk::PUBLIC), // Options: public, s3, local. (must be configured in config/filesystems.php)
+        'disk' => env('FILESYSTEM_DISK', Disk::PUBLIC->value), // Options: public, s3, local. (must be configured in config/filesystems.php)
         'base_path' => env('MEDIA_BASE_PATH', 'media'),
-        'profile_picture_preset' => [
-            'width' => 300,
-            'height' => 300,
-            'fit' => 'crop',
-            'position' => 'center',
+        'conversions_path' => 'conversions',
+        'presets' => [
+            MediaPreset::PROFILE_PICTURE->value => [
+                'suffix' => '_profile',
+                'optimize' => true,
+                'resize' => null,
+                'fit' => [
+                    'method' => Fit::Crop->value,
+                    'width' => 300,
+                    'height' => 300,
+                ],
+                'crop' => [
+                    'width' => 300,
+                    'height' => 300,
+                    'position' => CropPosition::Center->value,
+                ],
+            ],
+            MediaPreset::THUMBNAIL->value => [
+                'suffix' => '_thumb',
+                'optimize' => true,
+                'resize' => [
+                    'width' => 300,
+                    'height' => 300,
+                ],
+                'fit' => [
+                    'method' => Fit::Crop->value,
+                    'width' => 300,
+                    'height' => 300,
+                ],
+                'crop' => [
+                    'width' => 300,
+                    'height' => 300,
+                    'position' => CropPosition::Center->value,
+                ],
+            ],
         ],
-        'thumbnail_preset' => [
-            'width' => 300,
-            'height' => 300,
-            'fit' => 'crop',
-            'position' => 'center',
-        ],
+
     ],
 
     'pagination' => [

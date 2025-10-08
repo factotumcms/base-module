@@ -15,6 +15,7 @@ enum Setting: string
     case RESIZE_QUALITY = 'resize_quality';
     case DEFAULT_MEDIA_DISK = 'default_media_disk';
     case MEDIA_BASE_PATH = 'media_base_path';
+    case MEDIA_CONVERSIONS_PATH = 'media_conversions_path';
     case LOCALE_DEFAULT = 'locale_default';
     case LOCALE_AVAILABLE = 'locale_available';
     case PAGINATION_PER_PAGE = 'pagination_per_page';

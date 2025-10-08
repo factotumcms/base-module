@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api\Backoffice;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
@@ -46,12 +47,18 @@ final readonly class MediaController
         );
     }
 
+    /**
+     * Serve the media file identified by the given ID.
+     *
+     * @param  int  $id  The media record identifier.
+     * @return BinaryFileResponse A file response for the media file with the MIME type set in the Content-Type header.
+     */
     public function show(int $id)
     {
         $media = $this->mediaService->show($id);
 
         return response()->file(
-            $this->mediaService->getFullMediaPath($media),
+            $media->fullMediaPath(),
             ['Content-Type' => $media->mime_type]
         );
     }

@@ -6,7 +6,9 @@ namespace Wave8\Factotum\Base\Models;
 
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -14,14 +16,12 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Wave8\Factotum\Base\Policies\UserPolicy;
-use Wave8\Factotum\Base\Traits\HasMediaAssets;
 
 #[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
-    use HasMediaAssets;
     use HasPermissions;
     use HasRoles;
     use Notifiable;
@@ -72,8 +72,23 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the settings associated with the user.
+     *
+     * @return BelongsToMany A relation linking the user to its `Setting` models.
+     */
     public function settings(): BelongsToMany
     {
         return $this->belongsToMany(Setting::class);
+    }
+
+    /**
+     * Get the user's profile picture media relation.
+     *
+     * @return BelongsTo The HasOne relation to the Media model representing the user's profile picture.
+     */
+    public function profile_picture(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'media_id');
     }
 }

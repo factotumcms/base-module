@@ -11,8 +11,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\Image\Enums\CropPosition;
+use Spatie\Image\Enums\Fit;
 use Spatie\Image\Image;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
@@ -23,7 +24,6 @@ use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
-use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
@@ -78,7 +78,12 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     }
 
     /**
-     * @throws \Exception
+     * Store an uploaded file to the configured media disk, create a Media record, and dispatch conversion generation.
+     *
+     * @param  StoreFileDto  $data  DTO containing the uploaded file and optional preset selections.
+     * @return string|false The stored file path (relative to the disk) when successful, `false` on storage failure.
+     *
+     * @throws \Exception If a media record with the same filename already exists or if the file's MIME type is unsupported.
      */
     public function store(StoreFileDto $data): bool|string
     {
@@ -96,9 +101,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         );
 
         if ($storedFilename) {
-            // Optimize the image, the uploaded file will be overwritten
-            $optimizerChain = OptimizerChainFactory::create();
-            $optimizerChain->optimize(Storage::disk($disk)->path("$storedFilename"));
 
             $this->create(
                 data: CreateMediaDto::make(
@@ -120,11 +122,14 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         return $storedFilename;
     }
 
-    public function getFullMediaPath(Model $media): string
-    {
-        return Storage::disk($media->disk)->path($media->path.'/'.$media->file_name);
-    }
-
+    /**
+     * Map a MIME type string to the corresponding MediaType enum.
+     *
+     * @param  string  $mimeType  The MIME type to map (e.g., "image/jpeg").
+     * @return MediaType The matched MediaType enum value.
+     *
+     * @throws \Exception If the MIME type is not supported.
+     */
     private function detectMediaType(string $mimeType): MediaType
     {
         return match ($mimeType) {
@@ -177,58 +182,75 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         }
     }
 
+    /**
+     * Generate and save image conversions for each preset declared on the given media and persist their public URLs.
+     *
+     * For each preset listed in the media's `presets` JSON, this method loads the preset configuration from system
+     * settings, produces a converted image (applying resize, fit, crop, and optional optimization when configured),
+     * stores the conversion on the media's configured disk under the conversions path, and updates the media's
+     * `conversions` attribute with the public URLs of the generated files before saving the model.
+     *
+     * @param  Model  $media  Media model whose `presets`, `disk`, `path`, and `file_name` identify the source file and where conversions should be stored.
+     */
     public function generateConversions(Model $media): void
     {
+        $conversions = [];
         foreach (json_decode($media->presets) as $preset) {
 
-            match ($preset) {
-                MediaPreset::PROFILE_PICTURE->value => $path = $this->generateProfilePicture($media),
-                MediaPreset::THUMBNAIL->value => $path = $this->generateImageThumbnail($media),
-            };
+            // Load preset config
+            $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset)));
+            $conversionsPath = $this->settingService->getSystemSettingValue(Setting::MEDIA_CONVERSIONS_PATH);
 
-            $conversions[$preset] = $path;
+            $fileName = File::name($media->file_name);
+            $fileExtension = '.'.File::extension($media->file_name);
+
+            $fullMediaPath = $media->fullMediaPath();
+            $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
+
+            $destPath = $fullMediaDirectory.'/'.$conversionsPath;
+
+            if (! is_dir($destPath)) {
+                File::makeDirectory($destPath, 0755, true);
+            }
+
+            $destPath .= '/'.$fileName.$presetProps->suffix.$fileExtension;
+
+            if (is_file($fullMediaPath)) {
+                $image = Image::load($fullMediaPath);
+                if (isset($presetProps->resize)) {
+                    $image->resize($presetProps->resize->width, $presetProps->resize->height);
+                }
+
+                if (isset($presetProps->fit)) {
+                    $image->fit(Fit::tryFrom($presetProps->fit->method), $presetProps->fit->width, $presetProps->fit->height);
+                }
+
+                if (isset($presetProps->crop)) {
+                    $image->crop($presetProps->crop->width, $presetProps->crop->height, CropPosition::tryFrom($presetProps->crop->position));
+                }
+
+                if ($presetProps->optimize) {
+                    $image->optimize();
+                }
+
+                $image->save($destPath);
+            }
+
+            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/'.$conversionsPath.'/'.$fileName.$presetProps->suffix.$fileExtension);
         }
 
-        $media->conversions = json_encode($conversions);
+        $media->conversions = $conversions;
         $media->save();
     }
 
-    private function generateImageThumbnail(Model $media): string
-    {
-        $fileName = File::name($media->file_name);
-        $fileExtension = '.'.File::extension($media->file_name);
-
-        $fullMediaPath = $this->getFullMediaPath($media);
-        $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
-
-        $destPath = $fullMediaDirectory.'/conversions';
-
-        if (! is_dir($destPath)) {
-            File::makeDirectory($destPath, 0755, true);
-        }
-
-        $thumbSuffix = '_thumb';
-        $destPath .= '/'.$fileName.$thumbSuffix.$fileExtension;
-
-        if (is_file($fullMediaPath)) {
-            $props = json_decode($this->settingService->getSystemSettingValue(Setting::PROFILE_PICTURE_PRESET)); // todo change to thumbnail preset
-
-            try {
-
-                Image::load($fullMediaPath)
-                    ->width($props->width)
-                    ->height($props->height)
-//                    ->fit($props['fit'], $props['position'])
-                    ->save($destPath);
-
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-            }
-        }
-
-        return $destPath;
-    }
-
+    /**
+     * Create default custom properties for a media item based on its MIME type.
+     *
+     * @param  array  $metadata  Associative array containing at least:
+     *                           - 'mime_type' (string): the media MIME type
+     *                           - 'original_filename' (string): the uploaded file's original name
+     * @return MediaCustomPropertiesDto For images, returns a DTO with `alt` and `title` set to the original filename; for other types, returns an empty DTO.
+     */
     private function setDefaultCustomProperties(array $metadata): MediaCustomPropertiesDto
     {
         switch ($this->detectMediaType($metadata['mime_type'])) {
@@ -259,21 +281,29 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         return $configs;
     }
 
+    /**
+     * Build a media storage path using the configured base path and today's year/month/day segments.
+     *
+     * @return string The media path composed of the configured base media path followed by year, month, and day segments.
+     */
     private function generateMediaPath(): string
     {
         $basePath = $this->settingService->getSystemSettingValue(Setting::MEDIA_BASE_PATH);
 
-        return implode(DIRECTORY_SEPARATOR, [
+        return implode('/', [
             $basePath, date('Y'), date('m'), date('d'),
         ]);
 
     }
 
-    private function generateProfilePicture(Model $media): string
-    {
-        return 'media/toimplement.jpg';
-    }
-
+    /**
+     * Apply sorting to the given query using sort criteria from the provided filters.
+     *
+     * Applies an orderBy on the query when `sortBy` is present in the QueryFiltersDto, using `sortOrder` as the direction.
+     *
+     * @param  Builder  $query  The query builder to modify.
+     * @param  \Wave8\Factotum\Base\Dto\QueryFiltersDto  $queryFilters  Contains `sortBy` (column) and `sortOrder` (direction) used for ordering.
+     */
     public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void
     {
         if ($queryFilters->sortBy) {
