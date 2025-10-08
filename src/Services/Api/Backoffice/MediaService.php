@@ -78,12 +78,13 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     }
 
     /**
-         * Store an uploaded file to the configured media disk, create a Media record, and dispatch conversion generation.
-         *
-         * @param StoreFileDto $data DTO containing the uploaded file and optional preset selections.
-         * @throws \Exception If a media record with the same filename already exists or if the file's MIME type is unsupported.
-         * @return string|false The stored file path (relative to the disk) when successful, `false` on storage failure.
-         */
+     * Store an uploaded file to the configured media disk, create a Media record, and dispatch conversion generation.
+     *
+     * @param  StoreFileDto  $data  DTO containing the uploaded file and optional preset selections.
+     * @return string|false The stored file path (relative to the disk) when successful, `false` on storage failure.
+     *
+     * @throws \Exception If a media record with the same filename already exists or if the file's MIME type is unsupported.
+     */
     public function store(StoreFileDto $data): bool|string
     {
         $metadata = $this->generateFileMetadata($data->file);
@@ -124,8 +125,9 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     /**
      * Map a MIME type string to the corresponding MediaType enum.
      *
-     * @param string $mimeType The MIME type to map (e.g., "image/jpeg").
+     * @param  string  $mimeType  The MIME type to map (e.g., "image/jpeg").
      * @return MediaType The matched MediaType enum value.
+     *
      * @throws \Exception If the MIME type is not supported.
      */
     private function detectMediaType(string $mimeType): MediaType
@@ -188,7 +190,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      * stores the conversion on the media's configured disk under the conversions path, and updates the media's
      * `conversions` attribute with the public URLs of the generated files before saving the model.
      *
-     * @param Model $media Media model whose `presets`, `disk`, `path`, and `file_name` identify the source file and where conversions should be stored.
+     * @param  Model  $media  Media model whose `presets`, `disk`, `path`, and `file_name` identify the source file and where conversions should be stored.
      */
     public function generateConversions(Model $media): void
     {
@@ -244,9 +246,9 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     /**
      * Create default custom properties for a media item based on its MIME type.
      *
-     * @param array $metadata Associative array containing at least:
-     *                        - 'mime_type' (string): the media MIME type
-     *                        - 'original_filename' (string): the uploaded file's original name
+     * @param  array  $metadata  Associative array containing at least:
+     *                           - 'mime_type' (string): the media MIME type
+     *                           - 'original_filename' (string): the uploaded file's original name
      * @return MediaCustomPropertiesDto For images, returns a DTO with `alt` and `title` set to the original filename; for other types, returns an empty DTO.
      */
     private function setDefaultCustomProperties(array $metadata): MediaCustomPropertiesDto
@@ -299,9 +301,8 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      *
      * Applies an orderBy on the query when `sortBy` is present in the QueryFiltersDto, using `sortOrder` as the direction.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query The query builder to modify.
-     * @param \Wave8\Factotum\Base\Dto\QueryFiltersDto $queryFilters Contains `sortBy` (column) and `sortOrder` (direction) used for ordering.
-     * @return void
+     * @param  Builder  $query  The query builder to modify.
+     * @param  \Wave8\Factotum\Base\Dto\QueryFiltersDto  $queryFilters  Contains `sortBy` (column) and `sortOrder` (direction) used for ordering.
      */
     public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void
     {

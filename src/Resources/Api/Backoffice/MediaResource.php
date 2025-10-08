@@ -12,16 +12,16 @@ class MediaResource extends Resource
     /**
      * Create a MediaResource instance with its media metadata.
      *
-     * @param int $id Primary identifier for the media resource.
-     * @param string|null $uuid Optional UUID identifier.
-     * @param string $name Human-readable name of the media.
-     * @param string $file_name Stored filename of the media.
-     * @param string $path Directory path on the disk where the file is stored.
-     * @param string $mime_type MIME type of the media file.
-     * @param Disk $disk Storage disk enum indicating where the file is kept.
-     * @param MediaType $media_type Enum classifying the media type.
-     * @param int $size Size of the file in bytes.
-     * @param array|null $conversions Optional array of conversion metadata (e.g., derived versions or variants).
+     * @param  int  $id  Primary identifier for the media resource.
+     * @param  string|null  $uuid  Optional UUID identifier.
+     * @param  string  $name  Human-readable name of the media.
+     * @param  string  $file_name  Stored filename of the media.
+     * @param  string  $path  Directory path on the disk where the file is stored.
+     * @param  string  $mime_type  MIME type of the media file.
+     * @param  Disk  $disk  Storage disk enum indicating where the file is kept.
+     * @param  MediaType  $media_type  Enum classifying the media type.
+     * @param  int  $size  Size of the file in bytes.
+     * @param  array|null  $conversions  Optional array of conversion metadata (e.g., derived versions or variants).
      */
     public function __construct(
         public int $id,

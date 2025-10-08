@@ -10,9 +10,9 @@ class MediaCropDto extends Data
     /**
      * Create a MediaCropDto representing crop dimensions and position.
      *
-     * @param int $width The crop width in pixels.
-     * @param int $height The crop height in pixels.
-     * @param CropPosition|null $position The crop anchor position; defaults to CropPosition::Center.
+     * @param  int  $width  The crop width in pixels.
+     * @param  int  $height  The crop height in pixels.
+     * @param  CropPosition|null  $position  The crop anchor position; defaults to CropPosition::Center.
      */
     public function __construct(
         public readonly int $width,

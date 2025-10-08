@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,7 +75,7 @@ class User extends Authenticatable
     /**
      * Get the settings associated with the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany A relation linking the user to its `Setting` models.
+     * @return BelongsToMany A relation linking the user to its `Setting` models.
      */
     public function settings(): BelongsToMany
     {
@@ -84,7 +85,7 @@ class User extends Authenticatable
     /**
      * Get the user's profile picture media relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne The HasOne relation to the Media model representing the user's profile picture.
+     * @return HasOne The HasOne relation to the Media model representing the user's profile picture.
      */
     public function profile_picture(): BelongsTo
     {

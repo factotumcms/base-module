@@ -10,9 +10,9 @@ class MediaFitDto extends Data
     /**
      * Initialize the DTO with a fit method and target dimensions.
      *
-     * @param Fit $method The fit method to apply when resizing/cropping.
-     * @param int $width Target width in pixels.
-     * @param int $height Target height in pixels.
+     * @param  Fit  $method  The fit method to apply when resizing/cropping.
+     * @param  int  $width  Target width in pixels.
+     * @param  int  $height  Target height in pixels.
      */
     public function __construct(
         public readonly Fit $method,
