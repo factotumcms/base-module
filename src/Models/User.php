@@ -14,14 +14,12 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Wave8\Factotum\Base\Policies\UserPolicy;
-use Wave8\Factotum\Base\Traits\HasMediaAssets;
 
 #[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
-    use HasMediaAssets;
     use HasPermissions;
     use HasRoles;
     use Notifiable;
