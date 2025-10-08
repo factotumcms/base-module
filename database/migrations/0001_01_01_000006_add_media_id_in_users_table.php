@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Add a nullable `media_id` column to the `users` table and create a foreign key to `media.id`
+     * that sets `media_id` to NULL when the referenced media row is deleted.
      */
     public function up(): void
     {
@@ -18,7 +19,9 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Remove the media_id foreign key and column from the settings table.
+     *
+     * Drops the foreign key constraint on `media_id` and then drops the `media_id` column from the `settings` table.
      */
     public function down(): void
     {

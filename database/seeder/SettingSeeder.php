@@ -24,7 +24,10 @@ class SettingSeeder extends Seeder
     ) {}
 
     /**
-     * Seed the application's database.
+     * Seed default system settings into the database.
+     *
+     * Creates default settings for authentication, locale, media, and pagination,
+     * and registers media presets defined in the application configuration.
      */
     public function run(): void
     {

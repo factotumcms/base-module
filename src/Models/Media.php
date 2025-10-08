@@ -31,6 +31,11 @@ class Media extends Model
         'conversions' => 'json',
     ];
 
+    /**
+     * Resolve the absolute filesystem path for this media record using its configured disk, path, and file name.
+     *
+     * @return string The absolute filesystem path to the media file.
+     */
     public function fullMediaPath(): string
     {
         return Storage::disk($this->disk)->path($this->path.'/'.$this->file_name);

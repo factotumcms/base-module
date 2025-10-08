@@ -108,11 +108,25 @@ class SettingService implements SettingServiceInterface, SortableInterface
         return false;
     }
 
+    /**
+     * Retrieve all settings.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, \Wave8\Factotum\Base\Models\Setting> Collection of all Setting models.
+     */
     public function getAll(): Collection
     {
         return Setting::all();
     }
 
+    /**
+     * Get a paginated list of settings that match the provided query filters.
+     *
+     * Applies the filtering, sorting, and pagination parameters from the given
+     * QueryFiltersDto to produce a paginated result set.
+     *
+     * @param QueryFiltersDto $queryFilters DTO containing filter, sort, and pagination options.
+     * @return LengthAwarePaginator Paginated collection of Setting models matching the filters.
+     */
     public function filter(QueryFiltersDto $queryFilters): LengthAwarePaginator
     {
         // TODO: Implement filter() method.
