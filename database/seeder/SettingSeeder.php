@@ -72,9 +72,18 @@ class SettingSeeder extends Seeder
             )
         );
 
+        $this->settingService->create(
+            data: CreateSettingDto::make(
+                scope: SettingScope::SYSTEM,
+                data_type: SettingDataType::STRING,
+                group: SettingGroup::MEDIA,
+                key: Setting::MEDIA_CONVERSIONS_PATH,
+                value: config('factotum-base.media.conversions_path'),
+            )
+        );
 
         // Media presets
-        foreach (config('factotum-base.media.presets') as $key => $preset){
+        foreach (config('factotum-base.media.presets') as $key => $preset) {
 
             $this->settingService->create(
                 data: CreateSettingDto::make(

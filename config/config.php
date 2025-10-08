@@ -1,7 +1,10 @@
 <?php
 
+use Spatie\Image\Enums\CropPosition;
+use Spatie\Image\Enums\Fit;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
+use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 
 return [
     'module_name' => 'Base',
@@ -25,23 +28,24 @@ return [
     'media' => [
         'disk' => env('FILESYSTEM_DISK', Disk::PUBLIC), // Options: public, s3, local. (must be configured in config/filesystems.php)
         'base_path' => env('MEDIA_BASE_PATH', 'media'),
+        'conversions_path' => 'conversions',
         'presets' => [
-            \Wave8\Factotum\Base\Enums\Media\MediaPreset::PROFILE_PICTURE->value => [
+            MediaPreset::PROFILE_PICTURE->value => [
                 'suffix' => '_profile',
                 'optimize' => true,
                 'resize' => null,
                 'fit' => [
-                    'method' => \Spatie\Image\Enums\Fit::Crop,
+                    'method' => Fit::Crop,
                     'width' => 300,
                     'height' => 300,
                 ],
                 'crop' => [
                     'width' => 300,
                     'height' => 300,
-                    'position' => \Spatie\Image\Enums\CropPosition::Center,
-                ]
+                    'position' => CropPosition::Center,
+                ],
             ],
-            \Wave8\Factotum\Base\Enums\Media\MediaPreset::THUMBNAIL->value => [
+            MediaPreset::THUMBNAIL->value => [
                 'suffix' => '_thumb',
                 'optimize' => true,
                 'resize' => [
@@ -49,15 +53,15 @@ return [
                     'height' => 300,
                 ],
                 'fit' => [
-                    'method' => \Spatie\Image\Enums\Fit::Crop,
+                    'method' => Fit::Crop,
                     'width' => 300,
                     'height' => 300,
                 ],
                 'crop' => [
                     'width' => 300,
                     'height' => 300,
-                    'position' => \Spatie\Image\Enums\CropPosition::Center,
-                ]
+                    'position' => CropPosition::Center,
+                ],
             ],
         ],
 

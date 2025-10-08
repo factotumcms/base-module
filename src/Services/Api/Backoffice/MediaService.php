@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Image;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
@@ -25,7 +24,6 @@ use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
-use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
@@ -98,9 +96,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         );
 
         if ($storedFilename) {
-            // Optimize the image, the uploaded file will be overwritten
-            $optimizerChain = OptimizerChainFactory::create();
-            $optimizerChain->optimize(Storage::disk($disk)->path("$storedFilename"));
 
             $this->create(
                 data: CreateMediaDto::make(
@@ -179,8 +174,9 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         $conversions = [];
         foreach (json_decode($media->presets) as $preset) {
 
-            //Load preset config
+            // Load preset config
             $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset)));
+            $conversionsPath = $this->settingService->getSystemSettingValue(Setting::MEDIA_CONVERSIONS_PATH);
 
             $fileName = File::name($media->file_name);
             $fileExtension = '.'.File::extension($media->file_name);
@@ -188,30 +184,30 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             $fullMediaPath = $media->fullMediaPath();
             $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
 
-            $destPath = $fullMediaDirectory.'/conversions';
+            $destPath = $fullMediaDirectory.DIRECTORY_SEPARATOR.$conversionsPath;
 
             if (! is_dir($destPath)) {
                 File::makeDirectory($destPath, 0755, true);
             }
 
-            $destPath .= '/'.$fileName.$presetProps->suffix.$fileExtension;
+            $destPath .= DIRECTORY_SEPARATOR.$fileName.$presetProps->suffix.$fileExtension;
 
             if (is_file($fullMediaPath)) {
                 try {
                     $image = Image::load($fullMediaPath);
-                    if(isset($presetProps->resize)){
+                    if (isset($presetProps->resize)) {
                         $image->resize($presetProps->resize->width, $presetProps->resize->height);
                     }
 
-                    if(isset($presetProps->fit)){
+                    if (isset($presetProps->fit)) {
                         $image->fit(Fit::tryFrom($presetProps->fit->method), $presetProps->fit->width, $presetProps->fit->height);
                     }
 
-                    if(isset($presetProps->crop)){
+                    if (isset($presetProps->crop)) {
                         $image->crop($presetProps->crop->width, $presetProps->crop->height, CropPosition::tryFrom($presetProps->crop->position));
                     }
 
-                    if($presetProps->optimize){
+                    if ($presetProps->optimize) {
                         $image->optimize();
                     }
 
@@ -222,7 +218,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
                 }
             }
 
-            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/conversions/'.$fileName.$presetProps->suffix.$fileExtension);;
+            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.DIRECTORY_SEPARATOR.$conversionsPath.DIRECTORY_SEPARATOR.$fileName.$presetProps->suffix.$fileExtension);
         }
 
         $media->conversions = $conversions;
