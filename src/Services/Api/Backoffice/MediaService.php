@@ -205,41 +205,36 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             $fullMediaPath = $media->fullMediaPath();
             $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
 
-            $destPath = $fullMediaDirectory.DIRECTORY_SEPARATOR.$conversionsPath;
+            $destPath = $fullMediaDirectory.'/'.$conversionsPath;
 
             if (! is_dir($destPath)) {
                 File::makeDirectory($destPath, 0755, true);
             }
 
-            $destPath .= DIRECTORY_SEPARATOR.$fileName.$presetProps->suffix.$fileExtension;
+            $destPath .= '/'.$fileName.$presetProps->suffix.$fileExtension;
 
             if (is_file($fullMediaPath)) {
-                try {
-                    $image = Image::load($fullMediaPath);
-                    if (isset($presetProps->resize)) {
-                        $image->resize($presetProps->resize->width, $presetProps->resize->height);
-                    }
-
-                    if (isset($presetProps->fit)) {
-                        $image->fit(Fit::tryFrom($presetProps->fit->method), $presetProps->fit->width, $presetProps->fit->height);
-                    }
-
-                    if (isset($presetProps->crop)) {
-                        $image->crop($presetProps->crop->width, $presetProps->crop->height, CropPosition::tryFrom($presetProps->crop->position));
-                    }
-
-                    if ($presetProps->optimize) {
-                        $image->optimize();
-                    }
-
-                    $image->save($destPath);
-
-                } catch (\Exception $e) {
-                    dd($e->getMessage());
+                $image = Image::load($fullMediaPath);
+                if (isset($presetProps->resize)) {
+                    $image->resize($presetProps->resize->width, $presetProps->resize->height);
                 }
+
+                if (isset($presetProps->fit)) {
+                    $image->fit(Fit::tryFrom($presetProps->fit->method), $presetProps->fit->width, $presetProps->fit->height);
+                }
+
+                if (isset($presetProps->crop)) {
+                    $image->crop($presetProps->crop->width, $presetProps->crop->height, CropPosition::tryFrom($presetProps->crop->position));
+                }
+
+                if ($presetProps->optimize) {
+                    $image->optimize();
+                }
+
+                $image->save($destPath);
             }
 
-            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.DIRECTORY_SEPARATOR.$conversionsPath.DIRECTORY_SEPARATOR.$fileName.$presetProps->suffix.$fileExtension);
+            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/'.$conversionsPath.'/'.$fileName.$presetProps->suffix.$fileExtension);
         }
 
         $media->conversions = $conversions;
@@ -293,7 +288,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     {
         $basePath = $this->settingService->getSystemSettingValue(Setting::MEDIA_BASE_PATH);
 
-        return implode(DIRECTORY_SEPARATOR, [
+        return implode('/', [
             $basePath, date('Y'), date('m'), date('d'),
         ]);
 
