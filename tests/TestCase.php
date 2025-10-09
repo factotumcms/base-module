@@ -25,24 +25,45 @@ abstract class TestCase extends BaseTestCase
 
     protected function setUp(): void
     {
-        // Code before application created.
-
-        $this->afterApplicationCreated(function () {
-            $this->seed(DatabaseSeeder::class);
-        });
-
-        $this->beforeApplicationDestroyed(function () {
-            // Code before application destroyed.
-        });
-
-        parent::setUp();
+//        // Code before application created.
+//        $this->artisan('migrate', ['--database' => 'testing'])->run();
+//
+//        $this->afterApplicationCreated(function () {
+//            $this->seed(DatabaseSeeder::class);
+//        });
+//
+//        $this->beforeApplicationDestroyed(function () {
+//            // Code before application destroyed.
+//        });
+//
+//        parent::setUp();
     }
 
     protected function defineEnvironment($app): void
     {
         $app['config']->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
+
+        $app['config']->set('database.default', 'testing');
+
+        $app['config']->set('database.connections.testing', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
     }
 
+
+    protected function defineDatabaseMigrations()
+    {
+        echo ">> Loading package migrations...\n";
+        $this->loadLaravelMigrations();
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+    }
+
+    protected function defineDatabaseSeeders()
+    {
+        $this->seed(DatabaseSeeder::class);
+    }
 
     protected function getEnvironmentSetUp($app): void
     {
