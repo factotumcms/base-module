@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Wave8\Factotum\Base\Tests\TestCase;
 
 /*
@@ -14,7 +15,7 @@ use Wave8\Factotum\Base\Tests\TestCase;
 */
 
 pest()->extend(TestCase::class)
-  ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*

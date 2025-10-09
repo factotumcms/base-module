@@ -43,12 +43,11 @@ abstract class TestCase extends BaseTestCase
         $app['config']->set('database.default', 'testing');
 
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
-
 
     protected function defineDatabaseMigrations()
     {

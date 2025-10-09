@@ -1,6 +1,7 @@
 <?php
 
 use Wave8\Factotum\Base\Models\Media;
+use Wave8\Factotum\Base\Tests\TestCase;
 
 describe('MediaModel', function () {
     it('successfully creates a new Media model instance', function () {
@@ -28,4 +29,4 @@ describe('MediaModel', function () {
             'conversions',
         ]);
     });
-})->uses(\Wave8\Factotum\Base\Tests\TestCase::class);
+})->uses(TestCase::class);
