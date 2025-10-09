@@ -1,7 +1,7 @@
 laravel: '@testbench'
 
 providers:
-  # - Workbench\App\Providers\WorkbenchServiceProvider
+  - Wave8\Factotum\Base\Providers\ModuleServiceProvider
 
 migrations:
   - workbench/database/migrations

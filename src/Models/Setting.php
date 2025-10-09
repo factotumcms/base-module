@@ -11,12 +11,12 @@ use Wave8\Factotum\Base\Policies\SettingPolicy;
 class Setting extends Model
 {
     protected $fillable = [
-        'type',
+        'scope',
         'data_type',
         'group',
         'key',
         'value',
-        'user_id',
+        'description',
     ];
 
     public function users(): BelongsToMany
