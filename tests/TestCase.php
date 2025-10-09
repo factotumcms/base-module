@@ -3,15 +3,20 @@
 namespace Wave8\Factotum\Base\Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Orchestra\Testbench\Attributes\WithMigration;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Spatie\Permission\PermissionServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Database\Seeder\DatabaseSeeder;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Providers\ModuleServiceProvider;
 
+#[WithMigration('laravel', 'cache', 'queue')]
+#[WithMigration('session')]
 abstract class TestCase extends BaseTestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithWorkbench;
 
     protected $enablesPackageDiscoveries = true;
 
@@ -20,23 +25,15 @@ abstract class TestCase extends BaseTestCase
         return [
             ModuleServiceProvider::class,
             TranslationServiceProvider::class,
+            PermissionServiceProvider::class,
         ];
     }
 
     protected function setUp(): void
     {
-//        // Code before application created.
-//        $this->artisan('migrate', ['--database' => 'testing'])->run();
-//
-//        $this->afterApplicationCreated(function () {
-//            $this->seed(DatabaseSeeder::class);
-//        });
-//
-//        $this->beforeApplicationDestroyed(function () {
-//            // Code before application destroyed.
-//        });
-//
-//        parent::setUp();
+        parent::setUp();
+
+        $this->defineDatabaseMigrations();
     }
 
     protected function defineEnvironment($app): void
@@ -55,8 +52,10 @@ abstract class TestCase extends BaseTestCase
 
     protected function defineDatabaseMigrations()
     {
-        echo ">> Loading package migrations...\n";
-        $this->loadLaravelMigrations();
+        $this->loadLaravelMigrations([
+            '--database' => 'testing',
+        ]);
+
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 

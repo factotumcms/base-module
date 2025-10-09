@@ -7,7 +7,7 @@ use function PHPUnit\Framework\assertTrue;
 
 it('feature tests work', function () {
 
-    assertTrue(true);
+    assertTrue(Schema::hasColumn('users', 'email'));
 
 })->uses(\Wave8\Factotum\Base\Tests\TestCase::class);
 
