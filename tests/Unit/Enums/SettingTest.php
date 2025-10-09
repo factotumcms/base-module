@@ -1,8 +1,14 @@
 <?php
+
+use Wave8\Factotum\Base\Enums\Setting\Setting;
+use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
+use Wave8\Factotum\Base\Enums\Setting\SettingScope;
+
 describe('SettingEnums', function () {
     it('check Setting has exact values', function () {
 
-        $values = array_flip(\Wave8\Factotum\Base\Enums\Setting\Setting::getValues()->toArray());
+        $values = array_flip(Setting::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'auth_type',
@@ -24,7 +30,7 @@ describe('SettingEnums', function () {
 
     it('check SettingDataType has exact values', function () {
 
-        $values = array_flip(\Wave8\Factotum\Base\Enums\Setting\SettingDataType::getValues()->toArray());
+        $values = array_flip(SettingDataType::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'integer',
@@ -38,7 +44,7 @@ describe('SettingEnums', function () {
 
     it('check SettingGroup has exact values', function () {
 
-        $values = array_flip(\Wave8\Factotum\Base\Enums\Setting\SettingGroup::getValues()->toArray());
+        $values = array_flip(SettingGroup::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'media',
@@ -51,7 +57,7 @@ describe('SettingEnums', function () {
 
     it('check SettingScope has exact values', function () {
 
-        $values = array_flip(\Wave8\Factotum\Base\Enums\Setting\SettingScope::getValues()->toArray());
+        $values = array_flip(SettingScope::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'system',

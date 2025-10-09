@@ -1,8 +1,12 @@
 <?php
+
+use Wave8\Factotum\Base\Enums\Media\MediaPreset;
+use Wave8\Factotum\Base\Enums\Media\MediaType;
+
 describe('MediaEnums', function () {
     it('check MediaPresetEnum has exact values', function () {
 
-        $values = array_flip(\Wave8\Factotum\Base\Enums\Media\MediaPreset::getValues()->toArray());
+        $values = array_flip(MediaPreset::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'profile_picture_preset',
@@ -13,7 +17,7 @@ describe('MediaEnums', function () {
 
     it('check MediaTypeEnum has exact values', function () {
 
-        $values = array_flip(\Wave8\Factotum\Base\Enums\Media\MediaType::getValues()->toArray());
+        $values = array_flip(MediaType::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'image',

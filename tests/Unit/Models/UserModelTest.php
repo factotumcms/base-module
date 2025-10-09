@@ -1,15 +1,17 @@
 <?php
 
+use Wave8\Factotum\Base\Models\User;
+
 describe('UserModel', function () {
     it('successfully creates a new User model instance', function () {
-        $user = new \Wave8\Factotum\Base\Models\User();
+        $user = new User;
 
-        expect($user)->toBeInstanceOf(\Wave8\Factotum\Base\Models\User::class);
+        expect($user)->toBeInstanceOf(User::class);
     });
 
     it('checks fillable columns', function () {
 
-        $user = new \Wave8\Factotum\Base\Models\User();
+        $user = new User;
 
         expect($user->getFillable())->toEqual([
             'first_name',
@@ -23,6 +25,3 @@ describe('UserModel', function () {
         ]);
     });
 });
-
-
-

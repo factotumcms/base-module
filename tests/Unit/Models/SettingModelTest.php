@@ -1,15 +1,17 @@
 <?php
 
+use Wave8\Factotum\Base\Models\Setting;
+
 describe('SettingModel', function () {
     it('successfully creates a new Setting model instance', function () {
-        $setting = new \Wave8\Factotum\Base\Models\Setting();
+        $setting = new Setting;
 
-        expect($setting)->toBeInstanceOf(\Wave8\Factotum\Base\Models\Setting::class);
+        expect($setting)->toBeInstanceOf(Setting::class);
     });
 
     it('checks fillable columns', function () {
 
-        $setting = new \Wave8\Factotum\Base\Models\Setting();
+        $setting = new Setting;
 
         expect($setting->getFillable())->toEqual([
             'scope',
@@ -21,6 +23,3 @@ describe('SettingModel', function () {
         ]);
     });
 });
-
-
-

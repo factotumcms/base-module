@@ -1,16 +1,18 @@
 <?php
 
+use Wave8\Factotum\Base\Models\Media;
+
 describe('MediaModel', function () {
     it('successfully creates a new Media model instance', function () {
 
-        $media = new \Wave8\Factotum\Base\Models\Media();
+        $media = new Media;
 
-        expect($media)->toBeInstanceOf(\Wave8\Factotum\Base\Models\Media::class);
+        expect($media)->toBeInstanceOf(Media::class);
     });
 
     it('checks fillable columns', function () {
 
-        $media = new \Wave8\Factotum\Base\Models\Media();
+        $media = new Media;
 
         expect($media->getFillable())->toEqual([
             'uuid',
@@ -27,6 +29,3 @@ describe('MediaModel', function () {
         ]);
     });
 });
-
-
-
