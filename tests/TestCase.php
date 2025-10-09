@@ -38,7 +38,13 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
     }
 
-    protected function getEnvironmentSetUp($app)
+    protected function defineEnvironment($app): void
+    {
+        $app['config']->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
+    }
+
+
+    protected function getEnvironmentSetUp($app): void
     {
         // Use test User model for users provider
         $app['config']->set('auth.providers.users.model', User::class);

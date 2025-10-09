@@ -31,7 +31,10 @@
         "psr-4": {
             "Wave8\\Factotum\\Base\\": "src/",
             "Wave8\\Factotum\\Base\\Database\\Seeder\\": "database/seeder/"
-        }
+        },
+        "files": [
+            "tests/TestCase.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

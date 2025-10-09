@@ -28,4 +28,4 @@ describe('MediaModel', function () {
             'conversions',
         ]);
     });
-});
+})->uses(\Wave8\Factotum\Base\Tests\TestCase::class);
