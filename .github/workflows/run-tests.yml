@@ -15,7 +15,7 @@ jobs:
         php: [8.4]
         laravel: [12.x]
 
-    name: PHP ${{ matrix.php }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Pest Tests
 
     steps:
       - uses: actions/checkout@v3
