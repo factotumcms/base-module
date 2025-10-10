@@ -80,12 +80,12 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     /**
      * Store an uploaded file to the configured media disk, create a Media record, and dispatch conversion generation.
      *
-     * @param  StoreFileDto  $data  DTO containing the uploaded file and optional preset selections.
-     * @return string|false The stored file path (relative to the disk) when successful, `false` on storage failure.
+     * @param StoreFileDto $data DTO containing the uploaded file and optional preset selections.
+     * @return Media The stored file path (relative to the disk) when successful, `false` on storage failure.
      *
      * @throws \Exception If a media record with the same filename already exists or if the file's MIME type is unsupported.
      */
-    public function store(StoreFileDto $data): false|Media
+    public function store(StoreFileDto $data): Media
     {
         $metadata = $this->generateFileMetadata($data->file);
         $presetConfigs = $this->getPresetsConfigs($data);
@@ -100,28 +100,27 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             options: ['disk' => $disk->value]
         );
 
-        if ($storedFilename) {
-
-            $media = $this->create(
-                data: CreateMediaDto::make(
-                    name: $metadata['original_filename'],
-                    file_name: $metadata['filename'],
-                    mime_type: $metadata['mime_type'],
-                    media_type: $this->detectMediaType($metadata['mime_type']),
-                    presets: json_encode(array_keys($presetConfigs)),
-                    disk: $disk,
-                    path: $mediaBasePath,
-                    size: $metadata['size'],
-                    custom_properties: json_encode($this->setDefaultCustomProperties($metadata))
-                )
-            );
-
-            GenerateImagesConversions::dispatch();
-
-            return $media;
+        if(! $storedFilename) {
+            throw new \Exception('Failed to store file: '.$metadata['original_filename']);
         }
 
-        return false;
+        $media = $this->create(
+            data: CreateMediaDto::make(
+                name: $metadata['original_filename'],
+                file_name: $metadata['filename'],
+                mime_type: $metadata['mime_type'],
+                media_type: $this->detectMediaType($metadata['mime_type']),
+                presets: json_encode(array_keys($presetConfigs)),
+                disk: $disk,
+                path: $mediaBasePath,
+                size: $metadata['size'],
+                custom_properties: json_encode($this->setDefaultCustomProperties($metadata))
+            )
+        );
+
+        GenerateImagesConversions::dispatch();
+
+        return $media;
     }
 
     /**
