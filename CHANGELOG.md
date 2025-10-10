@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2025-10-10
+### Updated
+- Refactor store method on mediaService to return Media model instance.
+### Removed
+- Removed config/auth-providers.php
+
 ## [1.3.0] - 2025-10-09
 ### Added
 - Implemented orchestra for feature testing
