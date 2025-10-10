@@ -19,13 +19,13 @@ return new class extends Migration
     }
 
     /**
-     * Remove the media_id foreign key and column from the settings table.
+     * Remove the media_id foreign key and column from the users table.
      *
-     * Drops the foreign key constraint on `media_id` and then drops the `media_id` column from the `settings` table.
+     * Drops the foreign key constraint on `media_id` and then drops the `media_id` column from the `users` table.
      */
     public function down(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['media_id']);
             $table->dropColumn('media_id');
         });

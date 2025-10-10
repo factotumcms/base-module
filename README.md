@@ -2,16 +2,17 @@
 
 <br>
 
-[![8 Wave](docs/static/8wave.svg)](https://8wave.it)
 
+<img src="docs/static/factotumcms-logo.svg" alt="Logo" width="150" />
 <br>
 
-
+## Factotum CMS - Base Module
 
 `php` `laravel` `base-module`
 
+maintained with ❤️ by
 
-
+<img src="docs/static/8wave.svg" alt="Logo" width="130"/>
 
 </div>
 

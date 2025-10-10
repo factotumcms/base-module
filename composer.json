@@ -1,7 +1,7 @@
 {
     "name": "wave8/factotum-base",
     "type": "library",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "description": "Factotum V8 - Base Module",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -35,8 +35,14 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Wave8\\Factotum\\Base\\Tests\\": "tests/"
-        }
+            "Wave8\\Factotum\\Base\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        },
+        "files": [
+            "tests/TestCase.php"
+        ]
     },
     "scripts": {
         "post-install-cmd": [],

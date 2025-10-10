@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2025-10-09
+### Added
+- Implemented orchestra for feature testing
+- Added enum, model and dto unit tests
+- Added github action for running test on pull request
+### Updated
+- Updated readme file
+
 ## [1.2.0] - 2025-10-08
 ### Updated
 - Changed media conversions logic.
