@@ -85,7 +85,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      *
      * @throws \Exception If a media record with the same filename already exists or if the file's MIME type is unsupported.
      */
-    public function store(StoreFileDto $data): bool|string
+    public function store(StoreFileDto $data): false|Media
     {
         $metadata = $this->generateFileMetadata($data->file);
         $presetConfigs = $this->getPresetsConfigs($data);
@@ -102,7 +102,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
 
         if ($storedFilename) {
 
-            $this->create(
+            $media = $this->create(
                 data: CreateMediaDto::make(
                     name: $metadata['original_filename'],
                     file_name: $metadata['filename'],
@@ -117,9 +117,11 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             );
 
             GenerateImagesConversions::dispatch();
+
+            return $media;
         }
 
-        return $storedFilename;
+        return false;
     }
 
     /**
