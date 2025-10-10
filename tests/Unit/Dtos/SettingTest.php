@@ -8,7 +8,7 @@ use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 
 describe('SettingDto', function () {
-    it('it successfully create a new CreateSettingDto instance', function () {
+    it('successfully creates a new CreateSettingDto instance', function () {
 
         $dto = new CreateSettingDto(
             scope: SettingScope::SYSTEM,
@@ -21,7 +21,7 @@ describe('SettingDto', function () {
         expect($dto)->toBeInstanceOf(CreateSettingDto::class);
     });
 
-    it('it successfully create a new UpdateSettingDto instance', function () {
+    it('successfully creates a new UpdateSettingDto instance', function () {
 
         $dto = new UpdateSettingDto(
             value: 'test', description: 'web'

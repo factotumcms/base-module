@@ -14,7 +14,7 @@ use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 
 describe('MediaDto', function () {
-    it('it successfully create a new CreateMediaDto instance', function () {
+    it('successfully create a new CreateMediaDto instance', function () {
         $val = 'test';
 
         $dto = new CreateMediaDto(
@@ -24,7 +24,7 @@ describe('MediaDto', function () {
         expect($dto)->toBeInstanceOf(CreateMediaDto::class);
     });
 
-    it('it successfully create a new MediaCropDto instance', function () {
+    it('successfully create a new MediaCropDto instance', function () {
 
         $dto = new MediaCropDto(
             width: 100, height: 100, position: CropPosition::Center
@@ -33,7 +33,7 @@ describe('MediaDto', function () {
         expect($dto)->toBeInstanceOf(MediaCropDto::class);
     });
 
-    it('it successfully create a new MediaCustomPropertiesDto instance', function () {
+    it('successfully create a new MediaCustomPropertiesDto instance', function () {
         $val = 'test';
 
         $dto = new MediaCustomPropertiesDto(
@@ -43,7 +43,7 @@ describe('MediaDto', function () {
         expect($dto)->toBeInstanceOf(MediaCustomPropertiesDto::class);
     });
 
-    it('it successfully create a new MediaFitDto instance', function () {
+    it('successfully create a new MediaFitDto instance', function () {
 
         $dto = new MediaFitDto(
             method: Fit::Contain, width: 100, height: 100
@@ -52,7 +52,7 @@ describe('MediaDto', function () {
         expect($dto)->toBeInstanceOf(MediaFitDto::class);
     });
 
-    it('it successfully create a new MediaPresetConfigDto instance', function () {
+    it('successfully create a new MediaPresetConfigDto instance', function () {
 
         $dto = new MediaPresetConfigDto(
             suffix: 'thumb', optimize: true, resize: null, fit: new MediaFitDto(method: Fit::Contain, width: 100, height: 100), crop: null
@@ -61,7 +61,7 @@ describe('MediaDto', function () {
         expect($dto)->toBeInstanceOf(MediaPresetConfigDto::class);
     });
 
-    it('it successfully create a new MediaResizeDto instance', function () {
+    it('successfully create a new MediaResizeDto instance', function () {
 
         $dto = new MediaResizeDto(
             width: 100, height: 100
@@ -70,7 +70,7 @@ describe('MediaDto', function () {
         expect($dto)->toBeInstanceOf(MediaResizeDto::class);
     });
 
-    it('it successfully create a new StoreFileDto instance', function () {
+    it('successfully create a new StoreFileDto instance', function () {
 
         $file = UploadedFile::fake()->image('test.jpg');
 

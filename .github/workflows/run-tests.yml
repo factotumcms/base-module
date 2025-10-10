@@ -18,7 +18,7 @@ jobs:
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Pest Tests
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -28,7 +28,7 @@ jobs:
           tools: composer:v2
 
       - name: Install Dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
 
       - name: Run Pest Tests
         run: ./vendor/bin/pest

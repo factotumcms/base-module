@@ -37,10 +37,8 @@ describe('User model', function() {
             'last_name',
             'username',
             'email',
-            'email_verified_at',
             'password',
             'is_active',
-            'remember_token',
         ];
 
         expect($model->getFillable())->toEqual($fillable);

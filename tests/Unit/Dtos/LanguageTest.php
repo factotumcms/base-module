@@ -4,7 +4,7 @@ use Wave8\Factotum\Base\Dtos\Api\Backoffice\Language\RegisterLineDto;
 use Wave8\Factotum\Base\Enums\Locale;
 
 describe('LanguageDto', function () {
-    it('it successfully create a new RegisterLineDto instance', function () {
+    it('successfully create a new RegisterLineDto instance', function () {
         $val = 'test';
 
         $dto = new RegisterLineDto(

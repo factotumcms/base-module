@@ -4,7 +4,7 @@ use Wave8\Factotum\Base\Dtos\Api\Backoffice\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Backoffice\Auth\RegisterUserDto;
 
 describe('AuthDto', function () {
-    it('it successfully create a new LoginUserDto instance', function () {
+    it('successfully create a new LoginUserDto instance', function () {
         $val = 'test';
 
         $dto = new LoginUserDto(
@@ -14,7 +14,7 @@ describe('AuthDto', function () {
         expect($dto)->toBeInstanceOf(LoginUserDto::class);
     });
 
-    it('it successfully create a new RegisterUserDto instance', function () {
+    it('successfully create a new RegisterUserDto instance', function () {
         $val = 'test';
 
         $dto = new RegisterUserDto(
