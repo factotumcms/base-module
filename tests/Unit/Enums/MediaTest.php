@@ -9,7 +9,7 @@ describe('MediaEnums', function () {
         $values = array_flip(MediaPreset::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
-            'profile_picture_preset',
+            'user_avatar_preset',
             'thumbnail_preset',
         ]);
 

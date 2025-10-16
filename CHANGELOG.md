@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2025-10-16
+### Updated
+- Refactor relation name from profile_picture to avatar
+
 ## [1.3.1] - 2025-10-10
 ### Updated
 - Refactor store method on mediaService to return Media model instance.
