@@ -81,8 +81,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      * Store an uploaded file to the configured media disk, create a Media record, and dispatch conversion generation.
      *
      * @param  StoreFileDto  $data  DTO containing the uploaded file and optional preset selections.
-     * @return Media The stored file path (relative to the disk) when successful, `false` on storage failure.
-     *
+     * @return Media Stored media model instance; throws on storage failure.
      * @throws \Exception If a media record with the same filename already exists or if the file's MIME type is unsupported.
      */
     public function store(StoreFileDto $data): Media

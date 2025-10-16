@@ -44,8 +44,8 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     /**
      * Retrieve a user by ID with its `avatar` relationship loaded.
      *
-     * @param  int  $id  The user's ID.
-     * @return Model The requested User model with `` loaded.
+     * @param int $id The user's ID.
+     * @return Model|null The requested User model with 'avatar' loaded.</code>
      *
      * @throws \Exception If the user cannot be retrieved or another error occurs.
      */

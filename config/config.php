@@ -31,7 +31,7 @@ return [
         'conversions_path' => 'conversions',
         'presets' => [
             MediaPreset::USER_AVATAR->value => [
-                'suffix' => '_profile',
+                'suffix' => '_avatar',
                 'optimize' => true,
                 'resize' => null,
                 'fit' => [
