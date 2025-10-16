@@ -10,7 +10,7 @@ enum Setting: string
 
     case AUTH_TYPE = 'auth_type';
     case AUTH_BASIC_IDENTIFIER = 'auth_basic_identifier';
-    case PROFILE_PICTURE_PRESET = 'profile_picture_preset';
+    case USER_AVATAR_PRESET = 'user_avatar_preset';
     case THUMBNAIL_PRESET = 'thumbnail_preset';
     case RESIZE_QUALITY = 'resize_quality';
     case DEFAULT_MEDIA_DISK = 'default_media_disk';

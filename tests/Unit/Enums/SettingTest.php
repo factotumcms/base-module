@@ -13,7 +13,7 @@ describe('SettingEnums', function () {
         expect(array_keys($values))->toBe([
             'auth_type',
             'auth_basic_identifier',
-            'profile_picture_preset',
+            'user_avatar_preset',
             'thumbnail_preset',
             'resize_quality',
             'default_media_disk',

@@ -16,8 +16,7 @@ class UserResource extends Resource
      * @param  string|null  $last_name  The user's last name, or null if not provided.
      * @param  string|null  $username  The user's username, or null if not provided.
      * @param  \DateTime  $created_at  Timestamp when the user was created.
-     * @param  \Illuminate\Support\Collection|null  $roles  Collection of role representations assigned to the user, or null.
-     * @param  MediaResource|null  $profile_picture  Optional profile picture resource, or null.
+     * @param  Collection|null  $roles  Collection of role representations assigned to the user, or null.
      */
     public function __construct(
         public int $id,
@@ -27,6 +26,6 @@ class UserResource extends Resource
         public ?string $username,
         public \DateTime $created_at,
         public ?Collection $roles,
-        public ?MediaResource $profile_picture = null,
+        public ?MediaResource $avatar = null,
     ) {}
 }

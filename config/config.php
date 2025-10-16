@@ -30,7 +30,7 @@ return [
         'base_path' => env('MEDIA_BASE_PATH', 'media'),
         'conversions_path' => 'conversions',
         'presets' => [
-            MediaPreset::PROFILE_PICTURE->value => [
+            MediaPreset::USER_AVATAR->value => [
                 'suffix' => '_profile',
                 'optimize' => true,
                 'resize' => null,

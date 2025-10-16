@@ -42,10 +42,10 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     }
 
     /**
-     * Retrieve a user by ID with its `profile_picture` relationship loaded.
+     * Retrieve a user by ID with its `avatar` relationship loaded.
      *
      * @param  int  $id  The user's ID.
-     * @return Model The requested User model with `profile_picture` loaded.
+     * @return Model The requested User model with `` loaded.
      *
      * @throws \Exception If the user cannot be retrieved or another error occurs.
      */
@@ -53,7 +53,7 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     {
         try {
 
-            return User::with('profile_picture')->findOrFail($id);
+            return User::with('avatar')->findOrFail($id);
 
         } catch (\Exception $e) {
             throw $e;

@@ -86,7 +86,7 @@ class User extends Authenticatable
      *
      * @return BelongsTo The HasOne relation to the Media model representing the user's profile picture.
      */
-    public function profile_picture(): BelongsTo
+    public function avatar(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'media_id');
     }

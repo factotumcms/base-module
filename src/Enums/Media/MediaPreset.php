@@ -7,6 +7,6 @@ use Wave8\Factotum\Base\Traits\ListCases;
 enum MediaPreset: string
 {
     use ListCases;
-    case PROFILE_PICTURE = 'profile_picture_preset';
+    case USER_AVATAR = 'user_avatar_preset';
     case THUMBNAIL = 'thumbnail_preset';
 }
