@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\LanguageServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\LanguageServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Language\RegisterLineDto;
 use Wave8\Factotum\Base\Enums\Locale;
 

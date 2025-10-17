@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\UserServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;

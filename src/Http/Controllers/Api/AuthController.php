@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\AuthServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\AuthServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Auth\RegisterUserDto;
 use Wave8\Factotum\Base\Http\Requests\Api\Auth\LoginRequest;

@@ -3,13 +3,12 @@
 namespace Wave8\Factotum\Base\Services\Api;
 
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\FilterableInterface;
 use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Setting\CreateSettingDto;
@@ -20,9 +19,13 @@ use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 use Wave8\Factotum\Base\Models\Setting;
+use Wave8\Factotum\Base\Traits\Filterable;
+use Wave8\Factotum\Base\Traits\Sortable;
 
 class SettingService implements FilterableInterface, SettingServiceInterface, SortableInterface
 {
+    use Filterable, Sortable;
+
     public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
 
     /**
@@ -121,28 +124,5 @@ class SettingService implements FilterableInterface, SettingServiceInterface, So
             perPage: $queryFilters->perPage ?? 15,
             page: $queryFilters->page
         );
-    }
-
-    public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void
-    {
-        if ($queryFilters->sortBy) {
-            $query->orderBy($queryFilters->sortBy, $queryFilters->sortOrder->value);
-        }
-    }
-
-    public function applyFilters(Builder $query, ?array $searchFilters): void
-    {
-        foreach ($searchFilters as $field => $value) {
-
-            $operator = substr($value, 0, 1);
-            if (in_array($operator, ['<', '>'])) {
-
-                $value = substr($value, 1);
-                $query = $query->where($field, $operator, $value);
-
-            } else {
-                $query = $query->where($field, 'LIKE', "%$value%");
-            }
-        }
     }
 }

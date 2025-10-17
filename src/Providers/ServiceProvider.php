@@ -3,13 +3,13 @@
 namespace Wave8\Factotum\Base\Providers;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\AuthServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\LanguageServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\UserServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\AuthServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\LanguageServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Services\Api\AuthService;
 use Wave8\Factotum\Base\Services\Api\LanguageService;
 use Wave8\Factotum\Base\Services\Api\MediaService;

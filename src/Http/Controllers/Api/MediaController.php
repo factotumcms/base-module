@@ -3,7 +3,7 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Media\MediaPreset;

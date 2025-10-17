@@ -8,7 +8,7 @@ use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Optional;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Services\Api\SettingService;

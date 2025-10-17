@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Services\Api;
 
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -15,8 +14,8 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Image;
 use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\FilterableInterface;
 use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
@@ -28,9 +27,13 @@ use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
+use Wave8\Factotum\Base\Traits\Filterable;
+use Wave8\Factotum\Base\Traits\Sortable;
 
 class MediaService implements FilterableInterface, MediaServiceInterface, SortableInterface
 {
+    use Filterable, Sortable;
+
     public function __construct(
         /** @var SettingService $settingService */
         private readonly SettingServiceInterface $settingService,
@@ -298,37 +301,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             $basePath, date('Y'), date('m'), date('d'),
         ]);
 
-    }
-
-    /**
-     * Apply sorting to the given query using sort criteria from the provided filters.
-     *
-     * Applies an orderBy on the query when `sortBy` is present in the QueryFiltersDto, using `sortOrder` as the direction.
-     *
-     * @param  Builder  $query  The query builder to modify.
-     * @param  \Wave8\Factotum\Base\Dto\QueryFiltersDto  $queryFilters  Contains `sortBy` (column) and `sortOrder` (direction) used for ordering.
-     */
-    public function applySorting(Builder $query, QueryFiltersDto $queryFilters): void
-    {
-        if ($queryFilters->sortBy) {
-            $query->orderBy($queryFilters->sortBy, $queryFilters->sortOrder->value);
-        }
-    }
-
-    public function applyFilters(Builder $query, ?array $searchFilters): void
-    {
-        foreach ($searchFilters as $field => $value) {
-
-            $operator = substr($value, 0, 1);
-            if (in_array($operator, ['<', '>'])) {
-
-                $value = substr($value, 1);
-                $query = $query->where($field, $operator, $value);
-
-            } else {
-                $query = $query->where($field, 'LIKE', "%$value%");
-            }
-        }
     }
 
     public function getMediaNotConverted(): Collection

@@ -4,8 +4,8 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Permission\MediaPermission;

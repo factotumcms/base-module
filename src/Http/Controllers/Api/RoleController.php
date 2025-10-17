@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Api\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;

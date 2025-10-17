@@ -3,8 +3,8 @@
 namespace Wave8\Factotum\Base\Services\Api;
 
 use Illuminate\Support\Facades\Auth;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\AuthServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\AuthServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Auth\RegisterUserDto;
 use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;

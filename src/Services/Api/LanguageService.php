@@ -3,7 +3,7 @@
 namespace Wave8\Factotum\Base\Services\Api;
 
 use Spatie\TranslationLoader\LanguageLine;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\LanguageServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\LanguageServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Language\RegisterLineDto;
 
 class LanguageService implements LanguageServiceInterface

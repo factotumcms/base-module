@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;

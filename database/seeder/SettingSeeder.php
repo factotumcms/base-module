@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaCropDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaFitDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaPresetConfigDto;
