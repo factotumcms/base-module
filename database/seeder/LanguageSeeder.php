@@ -4,8 +4,8 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\LanguageServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Language\RegisterLineDto;
+use Wave8\Factotum\Base\Contracts\Api\LanguageServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Language\RegisterLineDto;
 use Wave8\Factotum\Base\Enums\Locale;
 
 class LanguageSeeder extends Seeder
@@ -23,7 +23,7 @@ class LanguageSeeder extends Seeder
         Log::info('Creating default language lines..');
 
         $this->languageService->registerLine(
-            data: RegisterLineDto::make(
+            data: new RegisterLineDto(
                 locale: Locale::IT,
                 group: 'auth',
                 key: 'login_successful',
@@ -32,7 +32,7 @@ class LanguageSeeder extends Seeder
         );
 
         $this->languageService->registerLine(
-            data: RegisterLineDto::make(
+            data: new RegisterLineDto(
                 locale: Locale::IT,
                 group: 'auth',
                 key: 'login_failed',
@@ -41,7 +41,7 @@ class LanguageSeeder extends Seeder
         );
 
         $this->languageService->registerLine(
-            data: RegisterLineDto::make(
+            data: new RegisterLineDto(
                 locale: Locale::IT,
                 group: 'auth',
                 key: 'logout_successful',
@@ -50,7 +50,7 @@ class LanguageSeeder extends Seeder
         );
 
         $this->languageService->registerLine(
-            data: RegisterLineDto::make(
+            data: new RegisterLineDto(
                 locale: Locale::EN,
                 group: 'auth',
                 key: 'login_successful',
@@ -59,7 +59,7 @@ class LanguageSeeder extends Seeder
         );
 
         $this->languageService->registerLine(
-            data: RegisterLineDto::make(
+            data: new RegisterLineDto(
                 locale: Locale::EN,
                 group: 'auth',
                 key: 'login_failed',
@@ -68,7 +68,7 @@ class LanguageSeeder extends Seeder
         );
 
         $this->languageService->registerLine(
-            data: RegisterLineDto::make(
+            data: new RegisterLineDto(
                 locale: Locale::EN,
                 group: 'auth',
                 key: 'logout_successful',
