@@ -20,23 +20,14 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
      */
     public function boot(): void
     {
-        if (env('ENABLE_BACKOFFICE_API')) {
-            $this->apiContexts[] = 'backoffice';
-        }
-        if (env('ENABLE_MOBILE_API')) {
-            $this->apiContexts[] = 'mobile';
-        }
-
         $this->configureRateLimiting();
 
         $this->routes(function () {
 
             Route::prefix($this->apiPrefix)
                 ->group(function () {
-                    foreach ($this->apiContexts as $context) {
-                        $this->registerProtectedApiRoutes($context);
-                        $this->registerPublicApiRoutes($context);
-                    }
+                    $this->registerProtectedApiRoutes();
+                    $this->registerPublicApiRoutes();
                 });
         });
     }
@@ -51,23 +42,21 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
         });
     }
 
-    protected function registerPublicApiRoutes($context): void
+    protected function registerPublicApiRoutes(): void
     {
         Route::group([
             'middleware' => ['api'],
-            'prefix' => $context,
-        ], function () use ($context) {
-            $this->mapRoutes(__DIR__."/../../routes/api/$context/public");
+        ], function () {
+            $this->mapRoutes(__DIR__.'/../../routes/api/public');
         });
     }
 
-    protected function registerProtectedApiRoutes(string $context): void
+    protected function registerProtectedApiRoutes(): void
     {
         Route::group([
             'middleware' => ['api', 'auth:sanctum'],
-            'prefix' => $context,
-        ], function () use ($context) {
-            $this->mapRoutes(__DIR__."/../../routes/api/$context/protected");
+        ], function () {
+            $this->mapRoutes(__DIR__.'/../../routes/api/protected');
         });
     }
 

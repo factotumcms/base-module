@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('first_name')->after('id')->nullable();
             $table->string('last_name')->after('first_name')->nullable();
-            $table->string('username')->after('last_name')->nullable()->unique();
+            $table->string('username')->after('last_name')->unique();
             $table->boolean('is_active')->after('password')->default(true);
 
             $table->dropColumn('name');

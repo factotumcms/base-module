@@ -4,9 +4,9 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Permission\CreatePermissionDto;
+use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Permission\MediaPermission;
 use Wave8\Factotum\Base\Enums\Permission\Permission;
@@ -31,7 +31,7 @@ class PermissionSeeder extends Seeder
         Log::info('Creating default permission..');
 
         $adminRole = $this->roleService->filter(
-            QueryFiltersDto::make(
+            new QueryFiltersDto(
                 search: ['name' => Role::ADMIN->value]
             )
         );
@@ -47,7 +47,7 @@ class PermissionSeeder extends Seeder
         foreach ($entities as $entity) {
             foreach ($entity::getValues() as $permission) {
                 $this->permissionService->create(
-                    data: CreatePermissionDto::make(
+                    data: new CreatePermissionDto(
                         name: $permission
                     )
                 );

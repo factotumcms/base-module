@@ -3,7 +3,7 @@
 namespace Wave8\Factotum\Base\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Enums\Permission\RolePermission;
 use Wave8\Factotum\Base\Models\User;
 

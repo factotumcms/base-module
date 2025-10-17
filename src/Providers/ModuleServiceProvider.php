@@ -14,8 +14,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
     public function register(): void
     {
         // Register DI services
-        $this->app->register(BackofficeServiceProvider::class);
-        $this->app->register(MobileServiceProvider::class);
+        $this->app->register(ServiceProvider::class);
 
         // Register app required service providers
         $this->app->register(ConfigServiceProvider::class);

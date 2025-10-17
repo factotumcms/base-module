@@ -1,7 +1,7 @@
 <?php
 
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\UpdateSettingDto;
+use Wave8\Factotum\Base\Dtos\Api\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dtos\Api\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
@@ -12,7 +12,7 @@ describe('SettingDto', function () {
 
         $dto = new CreateSettingDto(
             scope: SettingScope::SYSTEM,
-            data_type: SettingDataType::INTEGER,
+            dataType: SettingDataType::INTEGER,
             group: SettingGroup::AUTH,
             key: Setting::THUMBNAIL_PRESET,
             value: 'test', description: 'test'
