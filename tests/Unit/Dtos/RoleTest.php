@@ -7,8 +7,10 @@ describe('RoleDto', function () {
     it('successfully create a new CreateRoleDto instance', function () {
 
         $dto = new CreateRoleDto(
-            name: 'test', guardName: 'web'
+            name: 'test'
         );
+
+        $dto->guardName = 'web';
 
         expect($dto)->toBeInstanceOf(CreateRoleDto::class);
     });

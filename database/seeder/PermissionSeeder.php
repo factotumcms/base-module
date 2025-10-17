@@ -31,7 +31,7 @@ class PermissionSeeder extends Seeder
         Log::info('Creating default permission..');
 
         $adminRole = $this->roleService->filter(
-            QueryFiltersDto::make(
+            new QueryFiltersDto(
                 search: ['name' => Role::ADMIN->value]
             )
         );

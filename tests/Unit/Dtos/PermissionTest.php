@@ -7,8 +7,10 @@ describe('PermissionDto', function () {
     it('successfully create a new CreatePermissionDto instance', function () {
 
         $dto = new CreatePermissionDto(
-            name: 'test', guardName: 'web'
+            name: 'test'
         );
+
+        $dto->guardName = 'web';
 
         expect($dto)->toBeInstanceOf(CreatePermissionDto::class);
     });

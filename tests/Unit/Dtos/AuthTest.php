@@ -8,8 +8,10 @@ describe('AuthDto', function () {
         $val = 'test';
 
         $dto = new LoginUserDto(
-            email: $val, password: $val, username: $val
+            email: $val, password: $val,
         );
+
+        $dto->username = $val;
 
         expect($dto)->toBeInstanceOf(LoginUserDto::class);
     });
@@ -18,8 +20,10 @@ describe('AuthDto', function () {
         $val = 'test';
 
         $dto = new RegisterUserDto(
-            email: $val, password: $val, passwordConfirmation: $val, firstName: $val, lastName: $val, username: $val
+            email: $val, password: $val, passwordConfirmation: $val, firstName: $val, lastName: $val
         );
+
+        $dto->username = $val;
 
         expect($dto)->toBeInstanceOf(RegisterUserDto::class);
     });
