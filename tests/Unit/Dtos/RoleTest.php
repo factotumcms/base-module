@@ -1,13 +1,13 @@
 <?php
 
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Role\CreateRoleDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Role\UpdateRoleDto;
+use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
+use Wave8\Factotum\Base\Dtos\Api\Role\UpdateRoleDto;
 
 describe('RoleDto', function () {
     it('successfully create a new CreateRoleDto instance', function () {
 
         $dto = new CreateRoleDto(
-            name: 'test', guard_name: 'web'
+            name: 'test', guardName: 'web'
         );
 
         expect($dto)->toBeInstanceOf(CreateRoleDto::class);
@@ -16,7 +16,7 @@ describe('RoleDto', function () {
     it('successfully create a new UpdateRoleDto instance', function () {
 
         $dto = new UpdateRoleDto(
-            name: 'test', guard_name: 'web'
+            name: 'test', guardName: 'web'
         );
 
         expect($dto)->toBeInstanceOf(UpdateRoleDto::class);

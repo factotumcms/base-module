@@ -1,6 +1,6 @@
 <?php
 
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Language\RegisterLineDto;
+use Wave8\Factotum\Base\Dtos\Api\Language\RegisterLineDto;
 use Wave8\Factotum\Base\Enums\Locale;
 
 describe('LanguageDto', function () {

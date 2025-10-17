@@ -5,11 +5,11 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCropDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaFitDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaPresetConfigDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaResizeDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Setting\CreateSettingDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaCropDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaFitDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaPresetConfigDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaResizeDto;
+use Wave8\Factotum\Base\Dtos\Api\Setting\CreateSettingDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
@@ -35,9 +35,9 @@ class SettingSeeder extends Seeder
         Log::info('Creating default system settings..');
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::STRING,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::AUTH,
                 key: Setting::AUTH_TYPE,
                 value: 'basic',
@@ -46,9 +46,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::STRING,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::AUTH,
                 key: Setting::AUTH_BASIC_IDENTIFIER,
                 value: 'email',
@@ -56,9 +56,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::STRING,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE_DEFAULT,
                 value: Locale::tryFrom(config('factotum-base.locale.default'))->value,
@@ -66,9 +66,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::JSON,
+                dataType: SettingDataType::JSON,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE_AVAILABLE,
                 value: json_encode(Locale::getValues()),
@@ -76,9 +76,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::STRING,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_CONVERSIONS_PATH,
                 value: config('factotum-base.media.conversions_path'),
@@ -94,12 +94,12 @@ class SettingSeeder extends Seeder
             }
 
             $this->settingService->create(
-                data: CreateSettingDto::make(
+                data: new CreateSettingDto(
                     scope: SettingScope::SYSTEM,
-                    data_type: SettingDataType::JSON,
+                    dataType: SettingDataType::JSON,
                     group: SettingGroup::MEDIA,
                     key: $settingKey,
-                    value: json_encode(MediaPresetConfigDto::make(
+                    value: json_encode(new MediaPresetConfigDto(
                         suffix: $preset['suffix'],
                         optimize: $preset['optimize'] ?? true,
                         resize: isset($preset['resize']) ? MediaResizeDto::from($preset['resize']) : null,
@@ -111,9 +111,9 @@ class SettingSeeder extends Seeder
         }
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::STRING,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::DEFAULT_MEDIA_DISK,
                 value: Disk::tryFrom(config('factotum-base.media.disk'))->value
@@ -121,9 +121,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::STRING,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_BASE_PATH,
                 value: config('factotum-base.media.base_path')
@@ -131,9 +131,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::INTEGER,
+                dataType: SettingDataType::INTEGER,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_PER_PAGE,
                 value: config('factotum-base.pagination.per_page')
@@ -141,9 +141,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::INTEGER,
+                dataType: SettingDataType::INTEGER,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_DEFAULT_ORDER_BY,
                 value: config('factotum-base.pagination.default_order_by')
@@ -151,9 +151,9 @@ class SettingSeeder extends Seeder
         );
 
         $this->settingService->create(
-            data: CreateSettingDto::make(
+            data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                data_type: SettingDataType::INTEGER,
+                dataType: SettingDataType::INTEGER,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_DEFAULT_ORDER_DIRECTION,
                 value: config('factotum-base.pagination.default_order_direction')

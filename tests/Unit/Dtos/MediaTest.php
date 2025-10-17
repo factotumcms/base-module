@@ -3,13 +3,13 @@
 use Illuminate\Http\UploadedFile;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\CreateMediaDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCropDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCustomPropertiesDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaFitDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaPresetConfigDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaResizeDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaCropDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaFitDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaPresetConfigDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaResizeDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 
@@ -18,7 +18,7 @@ describe('MediaDto', function () {
         $val = 'test';
 
         $dto = new CreateMediaDto(
-            name: $val, file_name: $val, mime_type: $val, media_type: MediaType::IMAGE, presets: null, disk: Disk::LOCAL, path: $val, size: 123, custom_properties: '{}', conversions: null
+            name: $val, fileName: $val, mimeType: $val, mediaType: MediaType::IMAGE, presets: null, disk: Disk::LOCAL, path: $val, size: 123, customProperties: '{}', conversions: null
         );
 
         expect($dto)->toBeInstanceOf(CreateMediaDto::class);

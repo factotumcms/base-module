@@ -1,13 +1,13 @@
 <?php
 
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\CreateUserDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\UpdateUserDto;
+use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
+use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
 
 describe('UserDto', function () {
     it('successfully creates a new CreateUserDto instance', function () {
 
         $dto = new CreateUserDto(
-            email: 'test', password: 'password123', first_name: 'Test', last_name: 'User', username: 'testuser', is_active: true
+            email: 'test', password: 'password123', firstName: 'Test', lastName: 'User', username: 'testuser', isActive: true
         );
 
         expect($dto)->toBeInstanceOf(CreateUserDto::class);
@@ -16,7 +16,7 @@ describe('UserDto', function () {
     it('successfully creates a new UpdateUserDto instance', function () {
 
         $dto = new UpdateUserDto(
-            first_name: 'Test', last_name: 'User', is_active: true
+            firstName: 'Test', lastName: 'User', isActive: true
         );
 
         expect($dto)->toBeInstanceOf(UpdateUserDto::class);

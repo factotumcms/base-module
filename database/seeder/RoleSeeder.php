@@ -5,7 +5,7 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\RoleServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Role\CreateRoleDto;
+use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Enums\Role;
 
 class RoleSeeder extends Seeder
@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
 
         foreach (Role::getValues() as $role) {
             $this->roleService->create(
-                data: CreateRoleDto::make(
+                data: new CreateRoleDto(
                     name: $role
                 )
             );

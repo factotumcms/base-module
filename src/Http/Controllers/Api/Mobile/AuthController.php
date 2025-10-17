@@ -20,7 +20,7 @@ final readonly class AuthController
     public function login(LoginRequest $request): ApiResponse
     {
         $user = $this->authService->attemptLogin(
-            data: LoginUserDto::make(...$request->all())
+            data: LoginUserDto::from($request)
         );
 
         return ApiResponse::make(

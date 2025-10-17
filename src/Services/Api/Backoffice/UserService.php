@@ -11,8 +11,8 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\UserServiceInterface;
 use Wave8\Factotum\Base\Contracts\FilterableInterface;
 use Wave8\Factotum\Base\Contracts\SortableInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\CreateUserDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\UpdateUserDto;
+use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
+use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Models\User;
 
@@ -44,7 +44,7 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     /**
      * Retrieve a user by ID with its `avatar` relationship loaded.
      *
-     * @param int $id The user's ID.
+     * @param  int  $id  The user's ID.
      * @return Model|null The requested User model with 'avatar' loaded.</code>
      *
      * @throws \Exception If the user cannot be retrieved or another error occurs.

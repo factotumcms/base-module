@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api\Backoffice;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 use Wave8\Factotum\Base\Helpers\Utility;
@@ -36,7 +36,7 @@ final readonly class MediaController
     public function create(UploadMediaRequest $request): ApiResponse
     {
         $file = $this->mediaService->store(
-            StoreFileDto::make(
+            new StoreFileDto(
                 file: $request->file('file'),
                 presets: [MediaPreset::THUMBNAIL]
             )

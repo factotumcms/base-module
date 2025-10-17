@@ -1,18 +1,21 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dtos\Api\Backoffice\Media;
+namespace Wave8\Factotum\Base\Dtos\Api\Media;
 
+use Spatie\Image\Enums\Fit;
 use Spatie\LaravelData\Data;
 
-class MediaResizeDto extends Data
+class MediaFitDto extends Data
 {
     /**
-     * Create a DTO representing target dimensions for media resizing.
+     * Initialize the DTO with a fit method and target dimensions.
      *
+     * @param  Fit  $method  The fit method to apply when resizing/cropping.
      * @param  int  $width  Target width in pixels.
      * @param  int  $height  Target height in pixels.
      */
     public function __construct(
+        public readonly Fit $method,
         public readonly int $width,
         public readonly int $height,
     ) {}

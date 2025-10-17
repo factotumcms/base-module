@@ -5,7 +5,7 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\UserServiceInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\User\CreateUserDto;
+use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Enums\Role;
 use Wave8\Factotum\Base\Models\User;
 
@@ -25,11 +25,11 @@ class UserSeeder extends Seeder
 
         /** @var User $adminUser */
         $adminUser = $this->userService->create(
-            data: CreateUserDto::make(
+            data: new CreateUserDto(
                 email: config('factotum-base.admin_default.email'),
                 password: config('factotum-base.admin_default.password'),
-                first_name: config('factotum-base.admin_default.first_name'),
-                last_name: config('factotum-base.admin_default.last_name'),
+                firstName: config('factotum-base.admin_default.first_name'),
+                lastName: config('factotum-base.admin_default.last_name'),
                 username: config('factotum-base.admin_default.username'),
             )
         );

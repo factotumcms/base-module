@@ -10,8 +10,8 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\FilterableInterface;
 use Wave8\Factotum\Base\Contracts\SortableInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Permission\CreatePermissionDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Permission\UpdatePermissionDto;
+use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
+use Wave8\Factotum\Base\Dtos\Api\Permission\UpdatePermissionDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Models\Permission;
 

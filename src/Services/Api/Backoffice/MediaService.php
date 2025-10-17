@@ -19,9 +19,9 @@ use Wave8\Factotum\Base\Contracts\Api\Backoffice\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\Backoffice\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\FilterableInterface;
 use Wave8\Factotum\Base\Contracts\SortableInterface;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\CreateMediaDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\MediaCustomPropertiesDto;
-use Wave8\Factotum\Base\Dtos\Api\Backoffice\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
+use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
 use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
@@ -82,6 +82,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      *
      * @param  StoreFileDto  $data  DTO containing the uploaded file and optional preset selections.
      * @return Media Stored media model instance; throws on storage failure.
+     *
      * @throws \Exception If a media record with the same filename already exists or if the file's MIME type is unsupported.
      */
     public function store(StoreFileDto $data): Media
@@ -104,16 +105,16 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         }
 
         $media = $this->create(
-            data: CreateMediaDto::make(
+            data: new CreateMediaDto(
                 name: $metadata['original_filename'],
-                file_name: $metadata['filename'],
-                mime_type: $metadata['mime_type'],
-                media_type: $this->detectMediaType($metadata['mime_type']),
+                fileName: $metadata['filename'],
+                mimeType: $metadata['mime_type'],
+                mediaType: $this->detectMediaType($metadata['mime_type']),
                 presets: json_encode(array_keys($presetConfigs)),
                 disk: $disk,
                 path: $mediaBasePath,
                 size: $metadata['size'],
-                custom_properties: json_encode($this->setDefaultCustomProperties($metadata))
+                customProperties: json_encode($this->setDefaultCustomProperties($metadata))
             )
         );
 
@@ -255,13 +256,16 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     {
         switch ($this->detectMediaType($metadata['mime_type'])) {
             case MediaType::IMAGE:
-                return MediaCustomPropertiesDto::make(
+                return new MediaCustomPropertiesDto(
                     alt: $metadata['original_filename'],
                     title: $metadata['original_filename'],
                 );
 
             default:
-                return MediaCustomPropertiesDto::make();
+                return new MediaCustomPropertiesDto(
+                    alt: null,
+                    title: null,
+                );
 
         }
     }

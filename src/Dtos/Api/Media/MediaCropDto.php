@@ -1,6 +1,6 @@
 <?php
 
-namespace Wave8\Factotum\Base\Dtos\Api\Backoffice\Media;
+namespace Wave8\Factotum\Base\Dtos\Api\Media;
 
 use Spatie\Image\Enums\CropPosition;
 use Spatie\LaravelData\Data;
