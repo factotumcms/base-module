@@ -22,7 +22,7 @@ class ServiceProvider extends LaravelServiceProvider
 {
     public function register()
     {
-        // Backoffice Services
+        // API Services
         $this->app->singleton(AuthServiceInterface::class, AuthService::class);
         $this->app->singleton(SettingServiceInterface::class, SettingService::class);
         $this->app->singleton(UserServiceInterface::class, UserService::class);

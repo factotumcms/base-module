@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Dtos\Api\Auth;
 
+use Illuminate\Support\Str;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -19,6 +20,6 @@ class RegisterUserDto extends Data
         public readonly string $firstName,
         public readonly string $lastName,
     ) {
-        $this->username = trim(strtolower(str_replace(' ', '', $this->firstName))).'.'.trim(strtolower(str_replace(' ', '', $this->lastName)));
+        $this->username = Str::slug($this->firstName.$this->lastName.rand(1, 50));
     }
 }

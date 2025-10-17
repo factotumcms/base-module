@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Image;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
@@ -60,11 +61,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     public function delete(int $id): bool
     {
         return true;
-    }
-
-    public function getAll(): Collection
-    {
-        return Media::all();
     }
 
     public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
@@ -194,9 +190,11 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      * stores the conversion on the media's configured disk under the conversions path, and updates the media's
      * `conversions` attribute with the public URLs of the generated files before saving the model.
      *
-     * @param  Model  $media  Media model whose `presets`, `disk`, `path`, and `file_name` identify the source file and where conversions should be stored.
+     * @param  Media  $media  Media model whose `presets`, `disk`, `path`, and `file_name` identify the source file and where conversions should be stored.
+     *
+     * @throws CouldNotLoadImage
      */
-    public function generateConversions(Model $media): void
+    public function generateConversions(Media $media): void
     {
         $conversions = [];
         foreach (json_decode($media->presets) as $preset) {
@@ -254,6 +252,8 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      *                           - 'mime_type' (string): the media MIME type
      *                           - 'original_filename' (string): the uploaded file's original name
      * @return MediaCustomPropertiesDto For images, returns a DTO with `alt` and `title` set to the original filename; for other types, returns an empty DTO.
+     *
+     * @throws \Exception
      */
     private function setDefaultCustomProperties(array $metadata): MediaCustomPropertiesDto
     {
@@ -292,6 +292,8 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      * Build a media storage path using the configured base path and today's year/month/day segments.
      *
      * @return string The media path composed of the configured base media path followed by year, month, and day segments.
+     *
+     * @throws \Exception
      */
     private function generateMediaPath(): string
     {
