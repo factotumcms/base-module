@@ -27,7 +27,7 @@ final readonly class AuthController
 
         return ApiResponse::make(
             data: [
-                'user' => UserResource::from($user),
+                'user' => UserResource::from($user->load('avatar')),
                 'access_token' => $user->createToken('auth_token')->plainTextToken,
             ],
         );

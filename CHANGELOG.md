@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.2] - 2025-10-19
+### Fixed
+- Load avatar relation on user authentication
+
 ## [1.4.1] - 2025-10-18
 ### Changed
 - Refactor media_id to avatar in users table migration
