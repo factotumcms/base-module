@@ -18,7 +18,8 @@ use Wave8\Factotum\Base\Traits\Sortable;
 
 class PermissionService implements FilterableInterface, PermissionServiceInterface, SortableInterface
 {
-    use Filterable, Sortable;
+    use Filterable;
+    use Sortable;
 
     public function create(CreatePermissionDto|Data $data): Model
     {

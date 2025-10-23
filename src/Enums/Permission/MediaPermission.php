@@ -9,5 +9,4 @@ enum MediaPermission: string
     use ListCases;
     case UPLOAD_MEDIA = 'upload_media';
     case READ_MEDIA = 'read_media';
-
 }

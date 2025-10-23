@@ -24,7 +24,8 @@ use Wave8\Factotum\Base\Traits\Sortable;
 
 class SettingService implements FilterableInterface, SettingServiceInterface, SortableInterface
 {
-    use Filterable, Sortable;
+    use Filterable;
+    use Sortable;
 
     public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
 

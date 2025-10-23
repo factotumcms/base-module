@@ -33,7 +33,8 @@ use Wave8\Factotum\Base\Traits\Sortable;
 
 class MediaService implements FilterableInterface, MediaServiceInterface, SortableInterface
 {
-    use Filterable, Sortable;
+    use Filterable;
+    use Sortable;
 
     public function __construct(
         /** @var SettingService $settingService */
@@ -144,7 +145,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => MediaType::FILE,
             default => throw new \Exception('Unsupported media type: '.$mimeType),
         };
-
     }
 
     private function generateFileMetadata(UploadedFile $file): array
@@ -198,7 +198,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     {
         $conversions = [];
         foreach (json_decode($media->presets) as $preset) {
-
             // Load preset config
             $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset)));
             $conversionsPath = $this->settingService->getSystemSettingValue(Setting::MEDIA_CONVERSIONS_PATH);
@@ -269,7 +268,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
                     alt: null,
                     title: null,
                 );
-
         }
     }
 
@@ -278,7 +276,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         $configs = [];
 
         foreach ($data->presets as $preset) {
-
             $config = $this->settingService->getSystemSettingValue(Setting::from($preset->value));
             if (isset($config)) {
                 $configs[$preset->value] = $config;
@@ -302,7 +299,6 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         return implode('/', [
             $basePath, date('Y'), date('m'), date('d'),
         ]);
-
     }
 
     public function getMediaNotConverted(): Collection

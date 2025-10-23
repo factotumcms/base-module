@@ -55,6 +55,5 @@ class PermissionSeeder extends Seeder
                 $adminRole->firstOrFail()->givePermissionTo($permission);
             }
         }
-
     }
 }

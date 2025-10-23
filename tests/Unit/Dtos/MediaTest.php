@@ -25,7 +25,6 @@ describe('MediaDto', function () {
     });
 
     it('successfully create a new MediaCropDto instance', function () {
-
         $dto = new MediaCropDto(
             width: 100, height: 100, position: CropPosition::Center
         );
@@ -44,7 +43,6 @@ describe('MediaDto', function () {
     });
 
     it('successfully create a new MediaFitDto instance', function () {
-
         $dto = new MediaFitDto(
             method: Fit::Contain, width: 100, height: 100
         );
@@ -53,7 +51,6 @@ describe('MediaDto', function () {
     });
 
     it('successfully create a new MediaPresetConfigDto instance', function () {
-
         $dto = new MediaPresetConfigDto(
             suffix: 'thumb', optimize: true, resize: null, fit: new MediaFitDto(method: Fit::Contain, width: 100, height: 100), crop: null
         );
@@ -62,7 +59,6 @@ describe('MediaDto', function () {
     });
 
     it('successfully create a new MediaResizeDto instance', function () {
-
         $dto = new MediaResizeDto(
             width: 100, height: 100
         );
@@ -71,7 +67,6 @@ describe('MediaDto', function () {
     });
 
     it('successfully create a new StoreFileDto instance', function () {
-
         $file = UploadedFile::fake()->image('test.jpg');
 
         $dto = new StoreFileDto(
@@ -80,5 +75,4 @@ describe('MediaDto', function () {
 
         expect($dto)->toBeInstanceOf(StoreFileDto::class);
     });
-
 });

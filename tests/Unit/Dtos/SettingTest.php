@@ -9,7 +9,6 @@ use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 
 describe('SettingDto', function () {
     it('successfully creates a new CreateSettingDto instance', function () {
-
         $dto = new CreateSettingDto(
             scope: SettingScope::SYSTEM,
             dataType: SettingDataType::INTEGER,
@@ -22,12 +21,10 @@ describe('SettingDto', function () {
     });
 
     it('successfully creates a new UpdateSettingDto instance', function () {
-
         $dto = new UpdateSettingDto(
             value: 'test', description: 'web'
         );
 
         expect($dto)->toBeInstanceOf(UpdateSettingDto::class);
     });
-
 });

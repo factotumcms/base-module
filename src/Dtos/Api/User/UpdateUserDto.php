@@ -14,5 +14,4 @@ class UpdateUserDto extends Data
         public readonly ?string $lastName = null,
         public readonly bool $isActive = true,
     ) {}
-
 }

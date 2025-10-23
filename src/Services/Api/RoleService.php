@@ -20,7 +20,8 @@ use Wave8\Factotum\Base\Traits\Sortable;
 
 class RoleService implements FilterableInterface, RoleServiceInterface, SortableInterface
 {
-    use Filterable, Sortable;
+    use Filterable;
+    use Sortable;
 
     /**
      * Create a new role.
@@ -98,7 +99,6 @@ class RoleService implements FilterableInterface, RoleServiceInterface, Sortable
         try {
             $role = Role::findOrFail($roleId)->name;
             $defaultRole = \Wave8\Factotum\Base\Enums\Role::tryFrom($role);
-
         } catch (\Exception $e) {
             return false;
         }

@@ -7,7 +7,6 @@ use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 
 describe('SettingEnums', function () {
     it('check Setting has exact values', function () {
-
         $values = array_flip(Setting::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
@@ -25,11 +24,9 @@ describe('SettingEnums', function () {
             'pagination_default_order_by',
             'pagination_default_order_direction',
         ]);
-
     });
 
     it('check SettingDataType has exact values', function () {
-
         $values = array_flip(SettingDataType::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
@@ -39,11 +36,9 @@ describe('SettingEnums', function () {
             'boolean',
             'json',
         ]);
-
     });
 
     it('check SettingGroup has exact values', function () {
-
         $values = array_flip(SettingGroup::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
@@ -52,17 +47,14 @@ describe('SettingEnums', function () {
             'locale',
             'pagination',
         ]);
-
     });
 
     it('check SettingScope has exact values', function () {
-
         $values = array_flip(SettingScope::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'system',
             'user',
         ]);
-
     });
 });

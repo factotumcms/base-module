@@ -10,6 +10,8 @@ use Wave8\Factotum\Base\Models\Media;
 interface MediaServiceInterface extends EntityServiceInterface
 {
     public function store(StoreFileDto $data): Media;
+
     public function generateConversions(Media $media): void;
+
     public function getMediaNotConverted(): Collection;
 }

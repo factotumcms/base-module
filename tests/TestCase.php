@@ -16,7 +16,8 @@ use Wave8\Factotum\Base\Providers\ModuleServiceProvider;
 #[WithMigration('session')]
 abstract class TestCase extends BaseTestCase
 {
-    use RefreshDatabase, WithWorkbench;
+    use RefreshDatabase;
+    use WithWorkbench;
 
     protected $enablesPackageDiscoveries = true;
 

@@ -19,7 +19,8 @@ use Wave8\Factotum\Base\Traits\Sortable;
 
 class UserService implements FilterableInterface, SortableInterface, UserServiceInterface
 {
-    use Filterable, Sortable;
+    use Filterable;
+    use Sortable;
 
     /**
      * @throws \Exception
@@ -27,11 +28,9 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     public function create(CreateUserDto|Data $data): Model
     {
         try {
-
             $user = User::create(
                 attributes: $data->toArray()
             );
-
         } catch (\Exception $e) {
             throw $e;
         }
@@ -55,9 +54,7 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     public function show(int $id): ?Model
     {
         try {
-
             return User::with('avatar')->findOrFail($id);
-
         } catch (\Exception $e) {
             throw $e;
         }
@@ -66,13 +63,11 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     public function update(int $id, UpdateUserDto|Data $data): Model
     {
         try {
-
             $user = User::findOrFail($id);
 
             $user->update($data->toArray());
 
             return $user;
-
         } catch (\Exception $e) {
             throw $e;
         }
@@ -81,11 +76,9 @@ class UserService implements FilterableInterface, SortableInterface, UserService
     public function delete(int $id): bool
     {
         try {
-
             $user = User::findOrFail($id);
 
             return $user->delete();
-
         } catch (\Exception $e) {
             throw $e;
         }

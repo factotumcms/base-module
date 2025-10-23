@@ -11,6 +11,5 @@ class LangServiceProvider extends LaravelServiceProvider
         $this->publishes([
             __DIR__.'/../../lang' => base_path('lang'),
         ], ['factotum-base-lang']);
-
     }
 }

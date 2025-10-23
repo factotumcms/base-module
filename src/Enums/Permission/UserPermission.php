@@ -11,5 +11,4 @@ enum UserPermission: string
     case READ_USERS = 'read_user';
     case UPDATE_USERS = 'edit_users';
     case DELETE_USERS = 'delete_users';
-
 }

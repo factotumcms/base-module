@@ -29,6 +29,5 @@ class GenerateImagesConversions implements ShouldQueue
         foreach ($media as $item) {
             $mediaService->generateConversions($item);
         }
-
     }
 }

@@ -10,7 +10,6 @@ describe('UserModel', function () {
     });
 
     it('checks fillable columns', function () {
-
         $user = new User;
 
         expect($user->getFillable())->toEqual([
