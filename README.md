@@ -24,7 +24,7 @@ This repository contains the base module of Factotum, which includes essential f
 
 ## Requirements and Dependencies
 - Laravel 12+
-- PHP 8.3+
+- PHP 8.4+
 
 
 ## Install
