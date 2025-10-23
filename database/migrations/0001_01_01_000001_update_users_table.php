@@ -13,13 +13,14 @@ return new class extends Migration
     {
         // Update default users table
         Schema::table('users', function (Blueprint $table) {
-            $table->string('first_name')->after('id')->nullable();
-            $table->string('last_name')->after('first_name')->nullable();
-            $table->string('username')->after('last_name')->unique();
+            $table->renameColumn('name', 'first_name');
+
+            $table->after('first_name', function (Blueprint $table) {
+                $table->string('last_name')->nullable();
+                $table->string('username')->unique();
+            });
+
             $table->boolean('is_active')->after('password')->default(true);
-
-            $table->dropColumn('name');
-
             $table->softDeletes();
         });
     }
@@ -30,7 +31,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->default('')->after('id');
+            $table->renameColumn('first_name', 'name');
+            $table->dropUnique(['username']);
+
+            $table->dropColumn(['last_name', 'username', 'is_active']);
+            $table->dropSoftDeletes();
         });
     }
 };
