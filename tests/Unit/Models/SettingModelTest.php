@@ -10,7 +10,6 @@ describe('SettingModel', function () {
     });
 
     it('checks fillable columns', function () {
-
         $setting = new Setting;
 
         expect($setting->getFillable())->toEqual([

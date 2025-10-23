@@ -64,7 +64,6 @@ return [
                 ],
             ],
         ],
-
     ],
 
     'pagination' => [

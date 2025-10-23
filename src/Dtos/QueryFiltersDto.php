@@ -34,7 +34,6 @@ class QueryFiltersDto extends Data
         $this->perPage = $settingService->getSystemSettingValue(Setting::PAGINATION_PER_PAGE, SettingGroup::PAGINATION) ?? 15;
         $this->sortBy = $settingService->getSystemSettingValue(Setting::PAGINATION_DEFAULT_ORDER_BY, SettingGroup::PAGINATION) ?? 'id';
         $this->sortOrder = Sort::tryFrom($settingService->getSystemSettingValue(Setting::PAGINATION_DEFAULT_ORDER_DIRECTION, SettingGroup::PAGINATION)) ?? Sort::Descending;
-
     }
 
     /**

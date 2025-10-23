@@ -13,5 +13,4 @@ describe('LanguageDto', function () {
 
         expect($dto)->toBeInstanceOf(RegisterLineDto::class);
     });
-
 });

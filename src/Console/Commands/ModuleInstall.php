@@ -47,7 +47,6 @@ class ModuleInstall extends Command
         $this->seedData();
 
         $this->info('*** Factotum Base Module installation finished ***');
-
     }
 
     private function printDisclaimer(): void

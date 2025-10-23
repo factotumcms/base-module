@@ -23,7 +23,6 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-
             Route::prefix($this->apiPrefix)
                 ->group(function () {
                     $this->registerProtectedApiRoutes();

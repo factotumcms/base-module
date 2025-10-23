@@ -88,6 +88,6 @@ class User extends Authenticatable
      */
     public function avatar(): BelongsTo
     {
-        return $this->belongsTo(Media::class, 'avatar');
+        return $this->belongsTo(Media::class, 'avatar_id');
     }
 }

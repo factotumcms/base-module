@@ -87,7 +87,6 @@ class SettingSeeder extends Seeder
 
         // Media presets
         foreach (config('factotum-base.media.presets') as $key => $preset) {
-
             $settingKey = Setting::tryFrom($key);
             if (! $settingKey) {
                 continue; // Skip presets that don't map to Setting enum

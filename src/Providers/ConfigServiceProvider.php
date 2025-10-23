@@ -16,6 +16,5 @@ class ConfigServiceProvider extends LaravelServiceProvider
             __DIR__.'/../../config/config.php',
             'factotum-base'
         );
-
     }
 }
