@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Add a nullable `avatar` column to the `users` table and create a foreign key to `media.id`
-     * that sets `avatar` to NULL when the referenced media row is deleted.
+     * Rename the `avatar` column to `avatar_id` in the `users` table.
+     *
+     * Creates a new `avatar_id` column with the same properties as `avatar`, copies the data,
+     * and then drops the old `avatar` column.
      */
     public function up(): void
     {
