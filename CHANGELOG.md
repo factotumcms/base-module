@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.3] - 2025-10-23
+### Fixed
+- Rename avatar column in users table
+- Fix existing migrations
+- Fix workbench environment setup
+
 ## [1.4.2] - 2025-10-19
 ### Fixed
 - Load avatar relation on user authentication
