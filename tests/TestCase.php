@@ -24,8 +24,6 @@ abstract class TestCase extends BaseTestCase
     {
         return [
             ModuleServiceProvider::class,
-            TranslationServiceProvider::class,
-            PermissionServiceProvider::class,
         ];
     }
 
@@ -55,7 +53,8 @@ abstract class TestCase extends BaseTestCase
             '--database' => 'testing',
         ]);
 
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->artisan('vendor:publish', ['--provider' => TranslationServiceProvider::class, '--tag' => 'translation-loader-migrations']);
+        $this->artisan('vendor:publish', ['--provider' => PermissionServiceProvider::class, '--tag' => 'permission-migrations']);
     }
 
     protected function defineDatabaseSeeders()
