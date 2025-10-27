@@ -85,6 +85,7 @@ class ModuleInstall extends Command
         $this->call('vendor:publish', ['--provider' => SanctumServiceProvider::class, '--tag' => 'sanctum-migrations']);
         $this->call('vendor:publish', ['--provider' => TranslationServiceProvider::class, '--tag' => 'translation-loader-migrations']);
         $this->call('vendor:publish', ['--provider' => PermissionServiceProvider::class, '--tag' => 'permission-migrations']);
+        $this->call('make:notifications-table');
 
         $this->processStep++;
     }
