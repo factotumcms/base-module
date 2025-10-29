@@ -3,12 +3,13 @@
 namespace Wave8\Factotum\Base\Resources\Api;
 
 use Spatie\LaravelData\Resource;
-
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
+use Spatie\LaravelData\Attributes\MapName;
+#[MapName(SnakeCaseMapper::class)]
 class PermissionResource extends Resource
 {
     public function __construct(
         public int $id,
         public string $name,
-        //        public ?string $guard_name
     ) {}
 }
