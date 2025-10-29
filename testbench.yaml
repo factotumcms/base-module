@@ -4,11 +4,9 @@ providers:
   - Wave8\Factotum\Base\Providers\ModuleServiceProvider
 
 migrations:
-  - workbench/database/migrations
   - database/migrations
 
 seeders:
-  - Workbench\Database\Seeders\DatabaseSeeder
 
 workbench:
   start: '/'
