@@ -10,7 +10,6 @@ use Wave8\Factotum\Base\Database\Seeder\DatabaseSeeder;
 
 #[WithMigration('laravel', 'cache', 'queue')]
 #[WithMigration('notifications')]
-
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
@@ -21,14 +20,15 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->defineDatabaseMigrations();
+        $this->publishAssets();
     }
 
-    protected function defineDatabaseMigrations()
+    protected function publishAssets(): void
     {
         $this->artisan('vendor:publish', ['--tag' => 'translation-loader-migrations']);
         $this->artisan('vendor:publish', ['--tag' => 'permission-migrations']);
+
+        $this->artisan('migrate', ['--database' => 'testing']);
     }
 
     protected function defineDatabaseSeeders()
