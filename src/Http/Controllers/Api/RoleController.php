@@ -32,7 +32,7 @@ final readonly class RoleController
     public function store(CreateRoleRequest $request): ApiResponse
     {
         $role = $this->roleService->create(
-            data: CreateRoleDto::from($request->all())
+            data: CreateRoleDto::from($request)
         );
 
         return ApiResponse::make(
@@ -55,7 +55,7 @@ final readonly class RoleController
     {
         $role = $this->roleService->update(
             id: $id,
-            data: UpdateRoleDto::from($request->all())
+            data: UpdateRoleDto::from($request)
         );
 
         return ApiResponse::make(

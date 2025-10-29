@@ -67,6 +67,7 @@ php artisan factotum-base:install
 ENABLE_BACKOFFICE_API=true
 ENABLE_MOBILE_API=true
 ```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.

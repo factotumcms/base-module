@@ -3,6 +3,7 @@
 namespace Wave8\Factotum\Base\Providers;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
 use Wave8\Factotum\Base\Console\Commands\ModuleInstall;

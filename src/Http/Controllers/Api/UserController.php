@@ -33,7 +33,7 @@ final readonly class UserController
     public function store(CreateUserRequest $request): ApiResponse
     {
         $user = $this->userService->create(
-            data: CreateUserDto::from($request->all())
+            data: CreateUserDto::from($request)
         );
 
         return ApiResponse::make(
@@ -56,7 +56,7 @@ final readonly class UserController
     {
         $user = $this->userService->update(
             id: $id,
-            data: UpdateUserDto::from($request->all())
+            data: UpdateUserDto::from($request)
         );
 
         return ApiResponse::make(

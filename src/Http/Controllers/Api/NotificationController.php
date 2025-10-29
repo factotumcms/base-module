@@ -26,9 +26,7 @@ final readonly class NotificationController
     {
         $this->notificationService->read(
             id: $notification->id,
-            data: ReadNotificationDto::from(
-                $request->all()
-            )
+            data: ReadNotificationDto::from($request)
         );
 
         return ApiResponse::HttpNoContent();
