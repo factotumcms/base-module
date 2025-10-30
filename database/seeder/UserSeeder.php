@@ -26,11 +26,11 @@ class UserSeeder extends Seeder
         /** @var User $adminUser */
         $adminUser = $this->userService->create(
             data: new CreateUserDto(
-                email: config('factotum-base.admin_default.email'),
-                password: config('factotum-base.admin_default.password'),
-                firstName: config('factotum-base.admin_default.first_name'),
-                lastName: config('factotum-base.admin_default.last_name'),
-                username: config('factotum-base.admin_default.username'),
+                email: config('factotum_base.admin_default.email'),
+                password: config('factotum_base.admin_default.password'),
+                firstName: config('factotum_base.admin_default.first_name'),
+                lastName: config('factotum_base.admin_default.last_name'),
+                username: config('factotum_base.admin_default.username'),
             )
         );
 

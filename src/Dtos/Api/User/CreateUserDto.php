@@ -3,12 +3,11 @@
 namespace Wave8\Factotum\Base\Dtos\Api\User;
 
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Contracts\BaseData;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapName(SnakeCaseMapper::class)]
-class CreateUserDto extends Data implements BaseData
+class CreateUserDto extends Data
 {
     public function __construct(
         public readonly string $email,
@@ -17,5 +16,7 @@ class CreateUserDto extends Data implements BaseData
         public readonly ?string $lastName = null,
         public readonly ?string $username = null,
         public readonly bool $isActive = true,
-    ) {}
+    ) {
+//        dd($this);
+    }
 }

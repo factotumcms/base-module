@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Providers;
 
+use App\Http\Dtos\User\CreateUserDto;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Wave8\Factotum\Base\Contracts\Api\AuthServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\LanguageServiceInterface;
@@ -11,6 +12,7 @@ use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
+use Wave8\Factotum\Base\Http\Controllers\Api\UserController;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Services\Api\AuthService;
 use Wave8\Factotum\Base\Services\Api\LanguageService;
@@ -26,6 +28,8 @@ class ServiceProvider extends LaravelServiceProvider
     public function register()
     {
         $this->app->bind(User::class, config('auth.providers.users.model'));
+
+//        $this->app->when(UserController::class)->needs('$createUserDto')->giveConfig('data_transfer.' . CreateUserDto::class, CreateUserDto::class);
 
         // API Services
         $this->app->singleton(AuthServiceInterface::class, AuthService::class);

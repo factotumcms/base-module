@@ -4,6 +4,6 @@ namespace Wave8\Factotum\Base\Contracts\Api;
 
 use Wave8\Factotum\Base\Contracts\EntityServiceInterface;
 
-interface UserServiceInterface{
+interface CoreServiceInterface{
 
 }

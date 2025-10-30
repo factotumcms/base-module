@@ -2,74 +2,29 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
+use Spatie\LaravelData\Dto;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
-use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
-use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
-use Wave8\Factotum\Base\Resources\Api\UserResource;
 
-final readonly class UserController
+final class UserController
 {
-    public function __construct(
+    final public function __construct(
         private UserServiceInterface $userService,
-    ) {}
-
-    public function index(QueryFiltersRequest $request): ApiResponse
-    {
-        $users = $this->userService
-            ->filter(
-                QueryFiltersDto::from($request)
-            );
-
-        return ApiResponse::make(
-            data: UserResource::collect($users)
-        );
+    ) {
     }
 
-    public function store(CreateUserRequest $request): ApiResponse
+    final public function store(CreateUserRequest $request): ApiResponse
     {
+        $createUserDto = config('data_transfer.' . CreateUserDto::class, CreateUserDto::class);
+
         $user = $this->userService->create(
-            data: CreateUserDto::from($request)
+            data: $createUserDto::from($request)
         );
 
         return ApiResponse::make(
-            data: UserResource::from($user)
-        );
-    }
-
-    public function show(int $id): ApiResponse
-    {
-        $user = $this->userService->show(
-            id: $id
-        );
-
-        return ApiResponse::make(
-            data: UserResource::from($user)
-        );
-    }
-
-    public function update(int $id, UpdateUserRequest $request): ApiResponse
-    {
-        $user = $this->userService->update(
-            id: $id,
-            data: UpdateUserDto::from($request)
-        );
-
-        return ApiResponse::make(
-            data: UserResource::from($user)
-        );
-    }
-
-    public function destroy(int $id): ApiResponse
-    {
-        $this->userService->delete($id);
-
-        return ApiResponse::make(
-            data: 'ok'
+            data: []
         );
     }
 }

@@ -61,7 +61,7 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE_DEFAULT,
-                value: Locale::tryFrom(config('factotum-base.locale.default'))->value,
+                value: Locale::tryFrom(config('factotum_base.locale.default'))->value,
             )
         );
 
@@ -81,12 +81,12 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_CONVERSIONS_PATH,
-                value: config('factotum-base.media.conversions_path'),
+                value: config('factotum_base.media.conversions_path'),
             )
         );
 
         // Media presets
-        foreach (config('factotum-base.media.presets') as $key => $preset) {
+        foreach (config('factotum_base.media.presets') as $key => $preset) {
             $settingKey = Setting::tryFrom($key);
             if (! $settingKey) {
                 continue; // Skip presets that don't map to Setting enum
@@ -115,7 +115,7 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::DEFAULT_MEDIA_DISK,
-                value: Disk::tryFrom(config('factotum-base.media.disk'))->value
+                value: Disk::tryFrom(config('factotum_base.media.disk'))->value
             )
         );
 
@@ -125,7 +125,7 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_BASE_PATH,
-                value: config('factotum-base.media.base_path')
+                value: config('factotum_base.media.base_path')
             )
         );
 
@@ -135,7 +135,7 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::INTEGER,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_PER_PAGE,
-                value: config('factotum-base.pagination.per_page')
+                value: config('factotum_base.pagination.per_page')
             )
         );
 
@@ -145,7 +145,7 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::INTEGER,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_DEFAULT_ORDER_BY,
-                value: config('factotum-base.pagination.default_order_by')
+                value: config('factotum_base.pagination.default_order_by')
             )
         );
 
@@ -155,7 +155,7 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::INTEGER,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_DEFAULT_ORDER_DIRECTION,
-                value: config('factotum-base.pagination.default_order_direction')
+                value: config('factotum_base.pagination.default_order_direction')
             )
         );
     }
