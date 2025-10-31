@@ -6,6 +6,7 @@ use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Api\Role\UpdateRoleDto;
 use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
+use Wave8\Factotum\Base\Resources\Api\PermissionResource;
 use Wave8\Factotum\Base\Resources\Api\RoleResource;
 use Wave8\Factotum\Base\Resources\Api\UserResource;
 
@@ -21,4 +22,5 @@ return [
     // Resource Bindings
     UserResource::class => UserResource::class,
     RoleResource::class => RoleResource::class,
+    PermissionResource::class => PermissionResource::class,
 ];

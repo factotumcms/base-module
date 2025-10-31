@@ -2,6 +2,19 @@
 
 namespace Wave8\Factotum\Base\Contracts\Api;
 
-use Wave8\Factotum\Base\Contracts\EntityServiceInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Spatie\LaravelData\Data;
 
-interface PermissionServiceInterface extends EntityServiceInterface {}
+interface PermissionServiceInterface
+{
+    public function create(Data $data): Model;
+
+    public function read(int $id): Model;
+
+    public function update(int $id, Data $data): Model;
+
+    public function delete(int $id): void;
+
+    public function filter(): LengthAwarePaginator;
+}

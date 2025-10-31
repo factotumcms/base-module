@@ -3,26 +3,28 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\Api\PermissionResource;
+use Wave8\Factotum\Base\Services\Api\PermissionService;
 
 final readonly class PermissionController
 {
-    public function __construct(
-        private PermissionServiceInterface $permissionService,
-    ) {}
+    public string $permissionResource;
 
-    public function index(QueryFiltersRequest $request): ApiResponse
+    public function __construct(
+        /** @var $permissionService PermissionService */
+        private PermissionServiceInterface $permissionService,
+    ) {
+        $this->permissionResource = config('data_transfer.'.PermissionResource::class);
+    }
+
+    public function index(): ApiResponse
     {
         $permissions = $this->permissionService
-            ->filter(
-                QueryFiltersDto::from($request)
-            );
+            ->filter();
 
         return ApiResponse::make(
-            data: PermissionResource::collect($permissions)
+            data: $this->permissionResource::collect($permissions)
         );
     }
 
@@ -33,7 +35,7 @@ final readonly class PermissionController
         );
 
         return ApiResponse::make(
-            data: PermissionResource::from($permission)
+            data: $this->permissionResource::from($permission)
         );
     }
 }
