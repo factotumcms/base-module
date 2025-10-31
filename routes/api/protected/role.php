@@ -9,8 +9,8 @@ Route::prefix('roles')
 
     ->group(function () {
         Route::get('', 'index')->can('read', Role::class);
-        Route::get('{id}', 'show')->can('read', Role::class);
+        Route::get('{role}', 'show')->can('read', 'role');
         Route::post('', 'store')->can('create', Role::class);
-        Route::put('{id}', 'update')->can('update', Role::class);
-        Route::delete('{id}', 'destroy')->can('delete', Role::class);
+        Route::put('{role}', 'update')->can('update', 'role');
+        Route::delete('{role}', 'destroy')->can('delete', 'role');
     });

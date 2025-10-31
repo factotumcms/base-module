@@ -27,7 +27,7 @@ final readonly class UserController
         $users = $this->userService->filter();
 
         return ApiResponse::make(
-            data: UserResource::collect($users),
+            data: $this->userResource::collect($users),
         );
     }
 

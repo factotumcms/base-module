@@ -8,5 +8,5 @@ Route::prefix('settings')
     ->controller(SettingController::class)
     ->group(function () {
         Route::get('', 'index')->can('read', Setting::class);
-        Route::get('{id}', 'show')->can('read', Setting::class);
+        Route::get('{setting}', 'show')->can('read', 'setting');
     });

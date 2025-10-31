@@ -9,6 +9,7 @@ use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\CreateRoleRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\UpdateRoleRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Models\Role;
 use Wave8\Factotum\Base\Resources\Api\RoleResource;
 use Wave8\Factotum\Base\Services\Api\RoleService;
 
@@ -45,23 +46,19 @@ final readonly class RoleController
         );
     }
 
-    public function show(int $id): ApiResponse
+    public function show(Role $role): ApiResponse
     {
-        $role = $this->roleService->show(
-            id: $id
-        );
-
         return ApiResponse::make(
             data: $this->roleResource::from($role)
         );
     }
 
-    public function update(int $id, UpdateRoleRequest $request): ApiResponse
+    public function update(Role $role, UpdateRoleRequest $request): ApiResponse
     {
         $updateRoleDto = config('data_transfer.'.UpdateRoleDto::class);
 
         $role = $this->roleService->update(
-            id: $id,
+            id: $role->id,
             data: $updateRoleDto::from($request)
         );
 
@@ -70,9 +67,9 @@ final readonly class RoleController
         );
     }
 
-    public function destroy(int $id): ApiResponse
+    public function destroy(Role $role): ApiResponse
     {
-        $this->roleService->delete($id);
+        $this->roleService->delete($role->id);
 
         return ApiResponse::HttpNoContent();
     }

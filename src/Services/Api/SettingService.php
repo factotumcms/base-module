@@ -2,7 +2,6 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,9 +10,6 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\FilterableInterface;
 use Wave8\Factotum\Base\Contracts\SortableInterface;
-use Wave8\Factotum\Base\Dtos\Api\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Dtos\Api\Setting\UpdateSettingDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
@@ -32,7 +28,7 @@ class SettingService implements FilterableInterface, SettingServiceInterface, So
     /**
      * Create a new setting.
      */
-    public function create(CreateSettingDto|Data $data): Model
+    public function create(Data $data): Model
     {
         // todo:: To review the user's settings logic
         $setting = new Setting(
@@ -87,17 +83,15 @@ class SettingService implements FilterableInterface, SettingServiceInterface, So
     /**
      * Display the specified resource.
      */
-    public function show(int $id): ?Model
+    public function read(int $id): Model
     {
         return Setting::findOrFail($id);
     }
 
     /**
      * Update a setting value.
-     *
-     * @param  Data  $data
      */
-    public function update(int $id, UpdateSettingDto|Data $data): Model
+    public function update(int $id, Data $data): Model
     {
         $setting = Setting::findOrFail($id);
 
@@ -108,22 +102,19 @@ class SettingService implements FilterableInterface, SettingServiceInterface, So
         return $setting;
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
         // Todo:: To implement the delete logic or avoid
-        return false;
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    public function filter(): LengthAwarePaginator
     {
+        // todo:: To implement the filtering logic
         $query = Setting::query();
 
-        $this->applyFilters($query, $queryFilters->search);
-        $this->applySorting($query, $queryFilters);
+        //        $this->applyFilters($query, $queryFilters->search);
+        //        $this->applySorting($query, $queryFilters);
 
-        return $query->simplePaginate(
-            perPage: $queryFilters->perPage ?? 15,
-            page: $queryFilters->page
-        );
+        return $query->paginate();
     }
 }

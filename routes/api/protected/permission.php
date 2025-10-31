@@ -9,5 +9,5 @@ Route::prefix('permissions')
 
     ->group(function () {
         Route::get('', 'index')->can('read', Permission::class);
-        Route::get('{id}', 'show')->can('read', Permission::class);
+        Route::get('{permission}', 'show')->can('read', 'permission');
     });

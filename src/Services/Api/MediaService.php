@@ -2,7 +2,6 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -22,7 +21,6 @@ use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
@@ -46,7 +44,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         return Media::create($data->toArray());
     }
 
-    public function show(int $id): ?Model
+    public function read(int $id): Model
     {
         return Media::findOrFail($id);
     }
@@ -59,22 +57,16 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         return $media;
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
-        return true;
+        // todo:: implement delete media logic
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    public function filter(): LengthAwarePaginator
     {
         $query = Media::query();
 
-        $this->applyFilters($query, $queryFilters->search);
-        $this->applySorting($query, $queryFilters);
-
-        return $query->simplePaginate(
-            perPage: $queryFilters->perPage ?? 15,
-            page: $queryFilters->page
-        );
+        return $query->paginate();
     }
 
     /**

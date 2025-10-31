@@ -4,6 +4,7 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Models\Permission;
 use Wave8\Factotum\Base\Resources\Api\PermissionResource;
 use Wave8\Factotum\Base\Services\Api\PermissionService;
 
@@ -28,12 +29,8 @@ final readonly class PermissionController
         );
     }
 
-    public function show(int $id): ApiResponse
+    public function show(Permission $permission): ApiResponse
     {
-        $permission = $this->permissionService->show(
-            id: $id
-        );
-
         return ApiResponse::make(
             data: $this->permissionResource::from($permission)
         );

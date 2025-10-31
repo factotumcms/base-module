@@ -2,58 +2,53 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 use Wave8\Factotum\Base\Http\Requests\Api\Media\UploadMediaRequest;
-use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Models\Media;
 use Wave8\Factotum\Base\Resources\Api\MediaResource;
+use Wave8\Factotum\Base\Services\Api\MediaService;
 
 final readonly class MediaController
 {
-    public function __construct(
-        private MediaServiceInterface $mediaService,
-    ) {}
+    public string $mediaResource;
 
-    public function index(QueryFiltersRequest $request): ApiResponse
+    public function __construct(
+        /** @var $mediaService MediaService */
+        private MediaServiceInterface $mediaService,
+    ) {
+        $this->mediaResource = config('data_transfer.'.MediaResource::class);
+    }
+
+    public function index(): ApiResponse
     {
-        $media = $this->mediaService
-            ->filter(
-                QueryFiltersDto::from($request)
-            );
+        $media = $this->mediaService->filter();
 
         return ApiResponse::make(
-            data: MediaResource::collect($media),
+            data: $this->mediaResource::collect($media),
         );
     }
 
     public function create(UploadMediaRequest $request): ApiResponse
     {
+        $storeFileDto = config('data_transfer.'.StoreFileDto::class);
+
         $file = $this->mediaService->store(
-            new StoreFileDto(
+            new $storeFileDto(
                 file: $request->file('file'),
                 presets: [MediaPreset::THUMBNAIL]
             )
         );
 
         return ApiResponse::make(
-            data: $file
+            data: $file, status: ApiResponse::HTTP_CREATED
         );
     }
 
-    /**
-     * Serve the media file identified by the given ID.
-     *
-     * @param  int  $id  The media record identifier.
-     * @return BinaryFileResponse A file response for the media file with the MIME type set in the Content-Type header.
-     */
-    public function show(int $id)
+    public function show(Media $media)
     {
-        $media = $this->mediaService->show($id);
-
         return response()->file(
             $media->fullMediaPath(),
             ['Content-Type' => $media->mime_type]
