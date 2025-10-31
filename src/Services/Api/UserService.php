@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
@@ -44,5 +45,13 @@ class UserService implements UserServiceInterface
         $user = $this->user::findOrFail($id);
 
         $user->delete();
+    }
+
+    public function filter(): LengthAwarePaginator
+    {
+        // todo:: implement filtering and sorting
+        $query = $this->user::query();
+
+        return $query->paginate();
     }
 }

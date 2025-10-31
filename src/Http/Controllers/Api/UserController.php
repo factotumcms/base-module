@@ -22,6 +22,15 @@ final readonly class UserController
         $this->userResource = config('data_transfer.'.UserResource::class);
     }
 
+    final public function index(): ApiResponse
+    {
+        $users = $this->userService->filter();
+
+        return ApiResponse::make(
+            data: UserResource::collect($users),
+        );
+    }
+
     final public function store(CreateUserRequest $request): ApiResponse
     {
         $createUserDto = config('data_transfer.'.CreateUserDto::class);
