@@ -22,4 +22,27 @@ class UserService implements UserServiceInterface
             attributes: $data->toArray()
         );
     }
+
+    public function read(int $id): Model
+    {
+        return $this->user->findOrFail($id);
+    }
+
+    public function update(int $id, Data $data): Model
+    {
+        $user = $this->user::findOrFail($id);
+
+        $user->update(
+            attributes: $data->toArray()
+        );
+
+        return $user;
+    }
+
+    public function delete(int $id): void
+    {
+        $user = $this->user::findOrFail($id);
+
+        $user->delete();
+    }
 }

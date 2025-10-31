@@ -11,9 +11,7 @@ use Symfony\Component\Finder\Finder;
 
 class RouteServiceProvider extends LaravelRouteServiceProvider
 {
-    protected string $apiPrefix = 'api/v1/base';
-
-    protected array $apiContexts = [];
+    protected string $apiPrefix = 'api/v1';
 
     /**
      * Define your route model bindings, pattern filters, etc.

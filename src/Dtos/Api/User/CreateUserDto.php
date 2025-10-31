@@ -16,7 +16,5 @@ class CreateUserDto extends Data
         public readonly ?string $lastName = null,
         public readonly ?string $username = null,
         public readonly bool $isActive = true,
-    ) {
-//        dd($this);
-    }
+    ) {}
 }
