@@ -32,27 +32,29 @@ class AuthService implements AuthServiceInterface
             return false;
         }
 
-        return Auth::user()->load([
-            'roles' => function ($query) {
-                $query->select(['id', 'name']);
-            },
-            'roles.permissions' => function ($query) {
-                $query->select(['id', 'name']);
-            },
-        ])->setRelation(
-            'roles',
-            Auth::user()->roles->map(function ($role) {
-                $role->makeHidden('pivot');
-                $role->permissions->makeHidden('pivot');
-
-                return $role;
-            })
-        );
+        //        return Auth::user()->load([
+        //            'roles' => function ($query) {
+        //                $query->select(['id', 'name']);
+        //            },
+        //            'roles.permissions' => function ($query) {
+        //                $query->select(['id', 'name']);
+        //            },
+        //        ])->setRelation(
+        //            'roles',
+        //            Auth::user()->roles->map(function ($role) {
+        //                $role->makeHidden('pivot');
+        //                $role->permissions->makeHidden('pivot');
+        //
+        //                return $role;
+        //            })
+        //        );
+        return Auth::user();
     }
 
     public function register(RegisterUserDto $data): User
     {
-        return User::create($data
-            ->toArray());
+        return User::create(
+            $data->toArray()
+        );
     }
 }

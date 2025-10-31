@@ -11,7 +11,7 @@ use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\Api\UserResource;
 use Wave8\Factotum\Base\Services\Api\UserService;
 
-final class UserController
+final readonly class UserController
 {
     private string $userResource;
 
