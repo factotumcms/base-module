@@ -7,17 +7,15 @@ use Illuminate\Support\Str;
 
 final class ApiResponse extends JsonResponse
 {
-    public static function make(mixed $data, ?array $headers = null, int $status = self::HTTP_OK): static
+    public static function make(mixed $data, array $headers = [], int $status = self::HTTP_OK): static
     {
         $response = new self(
             data: $data,
             status: $status
         );
 
-        if ($headers) {
-            foreach ($headers as $key => $value) {
-                $response->headers->set($key, $value);
-            }
+        foreach ($headers as $key => $value) {
+            $response->headers->set($key, $value);
         }
 
         return $response;
