@@ -16,8 +16,6 @@ use Spatie\Image\Image;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
-use Wave8\Factotum\Base\Contracts\FilterableInterface;
-use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
@@ -26,32 +24,28 @@ use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class MediaService implements FilterableInterface, MediaServiceInterface, SortableInterface
+class MediaService implements MediaServiceInterface
 {
-    use Filterable;
-    use Sortable;
-
     public function __construct(
         /** @var SettingService $settingService */
         private readonly SettingServiceInterface $settingService,
+        public readonly Media $media,
     ) {}
 
     public function create(Data $data): Model
     {
-        return Media::create($data->toArray());
+        return $this->media::create($data->toArray());
     }
 
     public function read(int $id): Model
     {
-        return Media::findOrFail($id);
+        return $this->media::findOrFail($id);
     }
 
     public function update(int $id, Data $data): Model
     {
-        $media = Media::findOrFail($id);
+        $media = $this->media::findOrFail($id);
         $media->update($data->toArray());
 
         return $media;
@@ -64,7 +58,8 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
 
     public function filter(): LengthAwarePaginator
     {
-        $query = Media::query();
+        $query = $this->media->query()
+            ->filterByRequest();
 
         return $query->paginate();
     }

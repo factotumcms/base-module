@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Wave8\Factotum\Base\Builders\MediaQueryBuilder;
 use Wave8\Factotum\Base\Policies\MediaPolicy;
 
 #[UsePolicy(MediaPolicy::class)]
@@ -39,5 +40,10 @@ class Media extends Model
     public function fullMediaPath(): string
     {
         return Storage::disk($this->disk)->path($this->path.'/'.$this->file_name);
+    }
+
+    public function newEloquentBuilder($query): MediaQueryBuilder
+    {
+        return new MediaQueryBuilder($query);
     }
 }

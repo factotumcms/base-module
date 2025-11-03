@@ -6,17 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
-use Wave8\Factotum\Base\Contracts\FilterableInterface;
-use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Models\Permission;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class PermissionService implements FilterableInterface, PermissionServiceInterface, SortableInterface
+class PermissionService implements PermissionServiceInterface
 {
-    use Filterable;
-    use Sortable;
-
     public function __construct(public readonly Permission $permission) {}
 
     public function create(Data $data): Model
@@ -52,10 +45,8 @@ class PermissionService implements FilterableInterface, PermissionServiceInterfa
 
     public function filter(): LengthAwarePaginator
     {
-        $query = $this->permission::query();
-
-        //        $this->applyFilters($query, $queryFilters->search);
-        //        $this->applySorting($query, $queryFilters);
+        $query = $this->permission->query()
+            ->filterByRequest();
 
         return $query->paginate();
     }

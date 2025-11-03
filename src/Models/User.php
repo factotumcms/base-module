@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Wave8\Factotum\Base\Builders\UserQueryBuilder;
 use Wave8\Factotum\Base\Contracts\NotifiableInterface;
 use Wave8\Factotum\Base\Policies\UserPolicy;
 
@@ -45,6 +46,11 @@ class User extends Authenticatable implements NotifiableInterface
         'password',
         'is_active',
     ];
+
+    public function newEloquentBuilder($query): UserQueryBuilder
+    {
+        return new UserQueryBuilder($query);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -6,17 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
-use Wave8\Factotum\Base\Contracts\FilterableInterface;
-use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Models\Role;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class RoleService implements FilterableInterface, RoleServiceInterface, SortableInterface
+class RoleService implements RoleServiceInterface
 {
-    use Filterable;
-    use Sortable;
-
     public function __construct(public readonly Role $role) {}
 
     /**
@@ -52,11 +45,8 @@ class RoleService implements FilterableInterface, RoleServiceInterface, Sortable
 
     public function filter(): LengthAwarePaginator
     {
-        // todo:: implement filtering and sorting
-        $query = $this->role::query();
-
-        //        $this->applyFilters($query, $queryFilters->search);
-        //        $this->applySorting($query, $queryFilters);
+        $query = $this->role->query()
+            ->filterByRequest();
 
         return $query->paginate();
     }

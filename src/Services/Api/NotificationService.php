@@ -2,7 +2,6 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -10,10 +9,11 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 
 class NotificationService implements NotificationServiceInterface
 {
+    public function __construct(public readonly Model $notification) {}
+
     public function show(int $id): ?Model
     {
         return auth()->user()->notifications()->findOrFail($id);
@@ -44,8 +44,11 @@ class NotificationService implements NotificationServiceInterface
         auth()->user()->notifications()->findOrFail($id)->delete();
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    public function filter(): LengthAwarePaginator
     {
-        // todo:: implement  notification filtering
+        $query = $this->notification->query()
+            ->filterByRequest();
+
+        return $query->paginate();
     }
 }

@@ -3,6 +3,7 @@
 namespace Wave8\Factotum\Base\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\SanctumServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
@@ -42,6 +43,7 @@ class ModuleInstall extends Command
 
         $this->info('*** Factotum Base Module installation started ***');
 
+        $this->publishVendorConfigs();
         $this->publishVendorMigrations();
         $this->runMigration();
         $this->seedData();
@@ -74,6 +76,12 @@ class ModuleInstall extends Command
         ]);
 
         $this->processStep++;
+    }
+
+    private function publishVendorConfigs(): void
+    {
+        $filesystem = app(Filesystem::class);
+        $filesystem->copy(__DIR__.'/../../../config/vendors/query-builder.php', config_path('query-builder.php'));
     }
 
     private function publishVendorMigrations(): void

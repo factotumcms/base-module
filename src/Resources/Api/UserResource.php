@@ -2,7 +2,7 @@
 
 namespace Wave8\Factotum\Base\Resources\Api;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Resource;
@@ -17,6 +17,7 @@ class UserResource extends Resource
         public ?string $lastName,
         public ?string $username,
         public \DateTime $createdAt,
+        /** @var Collection<int, RoleResource>|null $roles */
         public ?Collection $roles,
         public ?MediaResource $avatar = null,
     ) {}
