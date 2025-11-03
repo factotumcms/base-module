@@ -18,7 +18,7 @@ describe('SettingEnums', function () {
             'default_media_disk',
             'media_base_path',
             'media_conversions_path',
-            'locale_default',
+            'locale',
             'locale_available',
             'pagination_per_page',
             'pagination_default_order_by',

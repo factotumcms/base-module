@@ -60,7 +60,7 @@ class SettingSeeder extends Seeder
                 scope: SettingScope::SYSTEM,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
-                key: Setting::LOCALE_DEFAULT,
+                key: Setting::LOCALE,
                 value: Locale::tryFrom(config('factotum_base.locale.default'))->value,
             )
         );
@@ -142,7 +142,7 @@ class SettingSeeder extends Seeder
         $this->settingService->create(
             data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                dataType: SettingDataType::INTEGER,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_DEFAULT_ORDER_BY,
                 value: config('factotum_base.pagination.default_order_by')
@@ -152,7 +152,7 @@ class SettingSeeder extends Seeder
         $this->settingService->create(
             data: new CreateSettingDto(
                 scope: SettingScope::SYSTEM,
-                dataType: SettingDataType::INTEGER,
+                dataType: SettingDataType::STRING,
                 group: SettingGroup::PAGINATION,
                 key: Setting::PAGINATION_DEFAULT_ORDER_DIRECTION,
                 value: config('factotum_base.pagination.default_order_direction')

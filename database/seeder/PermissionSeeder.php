@@ -7,19 +7,18 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Permission\MediaPermission;
 use Wave8\Factotum\Base\Enums\Permission\Permission;
 use Wave8\Factotum\Base\Enums\Permission\RolePermission;
 use Wave8\Factotum\Base\Enums\Permission\SettingPermission;
 use Wave8\Factotum\Base\Enums\Permission\UserPermission;
-use Wave8\Factotum\Base\Enums\Role;
+use Wave8\Factotum\Base\Enums\Role as RoleEnum;
+use Wave8\Factotum\Base\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
     public function __construct(
         private readonly PermissionServiceInterface $permissionService,
-        private readonly RoleServiceInterface $roleService
     ) {}
 
     /**
@@ -30,11 +29,7 @@ class PermissionSeeder extends Seeder
         // Create admin default user
         Log::info('Creating default permission..');
 
-        $adminRole = $this->roleService->filter(
-            new QueryFiltersDto(
-                search: ['name' => Role::ADMIN->value]
-            )
-        );
+        $adminRole = Role::where('name', RoleEnum::ADMIN->value)->firstOrFail();
 
         $entities = [
             UserPermission::class,
@@ -52,7 +47,7 @@ class PermissionSeeder extends Seeder
                     )
                 );
 
-                $adminRole->firstOrFail()->givePermissionTo($permission);
+                $adminRole->givePermissionTo($permission);
             }
         }
     }
