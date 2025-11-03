@@ -11,22 +11,27 @@ use Wave8\Factotum\Base\Resources\Api\NotificationResource;
 
 final readonly class NotificationController
 {
+    private string $notificationResource;
     public function __construct(
         private NotificationServiceInterface $notificationService,
-    ) {}
+    ) {
+        $this->notificationResource = config('data_transfer.'.NotificationResource::class);
+    }
 
     public function show(Notification $notification): ApiResponse
     {
         return ApiResponse::make(
-            data: NotificationResource::from($notification),
+            data: $this->notificationResource::from($notification),
         );
     }
 
     public function read(Notification $notification, ReadNotificationRequest $request): ApiResponse
     {
+        $readNotificationDto = config('data_transfer.'.ReadNotificationDto::class);
+
         $this->notificationService->read(
             id: $notification->id,
-            data: ReadNotificationDto::from($request)
+            data: $readNotificationDto::from($request)
         );
 
         return ApiResponse::HttpNoContent();

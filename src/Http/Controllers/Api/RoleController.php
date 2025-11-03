@@ -5,7 +5,6 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Api\Role\UpdateRoleDto;
-use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\CreateRoleRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Role\UpdateRoleRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
@@ -24,7 +23,7 @@ final readonly class RoleController
         $this->roleResource = config('data_transfer.'.RoleResource::class);
     }
 
-    public function index(QueryFiltersRequest $request): ApiResponse
+    public function index(): ApiResponse
     {
         $roles = $this->roleService->filter();
 
