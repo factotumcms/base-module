@@ -76,6 +76,6 @@ final readonly class UserController
             id: $id,
         );
 
-        return ApiResponse::HttpNoContent();
+        return ApiResponse::noContent();
     }
 }

@@ -70,6 +70,6 @@ final readonly class RoleController
     {
         $this->roleService->delete($role->id);
 
-        return ApiResponse::HttpNoContent();
+        return ApiResponse::noContent();
     }
 }

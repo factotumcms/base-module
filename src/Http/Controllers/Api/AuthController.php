@@ -33,7 +33,7 @@ final readonly class AuthController
             data: $loginUserDto::from($request)
         );
 
-        $user->load('avatar');
+        $user->load('avatar', 'roles.permissions');
 
         return ApiResponse::make(
             data: [

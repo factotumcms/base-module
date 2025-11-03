@@ -12,6 +12,7 @@ use Wave8\Factotum\Base\Resources\Api\NotificationResource;
 final readonly class NotificationController
 {
     private string $notificationResource;
+
     public function __construct(
         private NotificationServiceInterface $notificationService,
     ) {
@@ -34,6 +35,6 @@ final readonly class NotificationController
             data: $readNotificationDto::from($request)
         );
 
-        return ApiResponse::HttpNoContent();
+        return ApiResponse::noContent();
     }
 }

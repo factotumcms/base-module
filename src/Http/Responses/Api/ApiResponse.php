@@ -26,22 +26,22 @@ final class ApiResponse extends JsonResponse
     /**
      * Handle dynamic static calls into the method based on the Http statuses.
      */
-    public static function __callStatic($name, $arguments): static
+    public static function __callStatic($method, $parameters): static
     {
-        if (Str::startsWith($name, 'Http')) {
-            $statusConstant = 'self::HTTP_'.Str::upper(Str::snake(Str::after($name, 'Http')));
-            if (defined($statusConstant)) {
-                $status = constant($statusConstant);
-                $headers = $arguments[0] ?? [];
+        $constant = 'self::HTTP_'.Str::upper(Str::snake($method));
 
-                return new static(
-                    data: null,
-                    status: $status,
-                    headers: $headers
-                );
-            }
+        if (! defined($constant)) {
+            return parent::$method(...$parameters);
         }
 
-        throw new \BadMethodCallException("Method {$name} not supported.");
+        $status = constant($constant);
+        $data = $parameters[0] ?? [];
+        $headers = $parameters[1] ?? [];
+
+        return static::make(
+            data: $data,
+            headers: $headers,
+            status: $status,
+        );
     }
 }
