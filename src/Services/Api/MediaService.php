@@ -80,7 +80,16 @@ class MediaService implements MediaServiceInterface
         $mediaBasePath = $this->generateMediaPath();
         $disk = Disk::tryFrom($this->settingService->getSystemSettingValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
 
-        $this->checkMediaUnique($metadata['filename'], $disk->value, $mediaBasePath);
+        $i = 0;
+        $suffix = '';
+        do {
+            if ($i > 0) {
+                $suffix = '-'.$i;
+            }
+            $i++;
+
+            $metadata['filename'] = "{$metadata['basename']}{$suffix}.{$metadata['extension']}";
+        } while ($this->checkMediaUnique($metadata['filename'], $disk->value, $mediaBasePath));
 
         $storedFilename = $data->file->storeAs(
             path: $mediaBasePath,
@@ -137,19 +146,14 @@ class MediaService implements MediaServiceInterface
 
     private function generateFileMetadata(UploadedFile $file): array
     {
-        $metadata = [
+        return [
+            'original_filename' => $filename = $file->getClientOriginalName(),
+            'extension' => $extension = $file->getClientOriginalExtension(),
+            'basename' => $basename = Str::slug(File::name($filename)),
+            'filename' => "{$basename}.{$extension}",
             'mime_type' => $file->getMimeType(),
-            'original_filename' => $file->getClientOriginalName(),
             'size' => $file->getSize(),
         ];
-
-        $metadata['extension'] = $file->getClientOriginalExtension();
-
-        $tempFilename = Str::slug(File::name($metadata['original_filename']));
-
-        $metadata['filename'] = $tempFilename.'.'.$metadata['extension'];
-
-        return $metadata;
     }
 
     /**
@@ -158,16 +162,14 @@ class MediaService implements MediaServiceInterface
      *
      * @throws \Exception
      */
-    private function checkMediaUnique(string $filename, string $disk, string $path): void
+    private function checkMediaUnique(string $filename, string $disk, string $path): ?Model
     {
         $media = Media::where('file_name', $filename)
             ->where('disk', $disk)
             ->where('path', $path)
             ->first();
 
-        if ($media) {
-            throw new \Exception('File name conflict: '.$filename);
-        }
+        return $media;
     }
 
     /**
@@ -185,9 +187,9 @@ class MediaService implements MediaServiceInterface
     public function generateConversions(Media $media): void
     {
         $conversions = [];
-        foreach (json_decode($media->presets) as $preset) {
+        foreach ($media->presets as $preset) {
             // Load preset config
-            $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset), SettingGroup::MEDIA));
+            $presetProps = $this->settingService->getSystemSettingValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
             $conversionsPath = $this->settingService->getSystemSettingValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
