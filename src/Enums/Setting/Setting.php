@@ -18,7 +18,4 @@ enum Setting: string
     case MEDIA_CONVERSIONS_PATH = 'media_conversions_path';
     case LOCALE = 'locale';
     case LOCALE_AVAILABLE = 'locale_available';
-    case PAGINATION_PER_PAGE = 'pagination_per_page';
-    case PAGINATION_DEFAULT_ORDER_BY = 'pagination_default_order_by';
-    case PAGINATION_DEFAULT_ORDER_DIRECTION = 'pagination_default_order_direction';
 }

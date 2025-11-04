@@ -57,7 +57,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                visibility: SettingVisibility::USER,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE,
@@ -126,36 +126,6 @@ class SettingSeeder extends Seeder
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_BASE_PATH,
                 value: config('factotum_base.media.base_path')
-            )
-        );
-
-        $this->settingService->create(
-            data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
-                dataType: SettingDataType::INTEGER,
-                group: SettingGroup::PAGINATION,
-                key: Setting::PAGINATION_PER_PAGE,
-                value: config('factotum_base.pagination.per_page')
-            )
-        );
-
-        $this->settingService->create(
-            data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
-                dataType: SettingDataType::STRING,
-                group: SettingGroup::PAGINATION,
-                key: Setting::PAGINATION_DEFAULT_ORDER_BY,
-                value: config('factotum_base.pagination.default_order_by')
-            )
-        );
-
-        $this->settingService->create(
-            data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
-                dataType: SettingDataType::STRING,
-                group: SettingGroup::PAGINATION,
-                key: Setting::PAGINATION_DEFAULT_ORDER_DIRECTION,
-                value: config('factotum_base.pagination.default_order_direction')
             )
         );
     }
