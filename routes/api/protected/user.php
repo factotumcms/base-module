@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Wave8\Factotum\Base\Http\Controllers\Api\UserController;
+use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Models\User;
 
 Route::prefix('users')
@@ -12,4 +13,6 @@ Route::prefix('users')
         Route::post('', 'store')->can('create', User::class);
         Route::put('{id}', 'update')->can('update', User::class);
         Route::delete('{id}', 'destroy')->can('delete', User::class);
+        Route::put('{id}/settings/{setting}', 'updateSetting')->can('updateUserSetting', 'setting');
+        Route::get('{id}/settings', 'settings')->can('read', Setting::class);
     });

@@ -12,10 +12,8 @@ class UserPolicy
         return $user->hasPermissionTo(UserPermission::CREATE_USERS);
     }
 
-    public function read($user, $authUser): bool
+    public function read(User $user): bool
     {
-        dd('ss');
-
         return $user->hasPermissionTo(UserPermission::READ_USERS);
     }
 
