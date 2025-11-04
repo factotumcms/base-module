@@ -11,6 +11,7 @@ use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 class SettingResource extends Resource
 {
     public function __construct(
+        public int $id,
         public SettingDataType $dataType,
         public ?string $key,
         public string|int|float|array $value,
