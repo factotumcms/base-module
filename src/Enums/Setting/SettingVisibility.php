@@ -4,7 +4,7 @@ namespace Wave8\Factotum\Base\Enums\Setting;
 
 use Wave8\Factotum\Base\Traits\ListCases;
 
-enum SettingScope: string
+enum SettingVisibility: string
 {
     use ListCases;
 

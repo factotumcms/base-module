@@ -49,4 +49,16 @@ class UserService implements UserServiceInterface
 
         return $query->paginate();
     }
+
+    public function updateSetting(int $id, int $settingId, Data $data): Model
+    {
+        /** @var User $user */
+        $user = $this->user::findOrFail($id);
+
+        $user->settings()->sync([
+            $settingId => ['value' => $data->value],
+        ], false);
+
+        return $user;
+    }
 }

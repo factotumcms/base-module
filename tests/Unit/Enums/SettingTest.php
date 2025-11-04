@@ -3,7 +3,7 @@
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
-use Wave8\Factotum\Base\Enums\Setting\SettingScope;
+use Wave8\Factotum\Base\Enums\Setting\SettingVisibility;
 
 describe('SettingEnums', function () {
     it('check Setting has exact values', function () {
@@ -50,7 +50,7 @@ describe('SettingEnums', function () {
     });
 
     it('check SettingScope has exact values', function () {
-        $values = array_flip(SettingScope::getValues()->toArray());
+        $values = array_flip(SettingVisibility::getValues()->toArray());
 
         expect(array_keys($values))->toBe([
             'system',

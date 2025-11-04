@@ -22,6 +22,7 @@ use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
 
@@ -77,7 +78,7 @@ class MediaService implements MediaServiceInterface
         $metadata = $this->generateFileMetadata($data->file);
         $presetConfigs = $this->getPresetsConfigs($data);
         $mediaBasePath = $this->generateMediaPath();
-        $disk = Disk::tryFrom($this->settingService->getSystemSettingValue(Setting::DEFAULT_MEDIA_DISK));
+        $disk = Disk::tryFrom($this->settingService->getSystemSettingValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
 
         $this->checkMediaUnique($metadata['filename'], $disk->value, $mediaBasePath);
 
@@ -186,8 +187,8 @@ class MediaService implements MediaServiceInterface
         $conversions = [];
         foreach (json_decode($media->presets) as $preset) {
             // Load preset config
-            $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset)));
-            $conversionsPath = $this->settingService->getSystemSettingValue(Setting::MEDIA_CONVERSIONS_PATH);
+            $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset), SettingGroup::MEDIA));
+            $conversionsPath = $this->settingService->getSystemSettingValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
             $fileExtension = '.'.File::extension($media->file_name);
@@ -263,7 +264,7 @@ class MediaService implements MediaServiceInterface
         $configs = [];
 
         foreach ($data->presets as $preset) {
-            $config = $this->settingService->getSystemSettingValue(Setting::from($preset->value));
+            $config = $this->settingService->getSystemSettingValue(Setting::from($preset->value), SettingGroup::MEDIA);
             if (isset($config)) {
                 $configs[$preset->value] = $config;
             }
@@ -281,7 +282,7 @@ class MediaService implements MediaServiceInterface
      */
     private function generateMediaPath(): string
     {
-        $basePath = $this->settingService->getSystemSettingValue(Setting::MEDIA_BASE_PATH);
+        $basePath = $this->settingService->getSystemSettingValue(Setting::MEDIA_BASE_PATH, SettingGroup::MEDIA);
 
         return implode('/', [
             $basePath, date('Y'), date('m'), date('d'),

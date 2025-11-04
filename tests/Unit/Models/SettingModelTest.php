@@ -13,7 +13,7 @@ describe('SettingModel', function () {
         $setting = new Setting;
 
         expect($setting->getFillable())->toEqual([
-            'scope',
+            'visibility',
             'data_type',
             'group',
             'key',

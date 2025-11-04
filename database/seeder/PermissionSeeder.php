@@ -5,7 +5,6 @@ namespace Wave8\Factotum\Base\Database\Seeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
-use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Enums\Permission\MediaPermission;
 use Wave8\Factotum\Base\Enums\Permission\Permission;

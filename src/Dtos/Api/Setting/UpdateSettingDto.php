@@ -11,7 +11,7 @@ use Spatie\LaravelData\Optional;
 class UpdateSettingDto extends Data
 {
     public function __construct(
-        public ?string $value = null,
+        public ?string $value,
         public Optional|string|null $description,
     ) {}
 }

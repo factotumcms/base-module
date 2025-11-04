@@ -11,10 +11,10 @@ use Wave8\Factotum\Base\Enums\FilterType;
 class SettingQueryBuilder extends Builder
 {
     public $filterable = [
-        'key' => FilterType::LIKE,
-        'group' => FilterType::LIKE,
-        'scope' => FilterType::LIKE,
+        'visibility' => FilterType::LIKE,
         'data_type' => FilterType::EXACT,
+        'group' => FilterType::LIKE,
+        'key' => FilterType::LIKE,
     ];
 
     public $sortable = [

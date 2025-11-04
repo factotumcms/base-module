@@ -78,4 +78,31 @@ final readonly class UserController
 
         return ApiResponse::noContent();
     }
+
+    public function updateSetting(int $id, Setting $setting, UpdateSettingRequest $request): ApiResponse
+    {
+        $updateSettingDto = config('data_transfer.'.UpdateSettingDto::class);
+
+        $user = $this->userService->updateSetting(
+            id: $id,
+            settingId: $setting->id,
+            data: $updateSettingDto::from($request)
+        );
+
+        return ApiResponse::make(
+            data: $this->userResource::from($user),
+        );
+    }
+
+    public function settings(): ApiResponse
+    {
+        /** @var $settingService SettingService */
+        $settingService = app(SettingServiceInterface::class);
+
+        return ApiResponse::make(
+            data: $this->settingResource::collect(
+                $settingService->getUserSettings(Auth()->id())
+            ),
+        );
+    }
 }
