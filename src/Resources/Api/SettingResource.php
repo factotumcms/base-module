@@ -13,5 +13,6 @@ class SettingResource extends Resource
         public string $dataType,
         public ?string $key,
         public ?string $value,
+        public ?string $description,
     ) {}
 }

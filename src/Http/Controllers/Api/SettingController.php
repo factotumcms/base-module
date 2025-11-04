@@ -3,6 +3,9 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
+use Wave8\Factotum\Base\Dtos\Api\Setting\UpdateSettingDto;
+use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Resources\Api\SettingResource;
@@ -32,6 +35,20 @@ final readonly class SettingController
     {
         return ApiResponse::make(
             data: $this->settingResource::from($setting),
+        );
+    }
+
+    public function update(Setting $setting, UpdateSettingRequest $request): ApiResponse
+    {
+        $updateSettingDto = config('data_transfer.'.UpdateSettingDto::class);
+
+        $updatedSetting = $this->settingService->update(
+            id: $setting->id,
+            data: $updateSettingDto::from($request)
+        );
+
+        return ApiResponse::make(
+            data: $this->settingResource::from($updatedSetting),
         );
     }
 }

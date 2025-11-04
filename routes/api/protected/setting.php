@@ -9,4 +9,5 @@ Route::prefix('settings')
     ->group(function () {
         Route::get('', 'index')->can('read', Setting::class);
         Route::get('{setting}', 'show')->can('read', 'setting');
+        Route::put('{setting}', 'update')->can('update', 'setting');
     });

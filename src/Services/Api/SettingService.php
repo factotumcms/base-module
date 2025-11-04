@@ -25,7 +25,6 @@ class SettingService implements SettingServiceInterface
      */
     public function create(Data $data): Model
     {
-        // todo:: To review the user's settings logic
         $setting = new Setting(
             attributes: $data->toArray()
         );
