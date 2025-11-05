@@ -20,9 +20,6 @@ describe('SettingEnums', function () {
             'media_conversions_path',
             'locale',
             'locale_available',
-            'pagination_per_page',
-            'pagination_default_order_by',
-            'pagination_default_order_direction',
         ]);
     });
 
