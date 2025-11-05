@@ -17,9 +17,9 @@ use Wave8\Factotum\Base\Models\Setting;
 
 class SettingService implements SettingServiceInterface
 {
-    public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
+    public const string SETTINGS_CACHE_KEY = 'settings';
 
-    public const string CACHE_KEY_USER_SETTINGS = 'user_settings_';
+    public const string SETTINGS_CACHE_KEY_USER = 'user_settings_';
 
     public function __construct(public readonly Setting $setting) {}
 
@@ -34,7 +34,7 @@ class SettingService implements SettingServiceInterface
 
         $setting->save();
 
-        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
+        Cache::forget($this::SETTINGS_CACHE_KEY);
 
         return $setting;
     }
@@ -42,40 +42,44 @@ class SettingService implements SettingServiceInterface
     /**
      * Retrieve all system settings, cached indefinitely.
      */
-    public function getSystemSettings(): Collection
+    public function getSettings(): Collection
     {
-        return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
-            return Setting::where('visibility', SettingVisibility::SYSTEM)->get();
+        return Cache::rememberForever($this::SETTINGS_CACHE_KEY, function () {
+            return Setting::all();
         });
     }
 
     /**
      * @throws \Exception
      */
-    public function getSystemSettingValue(SettingType $key, SettingGroup $group): mixed
+//    public function getSettingValue(SettingType $key, SettingGroup $group): mixed
+//    {
+////        $setting = $this->getSettings()
+////            ->where('key', $key)
+////            ->where('group', $group)
+////            ->first();
+////
+////        return $setting ? $this->castSettingValue(setting: $setting) : null;
+//    }
+
+    public function getSettingValue(SettingType $key, SettingGroup $group, ?int $userId = null): Collection
     {
-        $setting = $this->getSystemSettings()
-            ->where('key', $key)
-            ->where('group', $group)
-            ->first();
+        return Cache::rememberForever($this::SETTINGS_CACHE_KEY_USER.$userId, function () use ($key, $group, $userId) {
+        //todo: gestire
+            $query = Setting::query();
 
-        return $setting ? $this->castSettingValue(setting: $setting) : null;
-    }
+            if(!is_null($userId)) {
+                $query->select(
+                    'settings.*',
+                    DB::raw('COALESCE(setting_user.value, settings.value) as user_value'),
+                )->leftJoin('setting_user', function ($join) use ($userId) {
+                    $join->on('settings.id', '=', 'setting_user.setting_id')
+                        ->where('setting_user.user_id', $userId);
+                });
+            }
 
-    public function getUserSettings(int $userId): Collection
-    {
-        return Cache::rememberForever($this::CACHE_KEY_USER_SETTINGS.$userId, function () use ($userId) {
-            $query = Setting::select(
-                'settings.*',
-                DB::raw('COALESCE(setting_user.value, settings.value) as user_value'),
-            );
-
-            $query->leftJoin('setting_user', function ($join) use ($userId) {
-                $join->on('settings.id', '=', 'setting_user.setting_id')
-                    ->where('setting_user.user_id', $userId);
-            });
-
-            $query->where('settings.visibility', SettingVisibility::USER);
+            $query->where('settings.key', $key)
+                ->where('settings.group', $group);
 
             return $query->get()->each(function ($setting) {
                 $setting->value = $setting->user_value ?? $setting->value;
@@ -118,7 +122,7 @@ class SettingService implements SettingServiceInterface
 
         $setting->update($data->toArray());
 
-        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
+        Cache::forget($this::SETTINGS_CACHE_KEY);
 
         return $setting;
     }

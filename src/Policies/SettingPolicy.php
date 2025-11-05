@@ -21,7 +21,7 @@ class SettingPolicy
 
     public function updateUserSetting(User $user, Setting $setting): bool
     {
-        return $setting->visibility !== SettingVisibility::SYSTEM
+        return $setting->ie_editable
             && $user->hasPermissionTo(SettingPermission::UPDATE_SETTINGS);
     }
 }

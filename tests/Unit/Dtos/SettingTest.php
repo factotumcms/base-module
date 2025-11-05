@@ -10,7 +10,7 @@ use Wave8\Factotum\Base\Enums\Setting\SettingVisibility;
 describe('SettingDto', function () {
     it('successfully creates a new CreateSettingDto instance', function () {
         $dto = new CreateSettingDto(
-            visibility: SettingVisibility::SYSTEM,
+            isEditable: SettingVisibility::SYSTEM,
             dataType: SettingDataType::INTEGER,
             group: SettingGroup::AUTH,
             key: Setting::THUMBNAIL_PRESET,

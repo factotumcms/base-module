@@ -24,7 +24,7 @@ class AuthService implements AuthServiceInterface
      */
     public function attemptLogin(LoginUserDto $data): User|false
     {
-        $identifier = $this->settingService->getSystemSettingValue(
+        $identifier = $this->settingService->getSettingValue(
             key: SettingType::AUTH_BASIC_IDENTIFIER,
             group: SettingGroup::AUTH,
         );

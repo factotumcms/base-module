@@ -15,7 +15,6 @@ use Wave8\Factotum\Base\Enums\Locale;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
-use Wave8\Factotum\Base\Enums\Setting\SettingVisibility;
 
 class SettingSeeder extends Seeder
 {
@@ -36,7 +35,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::AUTH,
                 key: Setting::AUTH_TYPE,
@@ -47,7 +46,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::AUTH,
                 key: Setting::AUTH_BASIC_IDENTIFIER,
@@ -57,7 +56,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::USER,
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE,
@@ -67,7 +66,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                isEditable: false,
                 dataType: SettingDataType::JSON,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE_AVAILABLE,
@@ -77,7 +76,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_CONVERSIONS_PATH,
@@ -94,7 +93,7 @@ class SettingSeeder extends Seeder
 
             $this->settingService->create(
                 data: new CreateSettingDto(
-                    visibility: SettingVisibility::SYSTEM,
+                    isEditable: false,
                     dataType: SettingDataType::JSON,
                     group: SettingGroup::MEDIA,
                     key: $settingKey,
@@ -111,7 +110,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::DEFAULT_MEDIA_DISK,
@@ -121,7 +120,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_BASE_PATH,

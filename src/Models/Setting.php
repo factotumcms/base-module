@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Wave8\Factotum\Base\Builders\SettingQueryBuilder;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
-use Wave8\Factotum\Base\Enums\Setting\SettingVisibility;
 use Wave8\Factotum\Base\Policies\SettingPolicy;
 
 #[UsePolicy(SettingPolicy::class)]
@@ -36,7 +35,7 @@ class Setting extends Model
     {
         return [
             'data_type' => SettingDataType::class,
-            'visibility' => SettingVisibility::class,
+            'visibility' => 'bool',
         ];
     }
 }
