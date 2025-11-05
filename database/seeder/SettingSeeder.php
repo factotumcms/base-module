@@ -69,7 +69,7 @@ class SettingSeeder extends Seeder
                 isEditable: false,
                 dataType: SettingDataType::JSON,
                 group: SettingGroup::LOCALE,
-                key: Setting::LOCALE_AVAILABLE,
+                key: Setting::AVAILABLE_LOCALES,
                 value: json_encode(Locale::getValues()),
             )
         );
@@ -125,6 +125,16 @@ class SettingSeeder extends Seeder
                 group: SettingGroup::MEDIA,
                 key: Setting::MEDIA_BASE_PATH,
                 value: config('factotum_base.media.base_path')
+            )
+        );
+
+        $this->settingService->create(
+            data: new CreateSettingDto(
+                visibility: SettingVisibility::SYSTEM,
+                dataType: SettingDataType::JSON,
+                group: SettingGroup::LOCALE,
+                key: Setting::PUBLIC_LANGUAGE_GROUPS,
+                value: json_encode([])
             )
         );
     }

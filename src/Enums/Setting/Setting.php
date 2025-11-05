@@ -17,5 +17,6 @@ enum Setting: string
     case MEDIA_BASE_PATH = 'media_base_path';
     case MEDIA_CONVERSIONS_PATH = 'media_conversions_path';
     case LOCALE = 'locale';
-    case LOCALE_AVAILABLE = 'locale_available';
+    case AVAILABLE_LOCALES = 'available_locales';
+    case PUBLIC_LANGUAGE_GROUPS = 'public_groups';
 }
