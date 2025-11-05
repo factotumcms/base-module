@@ -55,23 +55,19 @@ final readonly class UserController
         );
     }
 
-    final public function show(int $id): ApiResponse
+    final public function show(User $user): ApiResponse
     {
-        $user = $this->userService->read(
-            id: $id,
-        );
-
         return ApiResponse::make(
             data: $this->userResource::from($user),
         );
     }
 
-    final public function update(int $id, UpdateUserRequest $request): ApiResponse
+    final public function update(User $user, UpdateUserRequest $request): ApiResponse
     {
         $updateUserDto = config('data_transfer.'.UpdateUserDto::class);
 
         $user = $this->userService->update(
-            id: $id,
+            id: $user->id,
             data: $updateUserDto::from($request)
         );
 
@@ -80,10 +76,10 @@ final readonly class UserController
         );
     }
 
-    final public function destroy(int $id): ApiResponse
+    final public function destroy(User $user): ApiResponse
     {
         $this->userService->delete(
-            id: $id,
+            id: $user->id,
         );
 
         return ApiResponse::noContent();
