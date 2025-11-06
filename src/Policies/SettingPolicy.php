@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Policies;
 
 use Wave8\Factotum\Base\Enums\Permission\SettingPermission;
-use Wave8\Factotum\Base\Enums\Setting\SettingVisibility;
 use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Models\User;
 

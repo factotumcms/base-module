@@ -12,7 +12,6 @@ use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
-use Wave8\Factotum\Base\Enums\Setting\SettingVisibility;
 use Wave8\Factotum\Base\Models\Setting;
 
 class SettingService implements SettingServiceInterface

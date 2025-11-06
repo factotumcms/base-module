@@ -3,7 +3,6 @@
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
-use Wave8\Factotum\Base\Enums\Setting\SettingVisibility;
 
 describe('SettingEnums', function () {
     it('check Setting has exact values', function () {
@@ -19,7 +18,8 @@ describe('SettingEnums', function () {
             'media_base_path',
             'media_conversions_path',
             'locale',
-            'locale_available',
+            'available_locales',
+            'public_groups',
         ]);
     });
 
@@ -43,15 +43,6 @@ describe('SettingEnums', function () {
             'auth',
             'locale',
             'pagination',
-        ]);
-    });
-
-    it('check SettingScope has exact values', function () {
-        $values = array_flip(SettingVisibility::getValues()->toArray());
-
-        expect(array_keys($values))->toBe([
-            'system',
-            'user',
         ]);
     });
 });

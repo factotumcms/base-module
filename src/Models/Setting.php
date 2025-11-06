@@ -13,7 +13,7 @@ use Wave8\Factotum\Base\Policies\SettingPolicy;
 class Setting extends Model
 {
     protected $fillable = [
-        'visibility',
+        'is_editable',
         'data_type',
         'group',
         'key',
@@ -35,7 +35,7 @@ class Setting extends Model
     {
         return [
             'data_type' => SettingDataType::class,
-            'visibility' => 'bool',
+            'is_editable' => 'bool',
         ];
     }
 }

@@ -130,7 +130,7 @@ class SettingSeeder extends Seeder
 
         $this->settingService->create(
             data: new CreateSettingDto(
-                visibility: SettingVisibility::SYSTEM,
+                isEditable: false,
                 dataType: SettingDataType::JSON,
                 group: SettingGroup::LOCALE,
                 key: Setting::PUBLIC_LANGUAGE_GROUPS,
