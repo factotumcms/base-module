@@ -1,15 +1,10 @@
 {
     "name": "wave8/factotum-base",
-    "type": "library",
-    "version": "1.4.3",
     "description": "Factotum V8 - Base Module",
-    "license": "proprietary",
-    "minimum-stability": "stable",
-    "prefer-stable": false,
+    "license": "MIT",
     "authors": [
         {
-            "name": "8wave Srl",
-            "email": "info@8wave.it"
+            "name": "8 wave S.r.l."
         }
     ],
     "require": {
@@ -25,8 +20,8 @@
         "spatie/laravel-translation-loader": "^2.8"
     },
     "require-dev": {
-        "orchestra/testbench": "^10.6",
         "laravel/pint": "^1.25",
+        "orchestra/testbench": "^10.6",
         "pestphp/pest": "^4.1"
     },
     "autoload": {
@@ -37,17 +32,13 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Wave8\\Factotum\\Base\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/",
-            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+            "Wave8\\Factotum\\Base\\Tests\\": "tests/"
         },
         "files": [
             "tests/TestCase.php"
         ]
     },
     "scripts": {
-        "post-install-cmd": [],
         "test": "./vendor/bin/pest",
         "post-autoload-dump": [
             "@clear",
@@ -61,9 +52,7 @@
             "@build",
             "@php vendor/bin/testbench serve --ansi"
         ],
-        "lint": [
-            "pint"
-        ]
+        "lint": "pint"
     },
     "extra": {
         "laravel": {
@@ -73,9 +62,13 @@
         }
     },
     "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
         "allow-plugins": {
             "composer/installers": true,
             "pestphp/pest-plugin": true
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
