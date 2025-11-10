@@ -32,11 +32,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Wave8\\Factotum\\Base\\Tests\\": "tests/"
-        },
-        "files": [
-            "tests/TestCase.php"
-        ]
+            "Tests\\": "tests/"
+        }
     },
     "scripts": {
         "lint": "pint --parallel",
