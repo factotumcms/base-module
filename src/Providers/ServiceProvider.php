@@ -11,7 +11,6 @@ use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
-use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Services\Api\AuthService;
 use Wave8\Factotum\Base\Services\Api\LanguageService;
 use Wave8\Factotum\Base\Services\Api\MediaService;
@@ -23,10 +22,11 @@ use Wave8\Factotum\Base\Services\Api\UserService;
 
 class ServiceProvider extends LaravelServiceProvider
 {
-    public function register()
+    /**
+     * Register services.
+     */
+    public function register(): void
     {
-        $this->app->bind(User::class, config('auth.providers.users.model'));
-
         // API Services
         $this->app->singleton(AuthServiceInterface::class, AuthService::class);
         $this->app->singleton(SettingServiceInterface::class, SettingService::class);

@@ -5,12 +5,10 @@ namespace Wave8\Factotum\Base\Providers;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
-use Wave8\Factotum\Base\Console\Commands\ModuleInstall;
+use Wave8\Factotum\Base\Console\Commands\Install;
 
 class ModuleServiceProvider extends LaravelServiceProvider
 {
-    public int $migrationCounter = 0;
-
     public function register(): void
     {
         // Register DI services
@@ -30,27 +28,27 @@ class ModuleServiceProvider extends LaravelServiceProvider
 
     public function boot(): void
     {
-        $this->registerMigrations();
-        $this->registerTranslations();
+        $this->configurePublishing();
     }
 
     public function registerCommands(): void
     {
         $this->commands([
-            ModuleInstall::class,
+            Install::class,
             DispatchGenerateImageConversions::class,
         ]);
     }
 
-    private function registerMigrations(): void
+    private function configurePublishing(): void
     {
         $this->publishesMigrations([
-            __DIR__.'/../../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../../database/migrations' => database_path('migrations'),
         ], 'factotum-base-migrations');
-    }
 
-    private function registerTranslations(): void
-    {
-        $this->loadTranslationsFrom(__DIR__.'/../../lang');
+        $this->publishes([
+            __DIR__ . '/../../stubs/app/Providers/FactotumBaseServiceProvider.php' => app_path('Providers/FactotumBaseServiceProvider.php'),
+        ], 'factotum-base-provider');
+
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang');
     }
 }
