@@ -8,12 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Finder\Finder;
+use Wave8\Factotum\Base\Http\Middleware\SetLocale;
 
 class RouteServiceProvider extends LaravelRouteServiceProvider
 {
-    protected string $apiPrefix = 'api/v1/base';
-
-    protected array $apiContexts = [];
+    protected string $apiPrefix = 'api/v1';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -44,7 +43,7 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
     protected function registerPublicApiRoutes(): void
     {
         Route::group([
-            'middleware' => ['api'],
+            'middleware' => ['api', SetLocale::class],
         ], function () {
             $this->mapRoutes(__DIR__.'/../../routes/api/public');
         });
@@ -53,7 +52,7 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
     protected function registerProtectedApiRoutes(): void
     {
         Route::group([
-            'middleware' => ['api', 'auth:sanctum'],
+            'middleware' => ['api', 'auth:sanctum', SetLocale::class],
         ], function () {
             $this->mapRoutes(__DIR__.'/../../routes/api/protected');
         });

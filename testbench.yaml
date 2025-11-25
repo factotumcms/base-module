@@ -4,11 +4,9 @@ providers:
   - Wave8\Factotum\Base\Providers\ModuleServiceProvider
 
 migrations:
-  - workbench/database/migrations
   - database/migrations
 
 seeders:
-  - Workbench\Database\Seeders\DatabaseSeeder
 
 workbench:
   start: '/'
@@ -27,7 +25,8 @@ workbench:
     - db-wipe
     - migrate-fresh
   assets:
-    - laravel-assets
+    - translation-loader-migrations
+    - permission-migrations
   sync:
     - from: storage
       to: workbench/storage

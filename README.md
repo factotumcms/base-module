@@ -24,7 +24,7 @@ This repository contains the base module of Factotum, which includes essential f
 
 ## Requirements and Dependencies
 - Laravel 12+
-- PHP 8.3+
+- PHP 8.4+
 
 
 ## Install
@@ -61,12 +61,10 @@ app/Models/User.php
 php artisan factotum-base:install
 ```
 
-5. Configure the application based on your needs. Set this env variables in your `.env` file:
-```bash
-# .env
-ENABLE_BACKOFFICE_API=true
-ENABLE_MOBILE_API=true
-```
+## Please note
+Some vendor config files, are published in an updated version during the installation, i.e.
+- `spatie/laravel-query-builder`
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.

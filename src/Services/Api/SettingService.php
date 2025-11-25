@@ -2,71 +2,68 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
-use Wave8\Factotum\Base\Contracts\FilterableInterface;
-use Wave8\Factotum\Base\Contracts\SortableInterface;
-use Wave8\Factotum\Base\Dtos\Api\Setting\CreateSettingDto;
-use Wave8\Factotum\Base\Dtos\Api\Setting\UpdateSettingDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
-use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 use Wave8\Factotum\Base\Models\Setting;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class SettingService implements FilterableInterface, SettingServiceInterface, SortableInterface
+class SettingService implements SettingServiceInterface
 {
-    use Filterable;
-    use Sortable;
+    public const string SETTINGS_CACHE_KEY = 'settings';
 
-    public const string CACHE_KEY_SYSTEM_SETTINGS = 'system_settings';
+    public const string USER_SETTINGS_CACHE_KEY = 'user_settings_';
 
-    /**
-     * Create a new setting.
-     */
-    public function create(CreateSettingDto|Data $data): Model
+    public function __construct(public readonly Setting $setting) {}
+
+    public function getAll(): Collection
     {
-        // todo:: To review the user's settings logic
-        $setting = new Setting(
-            attributes: $data->toArray()
-        );
+        $query = $this->cachedSettings();
 
-        $setting->save();
-
-        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
-
-        return $setting;
-    }
-
-    /**
-     * Retrieve all system settings, cached indefinitely.
-     */
-    public function getSystemSettings(): Collection
-    {
-        return Cache::rememberForever($this::CACHE_KEY_SYSTEM_SETTINGS, function () {
-            return Setting::where('scope', SettingScope::SYSTEM)->get();
+        return $query->each(function ($setting) {
+            $setting->value = $setting->user_value ?? $setting->value;
+            $setting->value = $this->castSettingValue(setting: $setting);
         });
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function getSystemSettingValue(SettingType $key, SettingGroup $group = SettingGroup::MEDIA): mixed
+    public function getValue(SettingType $key, SettingGroup $group): mixed
     {
-        $setting = $this->getSystemSettings()
-            ->where('key', $key)
-            ->where('group', $group)
-            ->first();
+        $query = $this->cachedSettings();
 
-        return $setting ? $this->castSettingValue(setting: $setting) : null;
+        $filtered = $query->where('key', $key->value)
+            ->where('group', $group->value);
+
+        $filtered->each(function ($setting) {
+            $setting->value = $setting->user_value ?? $setting->value;
+            $setting->value = $this->castSettingValue(setting: $setting);
+        });
+
+        return $filtered->first()->value;
+    }
+
+    private function cachedSettings(): Collection
+    {
+        $userId = auth()->user()->id ?? 1;
+
+        return Cache::rememberForever($this::USER_SETTINGS_CACHE_KEY.$userId, function () use ($userId) {
+            $query = Setting::query();
+
+            $query->select(
+                'settings.*',
+                DB::raw('COALESCE(setting_user.value, settings.value) as user_value'),
+            )->leftJoin('setting_user', function ($join) use ($userId) {
+                $join->on('settings.id', '=', 'setting_user.setting_id')
+                    ->where('setting_user.user_id', $userId);
+            });
+
+            return $query->get();
+        });
     }
 
     /**
@@ -74,7 +71,7 @@ class SettingService implements FilterableInterface, SettingServiceInterface, So
      */
     private function castSettingValue(Setting $setting): mixed
     {
-        return match ($setting->data_type) {
+        $data = match ($setting->data_type) {
             SettingDataType::INTEGER => (int) $setting->value,
             SettingDataType::BOOLEAN => filter_var($setting->value, FILTER_VALIDATE_BOOLEAN),
             SettingDataType::FLOAT => (float) $setting->value,
@@ -82,48 +79,48 @@ class SettingService implements FilterableInterface, SettingServiceInterface, So
             SettingDataType::STRING => (string) $setting->value,
             default => $setting->value,
         };
+
+        return $data;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id): ?Model
+    public function create(Data $data): Model
+    {
+        $setting = new Setting(
+            attributes: $data->toArray()
+        );
+
+        $setting->save();
+
+        Cache::forget($this::SETTINGS_CACHE_KEY);
+
+        return $setting;
+    }
+
+    public function read(int $id): Model
     {
         return Setting::findOrFail($id);
     }
 
-    /**
-     * Update a setting value.
-     *
-     * @param  Data  $data
-     */
-    public function update(int $id, UpdateSettingDto|Data $data): Model
+    public function update(int $id, Data $data): Model
     {
         $setting = Setting::findOrFail($id);
 
         $setting->update($data->toArray());
 
-        Cache::forget($this::CACHE_KEY_SYSTEM_SETTINGS);
+        Cache::forget($this::SETTINGS_CACHE_KEY);
 
         return $setting;
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
         // Todo:: To implement the delete logic or avoid
-        return false;
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    public function filter(): LengthAwarePaginator
     {
-        $query = Setting::query();
+        $query = $this->setting->query()->filterByRequest();
 
-        $this->applyFilters($query, $queryFilters->search);
-        $this->applySorting($query, $queryFilters);
-
-        return $query->simplePaginate(
-            perPage: $queryFilters->perPage ?? 15,
-            page: $queryFilters->page
-        );
+        return $query->paginate();
     }
 }

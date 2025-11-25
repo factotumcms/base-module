@@ -22,7 +22,7 @@ class LanguageSeeder extends Seeder
         // Create admin default user
         Log::info('Creating default language lines..');
 
-        $this->languageService->registerLine(
+        $this->languageService->create(
             data: new RegisterLineDto(
                 locale: Locale::IT,
                 group: 'auth',
@@ -31,7 +31,7 @@ class LanguageSeeder extends Seeder
             )
         );
 
-        $this->languageService->registerLine(
+        $this->languageService->create(
             data: new RegisterLineDto(
                 locale: Locale::IT,
                 group: 'auth',
@@ -40,7 +40,7 @@ class LanguageSeeder extends Seeder
             )
         );
 
-        $this->languageService->registerLine(
+        $this->languageService->create(
             data: new RegisterLineDto(
                 locale: Locale::IT,
                 group: 'auth',
@@ -49,7 +49,7 @@ class LanguageSeeder extends Seeder
             )
         );
 
-        $this->languageService->registerLine(
+        $this->languageService->create(
             data: new RegisterLineDto(
                 locale: Locale::EN,
                 group: 'auth',
@@ -58,7 +58,7 @@ class LanguageSeeder extends Seeder
             )
         );
 
-        $this->languageService->registerLine(
+        $this->languageService->create(
             data: new RegisterLineDto(
                 locale: Locale::EN,
                 group: 'auth',
@@ -67,7 +67,7 @@ class LanguageSeeder extends Seeder
             )
         );
 
-        $this->languageService->registerLine(
+        $this->languageService->create(
             data: new RegisterLineDto(
                 locale: Locale::EN,
                 group: 'auth',

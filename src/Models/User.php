@@ -2,23 +2,22 @@
 
 namespace Wave8\Factotum\Base\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Wave8\Factotum\Base\Builders\UserQueryBuilder;
+use Wave8\Factotum\Base\Contracts\NotifiableInterface;
 use Wave8\Factotum\Base\Policies\UserPolicy;
 
 #[UsePolicy(UserPolicy::class)]
-class User extends Authenticatable
+class User extends Authenticatable implements NotifiableInterface
 {
     use HasApiTokens;
     use HasFactory;
@@ -48,6 +47,11 @@ class User extends Authenticatable
         'is_active',
     ];
 
+    public function newEloquentBuilder($query): UserQueryBuilder
+    {
+        return new UserQueryBuilder($query);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -68,6 +72,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 

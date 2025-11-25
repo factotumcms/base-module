@@ -9,25 +9,35 @@ use Wave8\Factotum\Base\Http\Requests\Api\Auth\LoginRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Auth\RegisterRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Resources\Api\UserResource;
+use Wave8\Factotum\Base\Services\Api\AuthService;
 
 final readonly class AuthController
 {
+    private string $userResource;
+
     public function __construct(
+        /** @var $authService AuthService */
         private AuthServiceInterface $authService
-    ) {}
+    ) {
+        $this->userResource = config('data_transfer.'.UserResource::class);
+    }
 
     /**
      * @throws \Exception
      */
     public function login(LoginRequest $request): ApiResponse
     {
+        $loginUserDto = config('data_transfer.'.LoginUserDto::class);
+
         $user = $this->authService->attemptLogin(
-            data: LoginUserDto::from($request)
+            data: $loginUserDto::from($request)
         );
+
+        $user->load('avatar', 'roles.permissions');
 
         return ApiResponse::make(
             data: [
-                'user' => UserResource::from($user->load('avatar')),
+                'user' => $this->userResource::from($user),
                 'access_token' => $user->createToken('auth_token')->plainTextToken,
             ],
         );
@@ -35,15 +45,15 @@ final readonly class AuthController
 
     public function register(RegisterRequest $request): ApiResponse
     {
+        $registerUserDto = config('data_transfer.'.RegisterUserDto::class);
+
         $user = $this->authService->register(
-            data: RegisterUserDto::from($request)
+            data: $registerUserDto::from($request)
         );
 
         return ApiResponse::make(
-            data: [
-                'user' => UserResource::from($user),
-                'access_token' => $user->createToken('auth_token')->plainTextToken,
-            ],
+            data: $this->userResource::from($user),
+            status: ApiResponse::HTTP_CREATED
         );
     }
 }

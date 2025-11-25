@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('data_type');
             $table->string('group');
             $table->string('key');
-            $table->text('value')->nullable();
+            $table->text('value');
             $table->timestamps();
 
             $table->unique(['key', 'scope', 'group']);

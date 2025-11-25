@@ -23,7 +23,7 @@ class UploadMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'max:5120'], // max 5MB
+            'file' => ['required', 'file', 'max:5120'],
         ];
     }
 }

@@ -1,31 +1,28 @@
 {
     "name": "wave8/factotum-base",
-    "type": "library",
-    "version": "1.4.3",
     "description": "Factotum V8 - Base Module",
-    "license": "proprietary",
-    "minimum-stability": "stable",
-    "prefer-stable": false,
+    "license": "MIT",
     "authors": [
         {
-            "name": "8wave Srl",
-            "email": "info@8wave.it"
+            "name": "8 wave S.r.l."
         }
     ],
     "require": {
         "php": "^8.4",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1",
         "laravel/sanctum": "^4.2",
-        "spatie/laravel-permission": "^6.21",
-        "spatie/laravel-data": "^4.17",
-        "spatie/laravel-translation-loader": "^2.8",
+        "laravel/tinker": "^2.10.1",
         "spatie/image": "^3.8",
-        "spatie/image-optimizer": "^1.8"
+        "spatie/image-optimizer": "^1.8",
+        "spatie/laravel-data": "^4.17",
+        "spatie/laravel-permission": "^6.21",
+        "spatie/laravel-query-builder": "^6.3",
+        "spatie/laravel-translation-loader": "^2.8"
     },
     "require-dev": {
-        "pestphp/pest": "*",
-        "orchestra/testbench": "^10.6"
+        "laravel/pint": "^1.25",
+        "orchestra/testbench": "^10.6",
+        "pestphp/pest": "^4.1"
     },
     "autoload": {
         "psr-4": {
@@ -35,18 +32,17 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Wave8\\Factotum\\Base\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/",
-            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
-        },
-        "files": [
-            "tests/TestCase.php"
-        ]
+            "Tests\\": "tests/"
+        }
     },
     "scripts": {
-        "post-install-cmd": [],
-        "test": "./vendor/bin/pest",
+        "lint": "pint --parallel",
+        "test:lint": "pint --parallel --test",
+        "test:unit": "pest --parallel",
+        "test": [
+            "@test:unit",
+            "@test:lint"
+        ],
         "post-autoload-dump": [
             "@clear",
             "@prepare"
@@ -58,9 +54,6 @@
             "Composer\\Config::disableProcessTimeout",
             "@build",
             "@php vendor/bin/testbench serve --ansi"
-        ],
-        "lint": [
-            "pint"
         ]
     },
     "extra": {
@@ -71,9 +64,13 @@
         }
     },
     "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
         "allow-plugins": {
             "composer/installers": true,
             "pestphp/pest-plugin": true
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

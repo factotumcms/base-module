@@ -2,7 +2,6 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -17,64 +16,53 @@ use Spatie\Image\Image;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
-use Wave8\Factotum\Base\Contracts\FilterableInterface;
-use Wave8\Factotum\Base\Contracts\SortableInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class MediaService implements FilterableInterface, MediaServiceInterface, SortableInterface
+class MediaService implements MediaServiceInterface
 {
-    use Filterable;
-    use Sortable;
-
     public function __construct(
         /** @var SettingService $settingService */
         private readonly SettingServiceInterface $settingService,
+        public readonly Media $media,
     ) {}
 
     public function create(Data $data): Model
     {
-        return Media::create($data->toArray());
+        return $this->media::create($data->toArray());
     }
 
-    public function show(int $id): ?Model
+    public function read(int $id): Model
     {
-        return Media::findOrFail($id);
+        return $this->media::findOrFail($id);
     }
 
     public function update(int $id, Data $data): Model
     {
-        $media = Media::findOrFail($id);
+        $media = $this->media::findOrFail($id);
         $media->update($data->toArray());
 
         return $media;
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
-        return true;
+        // todo:: implement delete media logic
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    public function filter(): LengthAwarePaginator
     {
-        $query = Media::query();
+        $query = $this->media->query()
+            ->filterByRequest();
 
-        $this->applyFilters($query, $queryFilters->search);
-        $this->applySorting($query, $queryFilters);
-
-        return $query->simplePaginate(
-            perPage: $queryFilters->perPage ?? 15,
-            page: $queryFilters->page
-        );
+        return $query->paginate();
     }
 
     /**
@@ -90,9 +78,18 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         $metadata = $this->generateFileMetadata($data->file);
         $presetConfigs = $this->getPresetsConfigs($data);
         $mediaBasePath = $this->generateMediaPath();
-        $disk = Disk::tryFrom($this->settingService->getSystemSettingValue(Setting::DEFAULT_MEDIA_DISK));
+        $disk = Disk::tryFrom($this->settingService->getValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
 
-        $this->checkMediaUnique($metadata['filename'], $disk->value, $mediaBasePath);
+        $i = 0;
+        $suffix = '';
+        do {
+            if ($i > 0) {
+                $suffix = '-'.$i;
+            }
+            $i++;
+
+            $metadata['filename'] = "{$metadata['basename']}{$suffix}.{$metadata['extension']}";
+        } while ($this->checkMediaUnique($metadata['filename'], $disk->value, $mediaBasePath));
 
         $storedFilename = $data->file->storeAs(
             path: $mediaBasePath,
@@ -149,19 +146,14 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
 
     private function generateFileMetadata(UploadedFile $file): array
     {
-        $metadata = [
+        return [
+            'original_filename' => $filename = $file->getClientOriginalName(),
+            'extension' => $extension = $file->getClientOriginalExtension(),
+            'basename' => $basename = Str::slug(File::name($filename)),
+            'filename' => "{$basename}.{$extension}",
             'mime_type' => $file->getMimeType(),
-            'original_filename' => $file->getClientOriginalName(),
             'size' => $file->getSize(),
         ];
-
-        $metadata['extension'] = $file->getClientOriginalExtension();
-
-        $tempFilename = Str::slug(File::name($metadata['original_filename']));
-
-        $metadata['filename'] = $tempFilename.'.'.$metadata['extension'];
-
-        return $metadata;
     }
 
     /**
@@ -170,16 +162,14 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      *
      * @throws \Exception
      */
-    private function checkMediaUnique(string $filename, string $disk, string $path): void
+    private function checkMediaUnique(string $filename, string $disk, string $path): ?Model
     {
         $media = Media::where('file_name', $filename)
             ->where('disk', $disk)
             ->where('path', $path)
             ->first();
 
-        if ($media) {
-            throw new \Exception('File name conflict: '.$filename);
-        }
+        return $media;
     }
 
     /**
@@ -197,10 +187,10 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
     public function generateConversions(Media $media): void
     {
         $conversions = [];
-        foreach (json_decode($media->presets) as $preset) {
+        foreach ($media->presets as $preset) {
             // Load preset config
-            $presetProps = json_decode($this->settingService->getSystemSettingValue(Setting::tryFrom($preset)));
-            $conversionsPath = $this->settingService->getSystemSettingValue(Setting::MEDIA_CONVERSIONS_PATH);
+            $presetProps = $this->settingService->getValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
+            $conversionsPath = $this->settingService->getValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
             $fileExtension = '.'.File::extension($media->file_name);
@@ -276,7 +266,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
         $configs = [];
 
         foreach ($data->presets as $preset) {
-            $config = $this->settingService->getSystemSettingValue(Setting::from($preset->value));
+            $config = $this->settingService->getValue(Setting::from($preset->value), SettingGroup::MEDIA);
             if (isset($config)) {
                 $configs[$preset->value] = $config;
             }
@@ -294,7 +284,7 @@ class MediaService implements FilterableInterface, MediaServiceInterface, Sortab
      */
     private function generateMediaPath(): string
     {
-        $basePath = $this->settingService->getSystemSettingValue(Setting::MEDIA_BASE_PATH);
+        $basePath = $this->settingService->getValue(Setting::MEDIA_BASE_PATH, SettingGroup::MEDIA);
 
         return implode('/', [
             $basePath, date('Y'), date('m'), date('d'),
