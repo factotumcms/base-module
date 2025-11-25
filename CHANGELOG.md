@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2025-11-25
+### Refactor
+- Refactor settings logic
+- Refactor language logic
+- Refactor data binding logic
+- Refactor installation command
+
+### Added
+- Added laravel query builder package
+
 ## [1.4.3] - 2025-10-23
 ### Fixed
 - Rename avatar column in users table
