@@ -3,7 +3,6 @@
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingDataType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
-use Wave8\Factotum\Base\Enums\Setting\SettingScope;
 
 describe('SettingEnums', function () {
     it('check Setting has exact values', function () {
@@ -18,11 +17,9 @@ describe('SettingEnums', function () {
             'default_media_disk',
             'media_base_path',
             'media_conversions_path',
-            'locale_default',
-            'locale_available',
-            'pagination_per_page',
-            'pagination_default_order_by',
-            'pagination_default_order_direction',
+            'locale',
+            'available_locales',
+            'public_groups',
         ]);
     });
 
@@ -46,15 +43,6 @@ describe('SettingEnums', function () {
             'auth',
             'locale',
             'pagination',
-        ]);
-    });
-
-    it('check SettingScope has exact values', function () {
-        $values = array_flip(SettingScope::getValues()->toArray());
-
-        expect(array_keys($values))->toBe([
-            'system',
-            'user',
         ]);
     });
 });

@@ -9,6 +9,7 @@ use Wave8\Factotum\Base\Dtos\Api\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Auth\RegisterUserDto;
 use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
+use Wave8\Factotum\Base\Exceptions\AuthenticationException;
 use Wave8\Factotum\Base\Models\User;
 
 class AuthService implements AuthServiceInterface
@@ -23,36 +24,24 @@ class AuthService implements AuthServiceInterface
      */
     public function attemptLogin(LoginUserDto $data): User|false
     {
-        $identifier = $this->settingService->getSystemSettingValue(
+        $identifier = $this->settingService->getValue(
             key: SettingType::AUTH_BASIC_IDENTIFIER,
             group: SettingGroup::AUTH,
         );
 
-        if (! Auth::attempt($data->only($identifier, 'password')->toArray())) {
-            return false;
+        $credentials = array_merge($data->only($identifier, 'password')->toArray(), ['is_active' => true]);
+
+        if (! Auth::once($credentials)) {
+            throw new AuthenticationException;
         }
 
-        return Auth::user()->load([
-            'roles' => function ($query) {
-                $query->select(['id', 'name']);
-            },
-            'roles.permissions' => function ($query) {
-                $query->select(['id', 'name']);
-            },
-        ])->setRelation(
-            'roles',
-            Auth::user()->roles->map(function ($role) {
-                $role->makeHidden('pivot');
-                $role->permissions->makeHidden('pivot');
-
-                return $role;
-            })
-        );
+        return Auth::user();
     }
 
     public function register(RegisterUserDto $data): User
     {
-        return User::create($data
-            ->toArray());
+        return User::create(
+            $data->toArray()
+        );
     }
 }

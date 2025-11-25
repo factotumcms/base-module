@@ -2,74 +2,113 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
+use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
+use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
+use Wave8\Factotum\Base\Models\Setting;
+use Wave8\Factotum\Base\Models\User;
+use Wave8\Factotum\Base\Resources\Api\SettingResource;
 use Wave8\Factotum\Base\Resources\Api\UserResource;
+use Wave8\Factotum\Base\Services\Api\SettingService;
+use Wave8\Factotum\Base\Services\Api\UserService;
 
 final readonly class UserController
 {
-    public function __construct(
+    private string $userResource;
+
+    private string $settingResource;
+
+    final public function __construct(
+        /** @var $userservice UserService */
         private UserServiceInterface $userService,
-    ) {}
+    ) {
+        $this->userResource = config('data_transfer.'.UserResource::class);
+        $this->settingResource = config('data_transfer.'.SettingResource::class);
+    }
 
-    public function index(QueryFiltersRequest $request): ApiResponse
+    final public function index(): ApiResponse
     {
-        $users = $this->userService
-            ->filter(
-                QueryFiltersDto::from($request)
-            );
+        $users = $this->userService->filter();
 
         return ApiResponse::make(
-            data: UserResource::collect($users)
+            data: $this->userResource::collect($users),
         );
     }
 
-    public function store(CreateUserRequest $request): ApiResponse
+    final public function store(CreateUserRequest $request): ApiResponse
     {
+        $createUserDto = config('data_transfer.'.CreateUserDto::class);
+
         $user = $this->userService->create(
-            data: CreateUserDto::from($request)
+            data: $createUserDto::from($request)
         );
 
         return ApiResponse::make(
-            data: UserResource::from($user)
+            data: $this->userResource::from($user),
+            status: ApiResponse::HTTP_CREATED
         );
     }
 
-    public function show(int $id): ApiResponse
+    final public function show(User $user): ApiResponse
     {
-        $user = $this->userService->show(
-            id: $id
-        );
-
         return ApiResponse::make(
-            data: UserResource::from($user)
+            data: $this->userResource::from($user),
         );
     }
 
-    public function update(int $id, UpdateUserRequest $request): ApiResponse
+    final public function update(User $user, UpdateUserRequest $request): ApiResponse
     {
+        $updateUserDto = config('data_transfer.'.UpdateUserDto::class);
+
         $user = $this->userService->update(
-            id: $id,
-            data: UpdateUserDto::from($request)
+            id: $user->id,
+            data: $updateUserDto::from($request)
         );
 
         return ApiResponse::make(
-            data: UserResource::from($user)
+            data: $this->userResource::from($user),
         );
     }
 
-    public function destroy(int $id): ApiResponse
+    final public function destroy(User $user): ApiResponse
     {
-        $this->userService->delete($id);
+        $this->userService->delete(
+            id: $user->id,
+        );
+
+        return ApiResponse::noContent();
+    }
+
+    final public function updateSetting(int $id, Setting $setting, UpdateSettingRequest $request): ApiResponse
+    {
+        $updateSettingDto = config('data_transfer.'.UpdateSettingDto::class);
+
+        $user = $this->userService->updateSetting(
+            id: $id,
+            settingId: $setting->id,
+            data: $updateSettingDto::from($request)
+        );
 
         return ApiResponse::make(
-            data: 'ok'
+            data: $this->userResource::from($user),
+        );
+    }
+
+    public function settings(): ApiResponse
+    {
+        /** @var $settingService SettingService */
+        $settingService = app(SettingServiceInterface::class);
+
+        return ApiResponse::make(
+            data: $this->settingResource::collect(
+                $settingService->getAll()
+            ),
         );
     }
 }

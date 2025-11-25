@@ -9,6 +9,6 @@ Route::prefix('media')
 
     ->group(function () {
         Route::get('', 'index')->can('read', Media::class);
-        Route::get('{id}', 'show')->can('read', Media::class);
+        Route::get('{media}', 'show')->can('read', 'media');
         Route::post('', 'create')->can('upload', Media::class);
     });

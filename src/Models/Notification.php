@@ -5,6 +5,7 @@ namespace Wave8\Factotum\Base\Models;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\DatabaseNotification;
+use Wave8\Factotum\Base\Builders\NotificationQueryBuilder;
 use Wave8\Factotum\Base\Policies\NotificationPolicy;
 
 #[UsePolicy(NotificationPolicy::class)]
@@ -28,4 +29,9 @@ class Notification extends DatabaseNotification
         'sent_at' => 'datetime',
         'read_at' => 'datetime',
     ];
+
+    public function newEloquentBuilder($query)
+    {
+        return new NotificationQueryBuilder($query);
+    }
 }

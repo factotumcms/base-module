@@ -2,93 +2,53 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
-use Wave8\Factotum\Base\Contracts\FilterableInterface;
-use Wave8\Factotum\Base\Contracts\SortableInterface;
-use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
-use Wave8\Factotum\Base\Dtos\Api\Role\UpdateRoleDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
-use Wave8\Factotum\Base\Enums\Permission\Permission;
 use Wave8\Factotum\Base\Models\Role;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class RoleService implements FilterableInterface, RoleServiceInterface, SortableInterface
+class RoleService implements RoleServiceInterface
 {
-    use Filterable;
-    use Sortable;
+    public function __construct(public readonly Role $role) {}
 
     /**
      * Create a new role.
      */
-    public function create(CreateRoleDto|Data $data): Model
+    public function create(Data $data): Model
     {
-        return Role::create(
+        return $this->role::create(
             attributes: $data->toArray()
         );
     }
 
-    /**
-     * Retrieve a role by its ID.
-     */
-    public function show(int $id): ?Model
+    public function read(int $id): Model
     {
-        return Role::findOrFail($id);
+        return $this->role::findOrFail($id);
     }
 
-    /**
-     * Update a role by its ID.
-     */
-    public function update(int $id, UpdateRoleDto|Data $data): Model
+    public function update(int $id, Data $data): Model
     {
-        $role = Role::findOrFail($id);
+        $role = $this->role::findOrFail($id);
 
         $role->update($data->toArray());
 
         return $role;
     }
 
-    /**
-     * Delete a role by its ID.
-     */
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
-        $role = Role::findOrFail($id);
+        $role = $this->role::findOrFail($id);
 
-        return $role->delete();
+        $role->delete();
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    public function filter(): LengthAwarePaginator
     {
-        $query = Role::query();
+        $query = $this->role->query()
+            ->filterByRequest();
 
-        $this->applyFilters($query, $queryFilters->search);
-        $this->applySorting($query, $queryFilters);
-
-        return $query->simplePaginate(
-            perPage: $queryFilters->perPage ?? 15,
-            page: $queryFilters->page
-        );
-    }
-
-    /**
-     * @param  Collection<Permission>  $permissions
-     */
-    public function assignPermissions(int $roleId, Collection $permissions): Model
-    {
-        /** @var Role $role */
-        $role = Role::findOrFail($roleId);
-
-        if ($permissions->isNotEmpty()) {
-            $role->givePermissionTo($permissions);
-        }
-
-        return $role;
+        return $query->paginate();
     }
 
     /**
@@ -97,7 +57,7 @@ class RoleService implements FilterableInterface, RoleServiceInterface, Sortable
     public function isDefaultRole(int $roleId): bool
     {
         try {
-            $role = Role::findOrFail($roleId)->name;
+            $role = $this->role::findOrFail($roleId)->name;
             $defaultRole = \Wave8\Factotum\Base\Enums\Role::tryFrom($role);
         } catch (\Exception $e) {
             return false;

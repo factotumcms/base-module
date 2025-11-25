@@ -2,66 +2,52 @@
 
 namespace Wave8\Factotum\Base\Services\Api;
 
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
-use Wave8\Factotum\Base\Contracts\FilterableInterface;
-use Wave8\Factotum\Base\Contracts\SortableInterface;
-use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
-use Wave8\Factotum\Base\Dtos\Api\Permission\UpdatePermissionDto;
-use Wave8\Factotum\Base\Dtos\QueryFiltersDto;
 use Wave8\Factotum\Base\Models\Permission;
-use Wave8\Factotum\Base\Traits\Filterable;
-use Wave8\Factotum\Base\Traits\Sortable;
 
-class PermissionService implements FilterableInterface, PermissionServiceInterface, SortableInterface
+class PermissionService implements PermissionServiceInterface
 {
-    use Filterable;
-    use Sortable;
+    public function __construct(public readonly Permission $permission) {}
 
-    public function create(CreatePermissionDto|Data $data): Model
+    public function create(Data $data): Model
     {
-        return Permission::create(
+        return $this->permission::create(
             attributes: $data->toArray()
         );
     }
 
-    public function show(int $id): ?Model
+    public function read(int $id): Model
     {
-        return Permission::findOrFail($id);
+        return $this->permission::findOrFail($id);
     }
 
     /**
      * @throws \Exception
      */
-    public function update(int $id, UpdatePermissionDto|Data $data): Model
+    public function update(int $id, Data $data): Model
     {
-        $permission = Permission::findOrFail($id);
+        $permission = $this->permission::findOrFail($id);
 
         $permission->update($data->toArray());
 
         return $permission;
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
-        $permission = Permission::findOrFail($id);
+        $permission = $this->permission::findOrFail($id);
 
-        return $permission->delete();
+        $permission->delete();
     }
 
-    public function filter(QueryFiltersDto $queryFilters): Paginator|LengthAwarePaginator
+    public function filter(): LengthAwarePaginator
     {
-        $query = Permission::query();
+        $query = $this->permission->query()
+            ->filterByRequest();
 
-        $this->applyFilters($query, $queryFilters->search);
-        $this->applySorting($query, $queryFilters);
-
-        return $query->simplePaginate(
-            perPage: $queryFilters->perPage ?? 15,
-            page: $queryFilters->page
-        );
+        return $query->paginate();
     }
 }

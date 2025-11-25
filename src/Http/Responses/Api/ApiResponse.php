@@ -7,17 +7,15 @@ use Illuminate\Support\Str;
 
 final class ApiResponse extends JsonResponse
 {
-    public static function make(mixed $data, ?array $headers = null, int $status = self::HTTP_OK): static
+    public static function make(mixed $data, array $headers = [], int $status = self::HTTP_OK): static
     {
         $response = new self(
             data: $data,
             status: $status
         );
 
-        if ($headers) {
-            foreach ($headers as $key => $value) {
-                $response->headers->set($key, $value);
-            }
+        foreach ($headers as $key => $value) {
+            $response->headers->set($key, $value);
         }
 
         return $response;
@@ -26,22 +24,22 @@ final class ApiResponse extends JsonResponse
     /**
      * Handle dynamic static calls into the method based on the Http statuses.
      */
-    public static function __callStatic($name, $arguments): static
+    public static function __callStatic($method, $parameters): static
     {
-        if (Str::startsWith($name, 'Http')) {
-            $statusConstant = 'self::HTTP_'.Str::upper(Str::snake(Str::after($name, 'Http')));
-            if (defined($statusConstant)) {
-                $status = constant($statusConstant);
-                $headers = $arguments[0] ?? [];
+        $constant = 'self::HTTP_'.Str::upper(Str::snake($method));
 
-                return new static(
-                    data: null,
-                    status: $status,
-                    headers: $headers
-                );
-            }
+        if (! defined($constant)) {
+            return parent::$method(...$parameters);
         }
 
-        throw new \BadMethodCallException("Method {$name} not supported.");
+        $status = constant($constant);
+        $data = $parameters[0] ?? [];
+        $headers = $parameters[1] ?? [];
+
+        return static::make(
+            data: $data,
+            headers: $headers,
+            status: $status,
+        );
     }
 }

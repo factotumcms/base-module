@@ -16,9 +16,7 @@ enum Setting: string
     case DEFAULT_MEDIA_DISK = 'default_media_disk';
     case MEDIA_BASE_PATH = 'media_base_path';
     case MEDIA_CONVERSIONS_PATH = 'media_conversions_path';
-    case LOCALE_DEFAULT = 'locale_default';
-    case LOCALE_AVAILABLE = 'locale_available';
-    case PAGINATION_PER_PAGE = 'pagination_per_page';
-    case PAGINATION_DEFAULT_ORDER_BY = 'pagination_default_order_by';
-    case PAGINATION_DEFAULT_ORDER_DIRECTION = 'pagination_default_order_direction';
+    case LOCALE = 'locale';
+    case AVAILABLE_LOCALES = 'available_locales';
+    case PUBLIC_LANGUAGE_GROUPS = 'public_groups';
 }

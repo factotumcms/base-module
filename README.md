@@ -61,12 +61,9 @@ app/Models/User.php
 php artisan factotum-base:install
 ```
 
-5. Configure the application based on your needs. Set this env variables in your `.env` file:
-```bash
-# .env
-ENABLE_BACKOFFICE_API=true
-ENABLE_MOBILE_API=true
-```
+## Please note
+Some vendor config files, are published in an updated version during the installation, i.e.
+- `spatie/laravel-query-builder`
 
 ## Changelog
 

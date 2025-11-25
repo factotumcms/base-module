@@ -8,12 +8,7 @@ use Wave8\Factotum\Base\Dtos\Api\Language\RegisterLineDto;
 
 class LanguageService implements LanguageServiceInterface
 {
-    /**
-     * Register a new language line or update an existing one for a specific locale.
-     *
-     * @param  RegisterLineDto  $data  The data transfer object containing the language line details.
-     */
-    public function registerLine(RegisterLineDto $data): void
+    public function create(RegisterLineDto $data): void
     {
         $line = LanguageLine::where('group', $data->group)
             ->where('key', $data->key)
