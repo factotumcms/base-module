@@ -14,7 +14,6 @@ class LanguageService implements LanguageServiceInterface
             ->where('key', $data->key)
             ->first();
 
-
         if (! $line) {
             $line = LanguageLine::create([
                 'group' => $data->group,

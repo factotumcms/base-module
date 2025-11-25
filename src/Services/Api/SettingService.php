@@ -18,72 +18,51 @@ class SettingService implements SettingServiceInterface
 {
     public const string SETTINGS_CACHE_KEY = 'settings';
 
-    public const string SETTINGS_CACHE_KEY_USER = 'user_settings_';
+    public const string USER_SETTINGS_CACHE_KEY = 'user_settings_';
 
     public function __construct(public readonly Setting $setting) {}
 
-    /**
-     * Create a new setting.
-     */
-    public function create(Data $data): Model
+    public function getAll(): Collection
     {
-        $setting = new Setting(
-            attributes: $data->toArray()
-        );
+        $query = $this->cachedSettings();
 
-        $setting->save();
-
-        Cache::forget($this::SETTINGS_CACHE_KEY);
-
-        return $setting;
-    }
-
-    /**
-     * Retrieve all system settings, cached indefinitely.
-     */
-    public function getSettings(): Collection
-    {
-        return Cache::rememberForever($this::SETTINGS_CACHE_KEY, function () {
-            return Setting::all();
+        return $query->each(function ($setting) {
+            $setting->value = $setting->user_value ?? $setting->value;
+            $setting->value = $this->castSettingValue(setting: $setting);
         });
     }
 
-    /**
-     * @throws \Exception
-     */
-//    public function getSettingValue(SettingType $key, SettingGroup $group): mixed
-//    {
-////        $setting = $this->getSettings()
-////            ->where('key', $key)
-////            ->where('group', $group)
-////            ->first();
-////
-////        return $setting ? $this->castSettingValue(setting: $setting) : null;
-//    }
-
-    public function getSettingValue(SettingType $key, SettingGroup $group, ?int $userId = null): Collection
+    public function getValue(SettingType $key, SettingGroup $group): mixed
     {
-        return Cache::rememberForever($this::SETTINGS_CACHE_KEY_USER.$userId, function () use ($key, $group, $userId) {
-        //todo: gestire
+        $query = $this->cachedSettings();
+
+        $filtered = $query->where('key', $key->value)
+            ->where('group', $group->value);
+
+        $filtered->each(function ($setting) {
+            $setting->value = $setting->user_value ?? $setting->value;
+            $setting->value = $this->castSettingValue(setting: $setting);
+        });
+
+        return $filtered->first()->value;
+    }
+
+    private function cachedSettings(): Collection
+    {
+        $userId = auth()->user()->id ?? 1;
+
+        return Cache::rememberForever($this::USER_SETTINGS_CACHE_KEY.$userId, function () use ($userId) {
             $query = Setting::query();
 
-            if(!is_null($userId)) {
-                $query->select(
-                    'settings.*',
-                    DB::raw('COALESCE(setting_user.value, settings.value) as user_value'),
-                )->leftJoin('setting_user', function ($join) use ($userId) {
-                    $join->on('settings.id', '=', 'setting_user.setting_id')
-                        ->where('setting_user.user_id', $userId);
-                });
-            }
-
-            $query->where('settings.key', $key)
-                ->where('settings.group', $group);
-
-            return $query->get()->each(function ($setting) {
-                $setting->value = $setting->user_value ?? $setting->value;
-                $setting->value = $this->castSettingValue(setting: $setting);
+            $query->select(
+                'settings.*',
+                DB::raw('COALESCE(setting_user.value, settings.value) as user_value'),
+            )->leftJoin('setting_user', function ($join) use ($userId) {
+                $join->on('settings.id', '=', 'setting_user.setting_id')
+                    ->where('setting_user.user_id', $userId);
             });
+
+            return $query->get();
         });
     }
 
@@ -104,17 +83,24 @@ class SettingService implements SettingServiceInterface
         return $data;
     }
 
-    /**
-     * Display the specified resource.
-     */
+    public function create(Data $data): Model
+    {
+        $setting = new Setting(
+            attributes: $data->toArray()
+        );
+
+        $setting->save();
+
+        Cache::forget($this::SETTINGS_CACHE_KEY);
+
+        return $setting;
+    }
+
     public function read(int $id): Model
     {
         return Setting::findOrFail($id);
     }
 
-    /**
-     * Update a setting value.
-     */
     public function update(int $id, Data $data): Model
     {
         $setting = Setting::findOrFail($id);

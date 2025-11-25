@@ -26,7 +26,7 @@ final class FactotumBaseServiceProvider extends ServiceProvider
 
     private function registerModelBindings(): void
     {
-        $this->app->bind(\Wave8\Factotum\Base\Models\User::class, \App\Models\User::class);
+        $this->app->bind(User::class, \App\Models\User::class);
     }
 
     private function registerServiceBindings(): void

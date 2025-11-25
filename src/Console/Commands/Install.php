@@ -54,7 +54,7 @@ final class Install extends Command
             fn () => $this->ensureVendorMigrationsNotPublished(),
         ])->every(fn (callable $task) => $task());
 
-        if (!$expectationsMet) {
+        if (! $expectationsMet) {
             return self::FAILURE;
         }
 
@@ -96,7 +96,7 @@ final class Install extends Command
 
     private function ensureDateNotImmutable(): bool
     {
-        if (!($now = now()) instanceof DateTimeImmutable) {
+        if (! ($now = now()) instanceof DateTimeImmutable) {
             return true;
         }
 
@@ -231,8 +231,8 @@ EOT);
 
     private function publishModels(): void
     {
-        if (!$this->option('force') &&
-            !confirm('Would you like to publish the Factotum Base models to your application?')
+        if (! $this->option('force') &&
+            ! confirm('Would you like to publish the Factotum Base models to your application?')
         ) {
             warning(<<<'EOT'
 Remember to extend the Factotum Base models in your application and customize them as needed.
@@ -241,7 +241,7 @@ EOT);
             return;
         }
 
-        $this->files->copy(__DIR__ . '/../../../stubs/app/Models/User.php', app_path('Models/User.php'));
+        $this->files->copy(__DIR__.'/../../../stubs/app/Models/User.php', app_path('Models/User.php'));
     }
 
     private function publishProviders(): void
@@ -257,8 +257,8 @@ EOT);
 
     private function runMigrations(): bool
     {
-        if (!$this->option('migrate') &&
-            !confirm('New database migrations were added. Would you like to re-run your migrations?')
+        if (! $this->option('migrate') &&
+            ! confirm('New database migrations were added. Would you like to re-run your migrations?')
         ) {
             return false;
         }
@@ -270,8 +270,8 @@ EOT);
 
     private function seedData(): bool
     {
-        if (!$this->option('seed') &&
-            !confirm('Would you like to seed the database with initial data?')
+        if (! $this->option('seed') &&
+            ! confirm('Would you like to seed the database with initial data?')
         ) {
             return false;
         }

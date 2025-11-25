@@ -78,7 +78,7 @@ class MediaService implements MediaServiceInterface
         $metadata = $this->generateFileMetadata($data->file);
         $presetConfigs = $this->getPresetsConfigs($data);
         $mediaBasePath = $this->generateMediaPath();
-        $disk = Disk::tryFrom($this->settingService->getSettingValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
+        $disk = Disk::tryFrom($this->settingService->getValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
 
         $i = 0;
         $suffix = '';
@@ -189,8 +189,8 @@ class MediaService implements MediaServiceInterface
         $conversions = [];
         foreach ($media->presets as $preset) {
             // Load preset config
-            $presetProps = $this->settingService->getSettingValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
-            $conversionsPath = $this->settingService->getSettingValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
+            $presetProps = $this->settingService->getValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
+            $conversionsPath = $this->settingService->getValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
             $fileExtension = '.'.File::extension($media->file_name);
@@ -266,7 +266,7 @@ class MediaService implements MediaServiceInterface
         $configs = [];
 
         foreach ($data->presets as $preset) {
-            $config = $this->settingService->getSettingValue(Setting::from($preset->value), SettingGroup::MEDIA);
+            $config = $this->settingService->getValue(Setting::from($preset->value), SettingGroup::MEDIA);
             if (isset($config)) {
                 $configs[$preset->value] = $config;
             }
@@ -284,7 +284,7 @@ class MediaService implements MediaServiceInterface
      */
     private function generateMediaPath(): string
     {
-        $basePath = $this->settingService->getSettingValue(Setting::MEDIA_BASE_PATH, SettingGroup::MEDIA);
+        $basePath = $this->settingService->getValue(Setting::MEDIA_BASE_PATH, SettingGroup::MEDIA);
 
         return implode('/', [
             $basePath, date('Y'), date('m'), date('d'),

@@ -42,13 +42,13 @@ class ModuleServiceProvider extends LaravelServiceProvider
     private function configurePublishing(): void
     {
         $this->publishesMigrations([
-            __DIR__ . '/../../database/migrations' => database_path('migrations'),
+            __DIR__.'/../../database/migrations' => database_path('migrations'),
         ], 'factotum-base-migrations');
 
         $this->publishes([
-            __DIR__ . '/../../stubs/app/Providers/FactotumBaseServiceProvider.php' => app_path('Providers/FactotumBaseServiceProvider.php'),
+            __DIR__.'/../../stubs/app/Providers/FactotumBaseServiceProvider.php' => app_path('Providers/FactotumBaseServiceProvider.php'),
         ], 'factotum-base-provider');
 
-        $this->loadTranslationsFrom(__DIR__ . '/../../lang');
+        $this->loadTranslationsFrom(__DIR__.'/../../lang');
     }
 }

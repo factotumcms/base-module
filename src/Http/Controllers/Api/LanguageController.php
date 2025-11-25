@@ -16,10 +16,7 @@ final readonly class LanguageController
     private string $roleResource;
 
     public function __construct(
-
-    ) {
-
-    }
+    ) {}
 
     public function index(string $group): ApiResponse
     {
@@ -27,18 +24,17 @@ final readonly class LanguageController
         $settingService = app(SettingServiceInterface::class);
 
         Gate::denyIf(
-            condition: function(?User $user) use ($group, $settingService) {
-                $publicGroups = $settingService->getSystemSettingValue(
+            condition: function (?User $user) use ($group, $settingService) {
+                $publicGroups = $settingService->getValue(
                     key: Setting::PUBLIC_LANGUAGE_GROUPS,
                     group: SettingGroup::LOCALE
                 );
 
-                return !in_array($group, $publicGroups ?? []);
-        });
+                return ! in_array($group, $publicGroups ?? []);
+            });
 
         return ApiResponse::make(
             data: LanguageLine::getTranslationsForGroup(locale: config('app.locale'), group: $group)
         );
     }
-
 }

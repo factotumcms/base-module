@@ -107,7 +107,7 @@ final readonly class UserController
 
         return ApiResponse::make(
             data: $this->settingResource::collect(
-                $settingService->getUserSettings(Auth()->id())
+                $settingService->getAll()
             ),
         );
     }

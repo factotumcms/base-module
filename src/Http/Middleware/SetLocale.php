@@ -16,7 +16,7 @@ class SetLocale
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -24,30 +24,29 @@ class SetLocale
         $settingService = app(SettingServiceInterface::class);
         $requestLanguages = $request->getLanguages();
 
-        if($request->user()) {
-            if($locale = $settingService->getUserSettingValue(
-                userId: $request->user()->id,
-                key: Setting::LOCALE,
-                group: SettingGroup::LOCALE
-            )){
-                app()->setLocale($locale);
-                return $next($request);
-            }
-        }
+        //        if($request->user()) {
+        //            if($locale = $settingService->getUserSettingValue(
+        //                userId: $request->user()->id,
+        //                key: Setting::LOCALE,
+        //                group: SettingGroup::LOCALE
+        //            )){
+        //                app()->setLocale($locale);
+        //                return $next($request);
+        //            }
+        //        }
 
-        $availableLocales = $settingService->getSystemSettingValue(
+        $availableLocales = $settingService->getValue(
             key: Setting::AVAILABLE_LOCALES,
             group: SettingGroup::LOCALE
         );
 
-
         foreach ($requestLanguages as $requestLanguage) {
-            if(in_array($requestLanguage, $availableLocales)) {
-                app()->setLocale($locale);
+            if (in_array($requestLanguage, $availableLocales)) {
+                app()->setLocale($requestLanguage);
+
                 return $next($request);
             }
         }
-
         app()->setLocale(config('app.fallback_locale'));
 
         return $next($request);
