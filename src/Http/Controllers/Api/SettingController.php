@@ -23,7 +23,7 @@ final readonly class SettingController
 
     public function index(): ApiResponse
     {
-        $settings = $this->settingService->filter();
+        $settings = $this->settingService->getAll();
 
         return ApiResponse::make(
             data: $this->settingResource::collect($settings)
