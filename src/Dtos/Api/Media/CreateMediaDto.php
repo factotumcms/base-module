@@ -16,11 +16,11 @@ class CreateMediaDto extends Data
         public readonly string $fileName,
         public readonly string $mimeType,
         public readonly MediaType $mediaType,
-        public readonly array $presets = [],
         public readonly Disk $disk,
         public readonly string $path,
         public readonly int $size,
-        public readonly MediaCustomPropertiesDto $customProperties,
+        public readonly ?MediaCustomPropertiesDto $customProperties,
         public readonly ?string $conversions = null,
+        public readonly array $presets = [],
     ) {}
 }
