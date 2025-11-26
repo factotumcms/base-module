@@ -20,11 +20,13 @@ use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enums\Disk;
+use Wave8\Factotum\Base\Enums\Media\MediaAction;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
+use function Illuminate\Filesystem\join_paths;
 
 class MediaService implements MediaServiceInterface
 {
@@ -78,7 +80,7 @@ class MediaService implements MediaServiceInterface
         $metadata = $this->generateFileMetadata($data->file);
         $presetConfigs = $this->getPresetsConfigs($data);
         $mediaBasePath = $this->generateMediaPath();
-        $disk = Disk::tryFrom($this->settingService->getValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
+        $disk = Disk::from($this->settingService->getValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
 
         $i = 0;
         $suffix = '';
@@ -107,11 +109,11 @@ class MediaService implements MediaServiceInterface
                 fileName: $metadata['filename'],
                 mimeType: $metadata['mime_type'],
                 mediaType: $this->detectMediaType($metadata['mime_type']),
-                presets: json_encode(array_keys($presetConfigs)),
+                presets: array_keys($presetConfigs),
                 disk: $disk,
                 path: $mediaBasePath,
                 size: $metadata['size'],
-                customProperties: json_encode($this->setDefaultCustomProperties($metadata))
+                customProperties: $this->setDefaultCustomProperties($metadata)
             )
         );
 
@@ -187,9 +189,10 @@ class MediaService implements MediaServiceInterface
     public function generateConversions(Media $media): void
     {
         $conversions = [];
+
         foreach ($media->presets as $preset) {
             // Load preset config
-            $presetProps = $this->settingService->getValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
+            $presetProps = $this->settingService->getValue(Setting::from($preset), SettingGroup::MEDIA);
             $conversionsPath = $this->settingService->getValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
@@ -198,36 +201,28 @@ class MediaService implements MediaServiceInterface
             $fullMediaPath = $media->fullMediaPath();
             $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
 
-            $destPath = $fullMediaDirectory.'/'.$conversionsPath;
+            $destPath = join_paths($fullMediaDirectory, $conversionsPath);
+            File::ensureDirectoryExists($destPath);
 
-            if (! is_dir($destPath)) {
-                File::makeDirectory($destPath, 0755, true);
-            }
-
-            $destPath .= '/'.$fileName.$presetProps->suffix.$fileExtension;
+            $destPath = join_paths($destPath, $fileName.$presetProps['suffix'].$fileExtension);
 
             if (is_file($fullMediaPath)) {
                 $image = Image::load($fullMediaPath);
-                if (isset($presetProps->resize)) {
-                    $image->resize($presetProps->resize->width, $presetProps->resize->height);
-                }
 
-                if (isset($presetProps->fit)) {
-                    $image->fit(Fit::tryFrom($presetProps->fit->method), $presetProps->fit->width, $presetProps->fit->height);
-                }
-
-                if (isset($presetProps->crop)) {
-                    $image->crop($presetProps->crop->width, $presetProps->crop->height, CropPosition::tryFrom($presetProps->crop->position));
-                }
-
-                if ($presetProps->optimize) {
-                    $image->optimize();
+                foreach ($presetProps['actions'] as $action => $actionConfigs) {
+                    match ($action) {
+                        MediaAction::RESIZE->value => $image = $this->applyResize($image, $actionConfigs),
+                        MediaAction::FIT->value => $image = $this->applyFit($image, $actionConfigs),
+                        MediaAction::CROP->value => $image = $this->applyCrop($image, $actionConfigs),
+                        MediaAction::OPTIMIZE->value => $image = $this->applyOptimize($image),
+                        default => throw new \Exception('Unsupported image action: '.$action),
+                    };
                 }
 
                 $image->save($destPath);
             }
 
-            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/'.$conversionsPath.'/'.$fileName.$presetProps->suffix.$fileExtension);
+            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/'.$conversionsPath.'/'.$fileName.$presetProps['suffix'].$fileExtension);
         }
 
         $media->conversions = $conversions;
@@ -297,5 +292,22 @@ class MediaService implements MediaServiceInterface
             ->whereNull('conversions')
             ->where('media_type', MediaType::IMAGE->value)
             ->get();
+    }
+
+    private function applyResize(Image $image, array $configs)
+    {
+        return $image->resize($configs['width'], $configs['height']);
+    }
+    private function applyFit(Image $image, array $configs)
+    {
+        return $image->fit(Fit::from($configs['method']), $configs['width'], $configs['height']);
+    }
+    private function applyCrop(Image $image, array $configs)
+    {
+        return $image->crop($configs['width'], $configs['height'], CropPosition::from($configs['position']));
+    }
+    private function applyOptimize(Image $image)
+    {
+        return $image->optimize();
     }
 }

@@ -11,9 +11,6 @@ class MediaPresetConfigDto extends Data
 {
     public function __construct(
         public readonly string $suffix,
-        public bool $optimize,
-        public readonly ?MediaResizeDto $resize,
-        public readonly ?MediaFitDto $fit,
-        public readonly ?MediaCropDto $crop,
+        public readonly array $actions,
     ) {}
 }

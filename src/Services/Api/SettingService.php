@@ -49,6 +49,7 @@ class SettingService implements SettingServiceInterface
 
     private function cachedSettings(): Collection
     {
+        //Todo:: capire come gestiore la casistica dell'utente non loggato
         $userId = auth()->user()->id ?? 1;
 
         return Cache::rememberForever($this::USER_SETTINGS_CACHE_KEY.$userId, function () use ($userId) {
