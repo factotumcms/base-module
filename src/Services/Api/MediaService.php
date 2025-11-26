@@ -26,6 +26,7 @@ use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
+use function Illuminate\Filesystem\join_paths;
 
 class MediaService implements MediaServiceInterface
 {
@@ -79,7 +80,7 @@ class MediaService implements MediaServiceInterface
         $metadata = $this->generateFileMetadata($data->file);
         $presetConfigs = $this->getPresetsConfigs($data);
         $mediaBasePath = $this->generateMediaPath();
-        $disk = Disk::tryFrom($this->settingService->getValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
+        $disk = Disk::from($this->settingService->getValue(Setting::DEFAULT_MEDIA_DISK, SettingGroup::MEDIA));
 
         $i = 0;
         $suffix = '';
@@ -191,7 +192,7 @@ class MediaService implements MediaServiceInterface
 
         foreach ($media->presets as $preset) {
             // Load preset config
-            $presetProps = $this->settingService->getValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
+            $presetProps = $this->settingService->getValue(Setting::from($preset), SettingGroup::MEDIA);
             $conversionsPath = $this->settingService->getValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
@@ -200,13 +201,10 @@ class MediaService implements MediaServiceInterface
             $fullMediaPath = $media->fullMediaPath();
             $fullMediaDirectory = Storage::disk($media->disk)->path($media->path);
 
-            $destPath = $fullMediaDirectory.'/'.$conversionsPath;
+            $destPath = join_paths($fullMediaDirectory, $conversionsPath);
+            File::ensureDirectoryExists($destPath);
 
-            if (! is_dir($destPath)) {
-                File::makeDirectory($destPath, 0755, true);
-            }
-
-            $destPath .= '/'.$fileName.$presetProps['suffix'].$fileExtension;
+            $destPath = join_paths($destPath, $fileName.$presetProps['suffix'].$fileExtension);
 
             if (is_file($fullMediaPath)) {
                 $image = Image::load($fullMediaPath);
@@ -302,11 +300,11 @@ class MediaService implements MediaServiceInterface
     }
     private function applyFit(Image $image, array $configs)
     {
-        return $image->fit(Fit::tryFrom($configs['method']), $configs['width'], $configs['height']);
+        return $image->fit(Fit::from($configs['method']), $configs['width'], $configs['height']);
     }
     private function applyCrop(Image $image, array $configs)
     {
-        return $image->crop($configs['width'], $configs['height'], CropPosition::tryFrom($configs['position']));
+        return $image->crop($configs['width'], $configs['height'], CropPosition::from($configs['position']));
     }
     private function applyOptimize(Image $image)
     {
