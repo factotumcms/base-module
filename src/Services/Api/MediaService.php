@@ -107,11 +107,11 @@ class MediaService implements MediaServiceInterface
                 fileName: $metadata['filename'],
                 mimeType: $metadata['mime_type'],
                 mediaType: $this->detectMediaType($metadata['mime_type']),
-                presets: json_encode(array_keys($presetConfigs)),
+                presets: array_keys($presetConfigs),
                 disk: $disk,
                 path: $mediaBasePath,
                 size: $metadata['size'],
-                customProperties: json_encode($this->setDefaultCustomProperties($metadata))
+                customProperties: $this->setDefaultCustomProperties($metadata)
             )
         );
 
@@ -187,9 +187,11 @@ class MediaService implements MediaServiceInterface
     public function generateConversions(Media $media): void
     {
         $conversions = [];
+
         foreach ($media->presets as $preset) {
             // Load preset config
             $presetProps = $this->settingService->getValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
+
             $conversionsPath = $this->settingService->getValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
@@ -204,30 +206,30 @@ class MediaService implements MediaServiceInterface
                 File::makeDirectory($destPath, 0755, true);
             }
 
-            $destPath .= '/'.$fileName.$presetProps->suffix.$fileExtension;
+            $destPath .= '/'.$fileName.$presetProps['suffix'].$fileExtension;
 
             if (is_file($fullMediaPath)) {
                 $image = Image::load($fullMediaPath);
-                if (isset($presetProps->resize)) {
-                    $image->resize($presetProps->resize->width, $presetProps->resize->height);
+                if (isset($presetProps['resize'])) {
+                    $image->resize($presetProps['resize']['width'], $presetProps['resize']['height']);
                 }
 
-                if (isset($presetProps->fit)) {
-                    $image->fit(Fit::tryFrom($presetProps->fit->method), $presetProps->fit->width, $presetProps->fit->height);
+                if (isset($presetProps['fit'])) {
+                    $image->fit(Fit::tryFrom($presetProps['fit']['method']), $presetProps['fit']['width'], $presetProps['fit']['height']);
                 }
 
-                if (isset($presetProps->crop)) {
-                    $image->crop($presetProps->crop->width, $presetProps->crop->height, CropPosition::tryFrom($presetProps->crop->position));
+                if (isset($presetProps['crop'])) {
+                    $image->crop($presetProps['crop']['width'], $presetProps['crop']['height'], CropPosition::tryFrom($presetProps['crop']['position']));
                 }
 
-                if ($presetProps->optimize) {
+                if ($presetProps['optimize']) {
                     $image->optimize();
                 }
 
                 $image->save($destPath);
             }
 
-            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/'.$conversionsPath.'/'.$fileName.$presetProps->suffix.$fileExtension);
+            $conversions[$preset] = Storage::disk($media->disk)->url($media->path.'/'.$conversionsPath.'/'.$fileName.$presetProps['suffix'].$fileExtension);
         }
 
         $media->conversions = $conversions;

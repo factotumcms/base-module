@@ -99,10 +99,7 @@ class SettingSeeder extends Seeder
                     key: $settingKey,
                     value: json_encode(new MediaPresetConfigDto(
                         suffix: $preset['suffix'],
-                        optimize: $preset['optimize'] ?? true,
-                        resize: isset($preset['resize']) ? MediaResizeDto::from($preset['resize']) : null,
-                        fit: isset($preset['fit']) ? MediaFitDto::from($preset['fit']) : null,
-                        crop: isset($preset['crop']) ? MediaCropDto::from($preset['crop']) : null,
+                        actions: $preset['actions'] ?? [],
                     )),
                 )
             );

@@ -32,36 +32,39 @@ return [
         'presets' => [
             MediaPreset::USER_AVATAR->value => [
                 'suffix' => '_avatar',
-                'optimize' => true,
-                'resize' => null,
-                'fit' => [
-                    'method' => Fit::Crop->value,
-                    'width' => 300,
-                    'height' => 300,
-                ],
-                'crop' => [
-                    'width' => 300,
-                    'height' => 300,
-                    'position' => CropPosition::Center->value,
+                'actions' => [
+                    'fit' => [
+                        'method' => Fit::Crop->value,
+                        'width' => 300,
+                        'height' => 300,
+                    ],
+                    'crop' => [
+                        'width' => 300,
+                        'height' => 300,
+                        'position' => CropPosition::Center->value,
+                    ],
+                    'optimize'
                 ],
             ],
             MediaPreset::THUMBNAIL->value => [
                 'suffix' => '_thumb',
-                'optimize' => true,
-                'resize' => [
-                    'width' => 300,
-                    'height' => 300,
-                ],
-                'fit' => [
-                    'method' => Fit::Crop->value,
-                    'width' => 300,
-                    'height' => 300,
-                ],
-                'crop' => [
-                    'width' => 300,
-                    'height' => 300,
-                    'position' => CropPosition::Center->value,
-                ],
+                'actions' => [
+                    'resize' => [
+                        'width' => 300,
+                        'height' => 300,
+                    ],
+                    'fit' => [
+                        'method' => Fit::Crop->value,
+                        'width' => 300,
+                        'height' => 300,
+                    ],
+                    'crop' => [
+                        'width' => 300,
+                        'height' => 300,
+                        'position' => CropPosition::Center->value,
+                    ],
+                    'optimize'
+                ]
             ],
         ],
     ],
