@@ -4,6 +4,7 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
+use Wave8\Factotum\Base\Enums\Media\MediaAction;
 use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 
 return [
@@ -33,37 +34,37 @@ return [
             MediaPreset::USER_AVATAR->value => [
                 'suffix' => '_avatar',
                 'actions' => [
-                    'fit' => [
+                    MediaAction::FIT->value => [
                         'method' => Fit::Crop->value,
                         'width' => 300,
                         'height' => 300,
                     ],
-                    'crop' => [
+                    MediaAction::CROP->value => [
                         'width' => 300,
                         'height' => 300,
                         'position' => CropPosition::Center->value,
                     ],
-                    'optimize'
+                    MediaAction::OPTIMIZE->value => []
                 ],
             ],
             MediaPreset::THUMBNAIL->value => [
                 'suffix' => '_thumb',
                 'actions' => [
-                    'resize' => [
+                    MediaAction::RESIZE->value => [
                         'width' => 300,
                         'height' => 300,
                     ],
-                    'fit' => [
+                    MediaAction::FIT->value => [
                         'method' => Fit::Crop->value,
                         'width' => 300,
                         'height' => 300,
                     ],
-                    'crop' => [
+                    MediaAction::CROP->value => [
                         'width' => 300,
                         'height' => 300,
                         'position' => CropPosition::Center->value,
                     ],
-                    'optimize'
+                    MediaAction::OPTIMIZE->value => []
                 ]
             ],
         ],

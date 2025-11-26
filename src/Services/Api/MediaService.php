@@ -20,6 +20,7 @@ use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
 use Wave8\Factotum\Base\Enums\Disk;
+use Wave8\Factotum\Base\Enums\Media\MediaAction;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
@@ -191,7 +192,6 @@ class MediaService implements MediaServiceInterface
         foreach ($media->presets as $preset) {
             // Load preset config
             $presetProps = $this->settingService->getValue(Setting::tryFrom($preset), SettingGroup::MEDIA);
-
             $conversionsPath = $this->settingService->getValue(Setting::MEDIA_CONVERSIONS_PATH, SettingGroup::MEDIA);
 
             $fileName = File::name($media->file_name);
@@ -210,20 +210,15 @@ class MediaService implements MediaServiceInterface
 
             if (is_file($fullMediaPath)) {
                 $image = Image::load($fullMediaPath);
-                if (isset($presetProps['resize'])) {
-                    $image->resize($presetProps['resize']['width'], $presetProps['resize']['height']);
-                }
 
-                if (isset($presetProps['fit'])) {
-                    $image->fit(Fit::tryFrom($presetProps['fit']['method']), $presetProps['fit']['width'], $presetProps['fit']['height']);
-                }
-
-                if (isset($presetProps['crop'])) {
-                    $image->crop($presetProps['crop']['width'], $presetProps['crop']['height'], CropPosition::tryFrom($presetProps['crop']['position']));
-                }
-
-                if ($presetProps['optimize']) {
-                    $image->optimize();
+                foreach ($presetProps['actions'] as $action => $actionConfigs) {
+                    match ($action) {
+                        MediaAction::RESIZE->value => $image = $this->applyResize($image, $actionConfigs),
+                        MediaAction::FIT->value => $image = $this->applyFit($image, $actionConfigs),
+                        MediaAction::CROP->value => $image = $this->applyCrop($image, $actionConfigs),
+                        MediaAction::OPTIMIZE->value => $image = $this->applyOptimize($image),
+                        default => throw new \Exception('Unsupported image action: '.$action),
+                    };
                 }
 
                 $image->save($destPath);
@@ -299,5 +294,22 @@ class MediaService implements MediaServiceInterface
             ->whereNull('conversions')
             ->where('media_type', MediaType::IMAGE->value)
             ->get();
+    }
+
+    private function applyResize(Image $image, array $configs)
+    {
+        return $image->resize($configs['width'], $configs['height']);
+    }
+    private function applyFit(Image $image, array $configs)
+    {
+        return $image->fit(Fit::tryFrom($configs['method']), $configs['width'], $configs['height']);
+    }
+    private function applyCrop(Image $image, array $configs)
+    {
+        return $image->crop($configs['width'], $configs['height'], CropPosition::tryFrom($configs['position']));
+    }
+    private function applyOptimize(Image $image)
+    {
+        return $image->optimize();
     }
 }
