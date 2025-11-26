@@ -26,6 +26,7 @@ use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Jobs\GenerateImagesConversions;
 use Wave8\Factotum\Base\Models\Media;
+
 use function Illuminate\Filesystem\join_paths;
 
 class MediaService implements MediaServiceInterface
@@ -298,14 +299,17 @@ class MediaService implements MediaServiceInterface
     {
         return $image->resize($configs['width'], $configs['height']);
     }
+
     private function applyFit(Image $image, array $configs)
     {
         return $image->fit(Fit::from($configs['method']), $configs['width'], $configs['height']);
     }
+
     private function applyCrop(Image $image, array $configs)
     {
         return $image->crop($configs['width'], $configs['height'], CropPosition::from($configs['position']));
     }
+
     private function applyOptimize(Image $image)
     {
         return $image->optimize();

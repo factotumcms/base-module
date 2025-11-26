@@ -44,7 +44,7 @@ return [
                         'height' => 300,
                         'position' => CropPosition::Center->value,
                     ],
-                    MediaAction::OPTIMIZE->value => []
+                    MediaAction::OPTIMIZE->value => [],
                 ],
             ],
             MediaPreset::THUMBNAIL->value => [
@@ -64,8 +64,8 @@ return [
                         'height' => 300,
                         'position' => CropPosition::Center->value,
                     ],
-                    MediaAction::OPTIMIZE->value => []
-                ]
+                    MediaAction::OPTIMIZE->value => [],
+                ],
             ],
         ],
     ],
