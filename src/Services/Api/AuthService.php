@@ -35,6 +35,8 @@ class AuthService implements AuthServiceInterface
             throw new AuthenticationException;
         }
 
+        $this->updateLastLogin();
+
         return Auth::user();
     }
 
@@ -43,5 +45,12 @@ class AuthService implements AuthServiceInterface
         return User::create(
             $data->toArray()
         );
+    }
+
+    public function updateLastLogin(): void
+    {
+        $user = Auth::user();
+        $user->last_login_at = now();
+        $user->save();
     }
 }

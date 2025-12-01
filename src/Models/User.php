@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -94,5 +95,24 @@ class User extends Authenticatable implements NotifiableInterface
     public function avatar(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'avatar_id');
+    }
+
+    public function password_histories(): HasMany
+    {
+        return $this->hasMany(PasswordHistory::class);
+    }
+
+    public function isCurrentPasswordExpired(): bool
+    {
+        if (
+            $this->last_login_at === null ||
+            $this->password_histories()->count() === 0 ||
+            ! hash_equals($this->password, $this->password_histories()->latest()->firstOrFail()->password)
+        ) {
+            return false;
+        }
+
+        return $this->password_histories()->latest()
+            ->firstOrFail()->expires_at->lessThanOrEqualTo($this->last_login_at);
     }
 }
