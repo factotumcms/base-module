@@ -44,6 +44,21 @@ class UserService implements UserServiceInterface
         return $user;
     }
 
+    public function updatePassword(User $user, string $password): User
+    {
+        $user = $this->user::findOrFail($user->id);
+
+        $user->password = $password;
+        $user->save();
+
+        $user->password_histories()->create([
+            'password' => $user->password,
+            'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),
+        ]);
+
+        return $user;
+    }
+
     public function delete(int $id): void
     {
         $user = $this->user::findOrFail($id);

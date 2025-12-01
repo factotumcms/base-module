@@ -12,6 +12,11 @@ class UserPolicy
         return $user->hasPermissionTo(UserPermission::CREATE_USERS);
     }
 
+    public function filter(User $user): bool
+    {
+        return $user->hasPermissionTo(UserPermission::READ_USERS);
+    }
+
     public function read(User $authUser, User $user): bool
     {
         return $authUser->hasPermissionTo(UserPermission::READ_USERS);
@@ -25,5 +30,10 @@ class UserPolicy
     public function delete(User $user): bool
     {
         return $user->hasPermissionTo(UserPermission::DELETE_USERS);
+    }
+
+    public function changePassword(User $authUser, User $user): bool
+    {
+        return $authUser->hasPermissionTo(UserPermission::UPDATE_USERS);
     }
 }

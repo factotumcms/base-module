@@ -9,6 +9,7 @@ use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
 use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
+use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserPasswordRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Models\Setting;
@@ -74,6 +75,13 @@ final readonly class UserController
         return ApiResponse::make(
             data: $this->userResource::from($user),
         );
+    }
+
+    final public function changePassword(User $user, UpdateUserPasswordRequest $request): ApiResponse
+    {
+        $this->userService->updatePassword($user, $request->password);
+
+        return ApiResponse::ok($user);
     }
 
     final public function destroy(User $user): ApiResponse

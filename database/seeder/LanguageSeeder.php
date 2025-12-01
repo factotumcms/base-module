@@ -84,5 +84,14 @@ class LanguageSeeder extends Seeder
                 line: 'Your password has expired. Please update your password to continue',
             )
         );
+
+        $this->languageService->create(
+            data: new RegisterLineDto(
+                locale: Locale::EN,
+                group: 'validation',
+                key: 'password.history_used',
+                line: 'The given :attribute has been previously used. Please choose a different :attribute.',
+            )
+        );
     }
 }
