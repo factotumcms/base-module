@@ -20,6 +20,7 @@ return [
     'auth' => [
         'type' => 'basic', // Options: basic
         'basic_identifier' => 'email', // Options: email, username
+        'password_expiration_days' => env('PASSWORD_EXPIRATION_DAYS', 30),
     ],
 
     'locale' => [

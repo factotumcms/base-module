@@ -14,9 +14,18 @@ class UserService implements UserServiceInterface
 
     public function create(Data $data): Model
     {
-        return $this->user::create(
+        $user = $this->user::create(
             attributes: $data->toArray()
         );
+
+        if($data->password){
+            $user->password_histories()->create([
+                'password' => $user->password,
+                'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),
+            ]);
+        }
+
+        return $user;
     }
 
     public function read(int $id): Model
