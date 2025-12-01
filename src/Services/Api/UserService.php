@@ -18,7 +18,7 @@ class UserService implements UserServiceInterface
             attributes: $data->toArray()
         );
 
-        if($data->password){
+        if ($data->password) {
             $user->password_histories()->create([
                 'password' => $user->password,
                 'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),

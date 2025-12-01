@@ -3,11 +3,7 @@
 namespace Wave8\Factotum\Base\Services\Api;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Spatie\LaravelData\Data;
-use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Models\PasswordHistory;
-use Wave8\Factotum\Base\Models\Role;
 use Wave8\Factotum\Base\Models\User;
 
 class PasswordHistoryService
@@ -18,7 +14,7 @@ class PasswordHistoryService
     {
         $passwordHistory = $user->password_histories;
 
-        if ($passwordHistory === null || !hash_equals($user->password, $passwordHistory->password)) {
+        if ($passwordHistory === null || ! hash_equals($user->password, $passwordHistory->password)) {
             return null;
         }
 

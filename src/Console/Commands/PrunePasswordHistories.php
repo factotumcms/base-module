@@ -24,13 +24,12 @@ class PrunePasswordHistories extends Command
 
     /**
      * Execute the console command.
-     * @var UserService $userService
-     * @return void
+     *
+     * @var UserService
      */
     public function handle(): void
     {
         if ($keep = config('factotum_base.auth.password_prune_keep')) {
-
             foreach (User::all() as $user) {
                 $passwordHistories =
                     $user->password_histories()->orderByDesc('created_at')->limit($keep)->offset($keep)->get();
@@ -45,7 +44,6 @@ class PrunePasswordHistories extends Command
                     $c, $user->id
                 ));
             }
-
         } else {
             $this->warn('Number of passwords to keep not specified in configuration file.');
         }

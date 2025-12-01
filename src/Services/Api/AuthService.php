@@ -47,7 +47,7 @@ class AuthService implements AuthServiceInterface
         );
     }
 
-    public function updateLastLogin():void
+    public function updateLastLogin(): void
     {
         $user = Auth::user();
         $user->last_login_at = now();
