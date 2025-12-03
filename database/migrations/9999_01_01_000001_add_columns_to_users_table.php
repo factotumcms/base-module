@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->renameColumn('name', 'first_name');
 
-
             $table->after('first_name', function (Blueprint $table) {
                 $table->string('last_name');
                 $table->string('username')->unique();
