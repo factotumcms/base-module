@@ -13,15 +13,18 @@ return new class extends Migration
     {
         // Update default users table
         Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('avatar_id')->nullable()->after('id')->constrained('media')->nullOnDelete();
             $table->renameColumn('name', 'first_name');
 
+
             $table->after('first_name', function (Blueprint $table) {
-                $table->string('last_name')->nullable();
+                $table->string('last_name');
                 $table->string('username')->unique();
             });
 
             $table->boolean('is_active')->after('password')->default(true);
             $table->softDeletes();
+            $table->timestamp('last_login_at')->nullable()->after('deleted_at');
         });
     }
 
@@ -33,6 +36,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->renameColumn('first_name', 'name');
             $table->dropUnique(['username']);
+            $table->dropConstrainedForeignId('avatar_id');
 
             $table->dropColumn(['last_name', 'username', 'is_active']);
             $table->dropSoftDeletes();
