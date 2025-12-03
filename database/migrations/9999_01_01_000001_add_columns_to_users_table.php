@@ -13,7 +13,6 @@ return new class extends Migration
     {
         // Update default users table
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('avatar_id')->nullable()->after('id')->constrained('media')->nullOnDelete();
             $table->renameColumn('name', 'first_name');
 
 
