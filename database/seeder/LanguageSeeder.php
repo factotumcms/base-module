@@ -75,5 +75,23 @@ class LanguageSeeder extends Seeder
                 line: 'Logout successful.',
             )
         );
+
+        $this->languageService->create(
+            data: new RegisterLineDto(
+                locale: Locale::EN,
+                group: 'passwords',
+                key: 'expired',
+                line: 'Your password has expired. Please update your password to continue',
+            )
+        );
+
+        $this->languageService->create(
+            data: new RegisterLineDto(
+                locale: Locale::EN,
+                group: 'validation',
+                key: 'password.history_used',
+                line: 'The given :attribute has been previously used. Please choose a different :attribute.',
+            )
+        );
     }
 }

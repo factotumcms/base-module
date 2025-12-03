@@ -4,6 +4,7 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Locale;
+use Wave8\Factotum\Base\Enums\Media\MediaAction;
 use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 
 return [
@@ -19,6 +20,9 @@ return [
     'auth' => [
         'type' => 'basic', // Options: basic
         'basic_identifier' => 'email', // Options: email, username
+        'password_expiration_days' => env('PASSWORD_EXPIRATION_DAYS', 30),
+        'password_prune_keep' => env('PASSWORD_PRUNE_KEEP', 5),
+        'password_validate_latest' => env('PASSWORD_VALIDATE_LATEST', 5),
     ],
 
     'locale' => [
@@ -32,35 +36,38 @@ return [
         'presets' => [
             MediaPreset::USER_AVATAR->value => [
                 'suffix' => '_avatar',
-                'optimize' => true,
-                'resize' => null,
-                'fit' => [
-                    'method' => Fit::Crop->value,
-                    'width' => 300,
-                    'height' => 300,
-                ],
-                'crop' => [
-                    'width' => 300,
-                    'height' => 300,
-                    'position' => CropPosition::Center->value,
+                'actions' => [
+                    MediaAction::FIT->value => [
+                        'method' => Fit::Crop->value,
+                        'width' => 300,
+                        'height' => 300,
+                    ],
+                    MediaAction::CROP->value => [
+                        'width' => 300,
+                        'height' => 300,
+                        'position' => CropPosition::Center->value,
+                    ],
+                    MediaAction::OPTIMIZE->value => [],
                 ],
             ],
             MediaPreset::THUMBNAIL->value => [
                 'suffix' => '_thumb',
-                'optimize' => true,
-                'resize' => [
-                    'width' => 300,
-                    'height' => 300,
-                ],
-                'fit' => [
-                    'method' => Fit::Crop->value,
-                    'width' => 300,
-                    'height' => 300,
-                ],
-                'crop' => [
-                    'width' => 300,
-                    'height' => 300,
-                    'position' => CropPosition::Center->value,
+                'actions' => [
+                    MediaAction::RESIZE->value => [
+                        'width' => 300,
+                        'height' => 300,
+                    ],
+                    MediaAction::FIT->value => [
+                        'method' => Fit::Crop->value,
+                        'width' => 300,
+                        'height' => 300,
+                    ],
+                    MediaAction::CROP->value => [
+                        'width' => 300,
+                        'height' => 300,
+                        'position' => CropPosition::Center->value,
+                    ],
+                    MediaAction::OPTIMIZE->value => [],
                 ],
             ],
         ],

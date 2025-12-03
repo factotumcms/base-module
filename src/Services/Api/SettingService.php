@@ -49,11 +49,16 @@ class SettingService implements SettingServiceInterface
 
     private function cachedSettings(): Collection
     {
-        $userId = auth()->user()->id ?? 1;
+        $userId = auth()?->user()?->id;
+        $query = Setting::query();
 
-        return Cache::rememberForever($this::USER_SETTINGS_CACHE_KEY.$userId, function () use ($userId) {
-            $query = Setting::query();
+        if (! $userId) {
+            return Cache::rememberForever($this::SETTINGS_CACHE_KEY, function () use ($query) {
+                return $query->get();
+            });
+        }
 
+        return Cache::rememberForever($this::USER_SETTINGS_CACHE_KEY.$userId, function () use ($userId, $query) {
             $query->select(
                 'settings.*',
                 DB::raw('COALESCE(setting_user.value, settings.value) as user_value'),

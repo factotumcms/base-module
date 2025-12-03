@@ -18,7 +18,7 @@ describe('MediaDto', function () {
         $val = 'test';
 
         $dto = new CreateMediaDto(
-            name: $val, fileName: $val, mimeType: $val, mediaType: MediaType::IMAGE, presets: null, disk: Disk::LOCAL, path: $val, size: 123, customProperties: '{}', conversions: null
+            name: $val, fileName: $val, mimeType: $val, mediaType: MediaType::IMAGE, disk: Disk::LOCAL, path: $val, size: 123, customProperties: null, conversions: null, presets: []
         );
 
         expect($dto)->toBeInstanceOf(CreateMediaDto::class);
@@ -52,7 +52,7 @@ describe('MediaDto', function () {
 
     it('successfully create a new MediaPresetConfigDto instance', function () {
         $dto = new MediaPresetConfigDto(
-            suffix: 'thumb', optimize: true, resize: null, fit: new MediaFitDto(method: Fit::Contain, width: 100, height: 100), crop: null
+            suffix: 'thumb', actions: []
         );
 
         expect($dto)->toBeInstanceOf(MediaPresetConfigDto::class);

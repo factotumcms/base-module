@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Finder\Finder;
+use Wave8\Factotum\Base\Http\Middleware\CheckPasswordExpiration;
 use Wave8\Factotum\Base\Http\Middleware\SetLocale;
 
 class RouteServiceProvider extends LaravelRouteServiceProvider
@@ -52,7 +53,7 @@ class RouteServiceProvider extends LaravelRouteServiceProvider
     protected function registerProtectedApiRoutes(): void
     {
         Route::group([
-            'middleware' => ['api', 'auth:sanctum', SetLocale::class],
+            'middleware' => ['api', 'auth:sanctum', CheckPasswordExpiration::class, SetLocale::class],
         ], function () {
             $this->mapRoutes(__DIR__.'/../../routes/api/protected');
         });

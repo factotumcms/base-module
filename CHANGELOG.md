@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0] - 2025-12-03
+### Added
+- Added password history feeature
+### Refactor
+- Refactor media conversions logic
+### Fixed
+- Fix user's settings cache logic
+
 ## [1.5.0] - 2025-11-25
 ### Refactor
 - Refactor settings logic

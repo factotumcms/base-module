@@ -31,6 +31,7 @@ class Media extends Model
     protected $casts = [
         'conversions' => 'json',
         'presets' => 'array',
+        'custom_properties' => 'json',
     ];
 
     /**
