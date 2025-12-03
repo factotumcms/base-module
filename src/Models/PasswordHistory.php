@@ -16,6 +16,10 @@ class PasswordHistory extends Model
         'expires_at',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
     protected $casts = [
         'expires_at' => 'datetime',
         'password' => 'hashed',
