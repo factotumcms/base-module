@@ -4,6 +4,7 @@ namespace Wave8\Factotum\Base\Services\Api;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Models\User;
@@ -84,5 +85,10 @@ class UserService implements UserServiceInterface
         ], false);
 
         return $user;
+    }
+
+    public function getBy(string $column, string $value): Collection
+    {
+        return $this->user::where($column, $value)->get();
     }
 }
