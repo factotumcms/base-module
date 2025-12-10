@@ -78,10 +78,28 @@ class LanguageSeeder extends Seeder
 
         $this->languageService->create(
             data: new RegisterLineDto(
+                locale: Locale::IT,
+                group: 'passwords',
+                key: 'expired',
+                line: 'La tua password è scaduta. Per favore aggiorna la tua password per continuare',
+            )
+        );
+
+        $this->languageService->create(
+            data: new RegisterLineDto(
                 locale: Locale::EN,
                 group: 'passwords',
                 key: 'expired',
                 line: 'Your password has expired. Please update your password to continue',
+            )
+        );
+
+        $this->languageService->create(
+            data: new RegisterLineDto(
+                locale: Locale::IT,
+                group: 'validation',
+                key: 'password.history_used',
+                line: 'La :attribute fornita è stata precedentemente utilizzata. Per favore scegli una :attribute diversa.',
             )
         );
 
