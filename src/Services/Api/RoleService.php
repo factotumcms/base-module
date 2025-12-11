@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
 use Wave8\Factotum\Base\Models\Role;
 
 class RoleService implements RoleServiceInterface
@@ -43,12 +44,15 @@ class RoleService implements RoleServiceInterface
         $role->delete();
     }
 
-    public function filter(): LengthAwarePaginator
+    public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator
     {
         $query = $this->role->query()
             ->filterByRequest();
 
-        return $query->paginate();
+        return $query->paginate(
+            perPage: $paginationDto->perPage ?? 15,
+            page: $paginationDto->page ?? 1,
+        );
     }
 
     /**
@@ -56,12 +60,8 @@ class RoleService implements RoleServiceInterface
      */
     public function isDefaultRole(int $roleId): bool
     {
-        try {
-            $role = $this->role::findOrFail($roleId)->name;
-            $defaultRole = \Wave8\Factotum\Base\Enums\Role::tryFrom($role);
-        } catch (\Exception $e) {
-            return false;
-        }
+        $role = $this->role::findOrFail($roleId)->name;
+        $defaultRole = \Wave8\Factotum\Base\Enums\Role::tryFrom($role);
 
         return ! is_null($defaultRole);
     }

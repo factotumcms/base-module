@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
 use Wave8\Factotum\Base\Models\Media;
 
 interface MediaServiceInterface
@@ -19,7 +20,7 @@ interface MediaServiceInterface
 
     public function delete(int $id): void;
 
-    public function filter(): LengthAwarePaginator;
+    public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator;
 
     public function store(StoreFileDto $data): Media;
 
