@@ -18,4 +18,6 @@ interface RoleServiceInterface
     public function delete(int $id): void;
 
     public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator;
+
+    public function isDefaultRole(int $roleId): bool;
 }

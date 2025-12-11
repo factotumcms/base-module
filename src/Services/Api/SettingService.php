@@ -117,11 +117,6 @@ class SettingService implements SettingServiceInterface
         return $setting;
     }
 
-    public function delete(int $id): void
-    {
-        // Todo:: To implement the delete logic or avoid
-    }
-
     public function filter(): LengthAwarePaginator
     {
         $query = $this->setting->query()->filterByRequest();
