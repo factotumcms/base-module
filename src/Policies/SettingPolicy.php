@@ -20,7 +20,7 @@ class SettingPolicy
 
     public function updateUserSetting(User $user, Setting $setting): bool
     {
-        return $setting->ie_editable
+        return $setting->is_editable
             && $user->hasPermissionTo(SettingPermission::UPDATE_SETTINGS);
     }
 }
