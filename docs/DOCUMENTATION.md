@@ -1538,8 +1538,8 @@ php artisan migrate
 
 ### Documentation
 
-- **README**: `/packages/wave8/factotum-base/README.md`
-- **Changelog**: `/packages/wave8/factotum-base/CHANGELOG.md`
+- **README**: `/README.md`
+- **Changelog**: `/CHANGELOG.md`
 
 ### Bug Reporting
 
@@ -1550,7 +1550,6 @@ To report bugs or issues, contact the development team or open an issue in the r
 The package includes a complete test suite:
 
 ```bash
-cd packages/wave8/factotum-base
 composer test          # Runs all tests
 composer test:unit     # Unit tests only
 composer test:lint     # Code style check
