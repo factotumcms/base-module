@@ -43,6 +43,13 @@ final readonly class AuthController
         );
     }
 
+    public function logout(): ApiResponse
+    {
+        $this->authService->logout();
+
+        return ApiResponse::noContent();
+    }
+
     public function register(RegisterRequest $request): ApiResponse
     {
         $registerUserDto = config('data_transfer.'.RegisterUserDto::class);

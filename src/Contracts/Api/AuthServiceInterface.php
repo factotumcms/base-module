@@ -11,6 +11,4 @@ interface AuthServiceInterface
     public function attemptLogin(LoginUserDto $data): User|false;
 
     public function register(RegisterUserDto $data): User;
-
-    public function updateLastLogin(): void;
 }

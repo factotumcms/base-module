@@ -36,6 +36,7 @@ class AuthService implements AuthServiceInterface
         }
 
         $this->updateLastLogin();
+        $this->cleanUpOldTokens();
 
         return Auth::user();
     }
@@ -47,10 +48,21 @@ class AuthService implements AuthServiceInterface
         );
     }
 
-    public function updateLastLogin(): void
+    public function logout(): void
+    {
+        $this->cleanUpOldTokens();
+    }
+
+    private function updateLastLogin(): void
     {
         $user = Auth::user();
         $user->last_login_at = now();
+
         $user->save();
+    }
+
+    private function cleanUpOldTokens()
+    {
+        Auth::user()->tokens()->where('created_at', '<', now()->addSecond())->delete();
     }
 }
