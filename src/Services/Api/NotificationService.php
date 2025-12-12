@@ -9,10 +9,11 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
+use Wave8\Factotum\Base\Models\Notification;
 
 class NotificationService implements NotificationServiceInterface
 {
-    public function __construct(public readonly Model $notification) {}
+    public function __construct(public readonly Notification $notification) {}
 
     public function show(int $id): ?Model
     {

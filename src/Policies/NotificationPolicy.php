@@ -19,10 +19,7 @@ class NotificationPolicy
 
     public function markManyAsRead(User $user): bool
     {
-        if (! request()->has('ids')) {
-            return true;
-        }
-
+        // Ensure all notification IDs belong to the auth user
         $ids = request()->ids;
 
         return $user->notifications()->whereIn('id', $ids)->count() === count($ids);

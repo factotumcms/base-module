@@ -3,7 +3,9 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
+use Wave8\Factotum\Base\Http\Requests\Api\Notification\ReadManyNotificationRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Notification\ReadNotificationRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Models\Notification;
@@ -33,6 +35,17 @@ final readonly class NotificationController
         $this->notificationService->read(
             id: $notification->id,
             data: $readNotificationDto::from($request)
+        );
+
+        return ApiResponse::noContent();
+    }
+
+    public function readMany(ReadManyNotificationRequest $request): ApiResponse
+    {
+        $readManyNotificationDto = config('data_transfer.'.ReadManyNotificationDto::class);
+
+        $this->notificationService->readMany(
+            data: $readManyNotificationDto::from($request)
         );
 
         return ApiResponse::noContent();
