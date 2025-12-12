@@ -128,7 +128,8 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::JSON,
                 group: SettingGroup::LOCALE,
                 key: Setting::PUBLIC_LANGUAGE_GROUPS,
-                value: json_encode([])
+                value: json_encode([]),
+                description: 'Language groups available to public users'
             )
         );
     }
