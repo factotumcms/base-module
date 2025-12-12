@@ -4,9 +4,13 @@ namespace Wave8\Factotum\Base\Services\Api;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
+use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
+use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 use Wave8\Factotum\Base\Models\User;
 
 class UserService implements UserServiceInterface
@@ -34,15 +38,17 @@ class UserService implements UserServiceInterface
         return $this->user->findOrFail($id);
     }
 
-    public function update(int $id, Data $data): Model
+    public function update(User $user, Data $data): Model
     {
-        $user = $this->user::findOrFail($id);
+        if ($data->avatar) {
+            $this->updateAvatar($user, $data->avatar);
+        }
 
         $user->update(
             attributes: $data->toArray()
         );
 
-        return $user;
+        return $user->load('avatar');
     }
 
     public function updatePassword(User $user, string $password): User
@@ -90,5 +96,21 @@ class UserService implements UserServiceInterface
     public function getBy(string $column, string $value): Collection
     {
         return $this->user::where($column, $value)->get();
+    }
+
+    public function updateAvatar(User $user, UploadedFile $file): User
+    {
+        /** @var MediaService $mediaService */
+        $mediaService = app(MediaServiceInterface::class);
+
+        $media = $mediaService->store(new StoreFileDto(file: $file, presets: [
+            MediaPreset::USER_AVATAR,
+        ]));
+
+        $user->avatar()->associate($media);
+
+        $user->save();
+
+        return $user;
     }
 }

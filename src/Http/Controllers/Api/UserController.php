@@ -59,7 +59,7 @@ final readonly class UserController
     final public function show(User $user): ApiResponse
     {
         return ApiResponse::make(
-            data: $this->userResource::from($user),
+            data: $this->userResource::from($user->load('avatar')),
         );
     }
 
@@ -68,7 +68,7 @@ final readonly class UserController
         $updateUserDto = config('data_transfer.'.UpdateUserDto::class);
 
         $user = $this->userService->update(
-            id: $user->id,
+            user: $user,
             data: $updateUserDto::from($request)
         );
 

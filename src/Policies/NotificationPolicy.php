@@ -12,6 +12,7 @@ class NotificationPolicy
     {
         return $user->hasPermissionTo(NotificationPermission::VIEW_NOTIFICATIONS);
     }
+
     public function view(User $user, Notification $notification): bool
     {
         return $notification->notifiable()->is($user);

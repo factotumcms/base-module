@@ -1,11 +1,11 @@
 <?php
 
-namespace Wave8\Factotum\Base\Http\Requests\Api\User;
+namespace Wave8\Factotum\Base\Http\Requests\Api\Media;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateUserAvatarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['sometimes', 'string'],
-            'last_name' => ['sometimes', 'string'],
-            'is_active' => ['sometimes', 'boolean'],
-            'avatar' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:5120'],
+            'avatar' => ['required', 'file', 'max:5120'],
         ];
     }
 }

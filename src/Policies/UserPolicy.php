@@ -29,7 +29,7 @@ class UserPolicy
 
     public function delete(User $user): bool
     {
-        if($user->email === config('factotum_base.admin_default.email')){
+        if ($user->email === config('factotum_base.admin_default.email')) {
             return false;
         }
 

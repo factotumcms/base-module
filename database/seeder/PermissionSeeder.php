@@ -37,7 +37,7 @@ class PermissionSeeder extends Seeder
             Permission::class,
             RolePermission::class,
             SettingPermission::class,
-            NotificationPermission::class
+            NotificationPermission::class,
         ];
 
         foreach ($entities as $entity) {

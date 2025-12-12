@@ -2,9 +2,11 @@
 
 namespace Wave8\Factotum\Base\Dtos\Api\User;
 
+use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
+use Spatie\LaravelData\Optional;
 
 #[MapName(SnakeCaseMapper::class)]
 class UpdateUserDto extends Data
@@ -13,5 +15,6 @@ class UpdateUserDto extends Data
         public readonly ?string $firstName = null,
         public readonly ?string $lastName = null,
         public readonly bool $isActive = true,
+        public Optional|UploadedFile|null $avatar = null
     ) {}
 }

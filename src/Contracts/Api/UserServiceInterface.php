@@ -14,7 +14,7 @@ interface UserServiceInterface
 
     public function read(int $id): Model;
 
-    public function update(int $id, Data $data): Model;
+    public function update(User $user, Data $data): Model;
 
     public function updatePassword(User $user, string $password): User;
 
