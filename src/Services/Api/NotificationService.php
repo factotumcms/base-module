@@ -9,6 +9,7 @@ use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
 use Wave8\Factotum\Base\Models\Notification;
 
 class NotificationService implements NotificationServiceInterface
@@ -45,11 +46,14 @@ class NotificationService implements NotificationServiceInterface
         auth()->user()->notifications()->findOrFail($id)->delete();
     }
 
-    public function filter(): LengthAwarePaginator
+    public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator
     {
         $query = $this->notification->query()
             ->filterByRequest();
 
-        return $query->paginate();
+        return $query->paginate(
+            perPage: $paginationDto->perPage ?? 15,
+            page: $paginationDto->page ?? 1,
+        );
     }
 }

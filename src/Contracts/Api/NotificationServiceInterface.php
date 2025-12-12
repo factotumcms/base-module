@@ -7,6 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
 
 interface NotificationServiceInterface
 {
@@ -18,5 +19,5 @@ interface NotificationServiceInterface
 
     public function delete(int $id): void;
 
-    public function filter(): LengthAwarePaginator;
+    public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator;
 }

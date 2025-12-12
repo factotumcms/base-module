@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Enums\Permission\MediaPermission;
+use Wave8\Factotum\Base\Enums\Permission\NotificationPermission;
 use Wave8\Factotum\Base\Enums\Permission\Permission;
 use Wave8\Factotum\Base\Enums\Permission\RolePermission;
 use Wave8\Factotum\Base\Enums\Permission\SettingPermission;
@@ -36,6 +37,7 @@ class PermissionSeeder extends Seeder
             Permission::class,
             RolePermission::class,
             SettingPermission::class,
+            NotificationPermission::class
         ];
 
         foreach ($entities as $entity) {
