@@ -53,9 +53,8 @@ final readonly class MediaController
 
     public function show(Media $media)
     {
-        return response()->file(
-            $media->fullMediaPath(),
-            ['Content-Type' => $media->mime_type]
+        return ApiResponse::make(
+            data: $this->mediaResource::from($media),
         );
     }
 }
