@@ -20,7 +20,7 @@ class UserService implements UserServiceInterface
         );
 
         if ($data->password) {
-            $user->password_histories()->create([
+            $user->passwordHistories()->create([
                 'password' => $user->password,
                 'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),
             ]);
@@ -52,7 +52,7 @@ class UserService implements UserServiceInterface
         $user->password = $password;
         $user->save();
 
-        $user->password_histories()->create([
+        $user->passwordHistories()->create([
             'password' => $user->password,
             'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),
         ]);

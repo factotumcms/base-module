@@ -27,7 +27,7 @@ class PasswordHistory implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $previousPasswords =
-            $this->user->password_histories()->orderByDesc('created_at')->limit($this->validateLatest)->get();
+            $this->user->passwordHistories()->orderByDesc('created_at')->limit($this->validateLatest)->get();
 
         foreach ($previousPasswords as $previousPassword) {
             if (Hash::check($value, $previousPassword->password)) {

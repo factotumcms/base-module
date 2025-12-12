@@ -97,7 +97,7 @@ class User extends Authenticatable implements NotifiableInterface
         return $this->belongsTo(Media::class, 'avatar_id');
     }
 
-    public function password_histories(): HasMany
+    public function passwordHistories(): HasMany
     {
         return $this->hasMany(PasswordHistory::class);
     }
@@ -106,13 +106,13 @@ class User extends Authenticatable implements NotifiableInterface
     {
         if (
             $this->last_login_at === null ||
-            $this->password_histories()->count() === 0 ||
-            ! hash_equals($this->password, $this->password_histories()->latest()->firstOrFail()->password)
+            $this->passwordHistories()->count() === 0 ||
+            ! hash_equals($this->password, $this->passwordHistories()->latest()->firstOrFail()->password)
         ) {
             return false;
         }
 
-        return $this->password_histories()->latest()
-            ->firstOrFail()->expires_at->lessThanOrEqualTo($this->last_login_at);
+        return $this->passwordHistories()->latest()
+            ->firstOrFail()->expires_at->lessThanOrEqualTo(now());
     }
 }
