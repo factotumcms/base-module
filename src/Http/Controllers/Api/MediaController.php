@@ -57,4 +57,11 @@ final readonly class MediaController
             data: $this->mediaResource::from($media),
         );
     }
+
+    public function destroy(Media $media): ApiResponse
+    {
+        $this->mediaService->delete($media);
+
+        return ApiResponse::noContent();
+    }
 }

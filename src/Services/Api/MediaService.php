@@ -56,9 +56,9 @@ class MediaService implements MediaServiceInterface
         return $media;
     }
 
-    public function delete(int $id): void
+    public function delete(Media $media): void
     {
-        // todo:: implement delete media logic
+        $media->delete();
     }
 
     public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator

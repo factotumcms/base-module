@@ -11,4 +11,5 @@ Route::prefix('media')
         Route::get('', 'index')->can('read', Media::class);
         Route::get('{media}', 'show')->can('read', 'media');
         Route::post('', 'create')->can('upload', Media::class);
+        Route::delete('{media}', 'destroy')->can('delete', 'media');
     });

@@ -18,7 +18,7 @@ interface MediaServiceInterface
 
     public function update(int $id, Data $data): Model;
 
-    public function delete(int $id): void;
+    public function delete(Media $media): void;
 
     public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator;
 
