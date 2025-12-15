@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use Wave8\Factotum\Base\Contracts\Api\AuthServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Auth\RegisterUserDto;
@@ -62,5 +63,14 @@ final readonly class AuthController
             data: $this->userResource::from($user),
             status: ApiResponse::HTTP_CREATED
         );
+    }
+
+    public function verify(Request $request): ApiResponse
+    {
+        $this->authService->verifyEmail(
+            userId: $request->get('id'),
+        );
+
+        return ApiResponse::noContent();
     }
 }
