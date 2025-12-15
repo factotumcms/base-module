@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\DatabaseNotification;
 use Wave8\Factotum\Base\Builders\NotificationQueryBuilder;
+use Wave8\Factotum\Base\Enums\Notification\NotificationChannel;
 use Wave8\Factotum\Base\Policies\NotificationPolicy;
 
 #[UsePolicy(NotificationPolicy::class)]
@@ -15,6 +16,8 @@ class Notification extends DatabaseNotification
 
     protected $fillable = [
         'type',
+        'notifiable_type',
+        'notifiable_id',
         'data',
         'channel',
         'route',
@@ -28,6 +31,7 @@ class Notification extends DatabaseNotification
         'data' => 'json',
         'sent_at' => 'datetime',
         'read_at' => 'datetime',
+        'channel' => NotificationChannel::class,
     ];
 
     public function newEloquentBuilder($query)

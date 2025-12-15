@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Models;
 
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,7 @@ use Wave8\Factotum\Base\Contracts\NotifiableInterface;
 use Wave8\Factotum\Base\Policies\UserPolicy;
 
 #[UsePolicy(UserPolicy::class)]
-class User extends Authenticatable implements NotifiableInterface
+class User extends Authenticatable implements HasLocalePreference, NotifiableInterface
 {
     use HasApiTokens;
     use HasFactory;
@@ -28,11 +29,6 @@ class User extends Authenticatable implements NotifiableInterface
     use SoftDeletes;
 
     protected string $guard_name = 'web';
-
-    protected function getDefaultGuardName(): string
-    {
-        return $this->guard_name;
-    }
 
     /**
      * The attributes that are mass assignable.
@@ -48,11 +44,6 @@ class User extends Authenticatable implements NotifiableInterface
         'is_active',
     ];
 
-    public function newEloquentBuilder($query): UserQueryBuilder
-    {
-        return new UserQueryBuilder($query);
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -62,6 +53,12 @@ class User extends Authenticatable implements NotifiableInterface
         'password',
         'remember_token',
     ];
+
+    protected function getDefaultGuardName(): string
+    {
+        // todo:: da verificare
+        return $this->guard_name;
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -75,6 +72,16 @@ class User extends Authenticatable implements NotifiableInterface
             'password' => 'hashed',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function newEloquentBuilder($query): UserQueryBuilder
+    {
+        return new UserQueryBuilder($query);
+    }
+
+    public function preferredLocale()
+    {
+        return $this->locale;
     }
 
     /**
@@ -104,15 +111,8 @@ class User extends Authenticatable implements NotifiableInterface
 
     public function isCurrentPasswordExpired(): bool
     {
-        if (
-            $this->last_login_at === null ||
-            $this->passwordHistories()->count() === 0 ||
-            ! hash_equals($this->password, $this->passwordHistories()->latest()->firstOrFail()->password)
-        ) {
-            return false;
-        }
+        $currentPassword = $this->passwordHistories()->latest()->first();
 
-        return $this->passwordHistories()->latest()
-            ->firstOrFail()->expires_at->lessThanOrEqualTo(now());
+        return !hash_equals($currentPassword->password, $this->password) || $currentPassword->expires_at->isPast();
     }
 }

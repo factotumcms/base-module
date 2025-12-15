@@ -2,11 +2,11 @@
 
 namespace Wave8\Factotum\Base\Notifications;
 
-use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
+use Illuminate\Auth\Notifications\VerifyEmail as LaravalVerifyEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class VerifyEmail extends BaseVerifyEmail
+class VerifyEmail extends LaravalVerifyEmail
 {
     use Queueable;
 
@@ -20,4 +20,6 @@ class VerifyEmail extends BaseVerifyEmail
             ->salutation(__('auth.email_verification.salutation', ['appName' => config('app.name')]))
             ->line(__('auth.email_verification.line_post_cta'));
     }
+
+
 }

@@ -15,10 +15,13 @@ return new class extends Migration
             $table->after('data', function ($table) {
                 $table->string('channel');
                 $table->string('route');
-                $table->char('lang', 2);
                 $table->timestamp('sent_at')->nullable();
                 $table->text('response')->nullable();
             });
+
+            $table->dropPrimary();
+            $table->dropColumn('id');
+            $table->uuid('id')->primary()->default(DB::raw('UUID()'))->first();
 
             $table->softDeletes();
         });
@@ -30,8 +33,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            $table->dropColumn(['channel', 'route', 'lang', 'sent_at', 'response']);
+            $table->dropColumn(['channel', 'route', 'sent_at', 'response']);
             $table->dropSoftDeletes();
+
+            $table->dropPrimary();
+            $table->dropColumn('id');
+            $table->uuid('id')->primary()->first();
         });
     }
 };
