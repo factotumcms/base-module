@@ -1,0 +1,158 @@
+[
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "login_successful",
+        "line": "Accesso effettuato con successo."
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "login_successful",
+        "line": "Login successful."
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "login_failed",
+        "line": "Accesso fallito, email o password errati."
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "login_failed",
+        "line": "Login failed, email or password is incorrect."
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "logout_successful",
+        "line": "Logout effettuato con successo."
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "logout_successful",
+        "line": "Logout successful."
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.subject",
+        "line": "Verifica indirizzo email"
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.subject",
+        "line": "Verify Email Address"
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.line_pre_cta",
+        "line": "Clicca il pulsante qui sotto per verificare il tuo indirizzo email"
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.line_pre_cta",
+        "line": "Please click the button below to verify your email address"
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.cta",
+        "line": "Verifica Indirizzo Email"
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.cta",
+        "line": "Veriry Email Address"
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.line_post_cta",
+        "line": "Se non hai creato un account, non è richiesta alcuna azione ulteriore"
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.line_post_cta",
+        "line": "If you did not create an account, no further action is required"
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.greeting",
+        "line": "Ciao!"
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.greeting",
+        "line": "Hello!"
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.salutation",
+        "line": "Cordiali saluti, il Team di :appName"
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.salutation",
+        "line": "Best regards, the :appName Team"
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.subcopy",
+        "line": "Se hai problemi a cliccare il pulsante \":actionText\", copia e incolla l'URL sottostante nel tuo browser web:\r\n"
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.subcopy",
+        "line": "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser:\r\n"
+    },
+    {
+        "locale": "it",
+        "group": "auth",
+        "key": "email_verification.footer",
+        "line": "Tutti i diritti riservati."
+    },
+    {
+        "locale": "en",
+        "group": "auth",
+        "key": "email_verification.footer",
+        "line": "All rights reserved."
+    },
+    {
+        "locale": "it",
+        "group": "passwords",
+        "key": "expired",
+        "line": "La tua password è scaduta. Per favore aggiorna la tua password per continuare"
+    },
+    {
+        "locale": "en",
+        "group": "passwords",
+        "key": "expired",
+        "line": "Your password has expired. Please update your password to continue"
+    },
+    {
+        "locale": "it",
+        "group": "validation",
+        "key": "password.history_used",
+        "line": "La :attribute fornita è stata precedentemente utilizzata. Per favore scegli una :attribute diversa."
+    },
+    {
+        "locale": "en",
+        "group": "validation",
+        "key": "password.history_used",
+        "line": "The given :attribute has been previously used. Please choose a different :attribute."
+    }
+]
