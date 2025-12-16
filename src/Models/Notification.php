@@ -15,6 +15,7 @@ class Notification extends DatabaseNotification
     use SoftDeletes;
 
     protected $fillable = [
+        'id',
         'type',
         'notifiable_type',
         'notifiable_id',
@@ -37,5 +38,10 @@ class Notification extends DatabaseNotification
     public function newEloquentBuilder($query)
     {
         return new NotificationQueryBuilder($query);
+    }
+
+    public function notifiable()
+    {
+        return $this->morphTo();
     }
 }

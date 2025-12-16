@@ -76,6 +76,11 @@ class User extends Authenticatable implements HasLocalePreference, NotifiableInt
         return $this->locale;
     }
 
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')->latest();
+    }
+
     /**
      * Get the settings associated with the user.
      *
@@ -105,6 +110,6 @@ class User extends Authenticatable implements HasLocalePreference, NotifiableInt
     {
         $currentPassword = $this->passwordHistories()->latest()->first();
 
-        return !hash_equals($currentPassword->password, $this->password) || $currentPassword->expires_at->isPast();
+        return ! hash_equals($currentPassword->password, $this->password) || $currentPassword->expires_at->isPast();
     }
 }

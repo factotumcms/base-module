@@ -20,6 +20,4 @@ class VerifyEmail extends LaravalVerifyEmail
             ->salutation(__('auth.email_verification.salutation', ['appName' => config('app.name')]))
             ->line(__('auth.email_verification.line_post_cta'));
     }
-
-
 }

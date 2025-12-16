@@ -2,20 +2,15 @@
 
 namespace Wave8\Factotum\Base\Observers;
 
-use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Notification\CreateNotificationDto;
 use Wave8\Factotum\Base\Enums\Notification\NotificationChannel;
 use Wave8\Factotum\Base\Jobs\SendEmailNotifications;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Notifications\VerifyEmail;
-use Wave8\Factotum\Base\Services\Api\NotificationService;
 
 class UserObserver
 {
-    public function __construct(
-        /** @var NotificationService $notificationService */
-        private NotificationServiceInterface $notificationService,
-    ) {}
+    public function __construct() {}
 
     /**
      * Handle the User "created" event.
@@ -24,16 +19,16 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $this->notificationService->create(
-            new CreateNotificationDto(
-                type: VerifyEmail::class,
-                notifiableType: User::class,
-                notifiableId: $user->id,
-                data: '',
-                channel: NotificationChannel::EMAIL,
-                route: ''
-            )
+        $dto = new CreateNotificationDto(
+            type: VerifyEmail::class,
+            channel: NotificationChannel::EMAIL,
         );
+
+        $notification = $user->notifications()->create($dto->toArray());
+
+        SendEmailNotifications::dispatch(
+            notification: $notification,
+        )->onQueue('notifications');
     }
 
     /**

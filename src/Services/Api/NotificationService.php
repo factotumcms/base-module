@@ -5,14 +5,12 @@ namespace Wave8\Factotum\Base\Services\Api;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Notification\CreateNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
-use Wave8\Factotum\Base\Enums\Notification\NotificationChannel;
 use Wave8\Factotum\Base\Models\Notification;
 
 class NotificationService implements NotificationServiceInterface
@@ -23,6 +21,7 @@ class NotificationService implements NotificationServiceInterface
     {
         return $this->notification::create($dto->toArray());
     }
+
     public function show(int $id): ?Model
     {
         return auth()->user()->notifications()->findOrFail($id);
@@ -37,7 +36,6 @@ class NotificationService implements NotificationServiceInterface
 
         return $notification;
     }
-
 
     public function readMany(ReadManyNotificationDto|Data $data): void
     {
@@ -64,14 +62,5 @@ class NotificationService implements NotificationServiceInterface
             perPage: $paginationDto->perPage ?? 15,
             page: $paginationDto->page ?? 1,
         );
-    }
-    public function processPendingEmails():void
-    {
-        foreach ($this->notification::where('channel', NotificationChannel::EMAIL)->get() as $notification) {;
-            $notifiable = $notification->notifiable_type::find($notification->notifiable_id);
-
-            $notifiable->notify(new $notification->type());
-            Log::info("Sent {$notification->notifiable_type} to notifiable ID {$notification->notifiable_id}");
-        }
     }
 }

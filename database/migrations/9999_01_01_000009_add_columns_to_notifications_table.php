@@ -19,10 +19,6 @@ return new class extends Migration
                 $table->text('response')->nullable();
             });
 
-            $table->dropPrimary();
-            $table->dropColumn('id');
-            $table->uuid('id')->primary()->default(DB::raw('UUID()'))->first();
-
             $table->softDeletes();
         });
     }
@@ -35,10 +31,6 @@ return new class extends Migration
         Schema::table('notifications', function (Blueprint $table) {
             $table->dropColumn(['channel', 'route', 'sent_at', 'response']);
             $table->dropSoftDeletes();
-
-            $table->dropPrimary();
-            $table->dropColumn('id');
-            $table->uuid('id')->primary()->first();
         });
     }
 };
