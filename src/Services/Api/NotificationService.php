@@ -5,7 +5,6 @@ namespace Wave8\Factotum\Base\Services\Api;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
@@ -66,30 +65,13 @@ class NotificationService implements NotificationServiceInterface
             page: $paginationDto->page ?? 1,
         );
     }
-    public function getBy(string $key, string $value): Collection
+    public function processPendingEmails():void
     {
-        return $this->notification->where($key, $value)->get();
-    }
+        foreach ($this->notification::where('channel', NotificationChannel::EMAIL)->get() as $notification) {;
+            $notifiable = $notification->notifiable_type::find($notification->notifiable_id);
 
-    public function getPendingsByChannel(NotificationChannel $channel): Collection
-    {
-        return $this->getBy('channel', $channel->value);
-    }
-
-    public function elaborate(Notification $notification):bool
-    {
-        switch ($notification->channel) {
-            case NotificationChannel::EMAIL:
-                $notifiable = $notification->notifiable_type::find($notification->notifiable_id);
-
-                $notifiable->notify(new $notification->type());
-                Log::info("Email notification sent to notifiable ID {$notification->notifiable_id}");
-                return true;
-
-            default:
-                return false;
+            $notifiable->notify(new $notification->type());
+            Log::info("Sent {$notification->notifiable_type} to notifiable ID {$notification->notifiable_id}");
         }
-
-
     }
 }

@@ -28,8 +28,6 @@ class User extends Authenticatable implements HasLocalePreference, NotifiableInt
     use Notifiable;
     use SoftDeletes;
 
-    protected string $guard_name = 'web';
-
     /**
      * The attributes that are mass assignable.
      *
@@ -53,12 +51,6 @@ class User extends Authenticatable implements HasLocalePreference, NotifiableInt
         'password',
         'remember_token',
     ];
-
-    protected function getDefaultGuardName(): string
-    {
-        // todo:: da verificare
-        return $this->guard_name;
-    }
 
     /**
      * Get the attributes that should be cast.

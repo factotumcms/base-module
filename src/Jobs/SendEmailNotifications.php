@@ -5,10 +5,9 @@ namespace Wave8\Factotum\Base\Jobs;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
-use Wave8\Factotum\Base\Enums\Notification\NotificationChannel;
 use Wave8\Factotum\Base\Services\Api\NotificationService;
 
-class SendEmailNotifications
+class SendEmailNotifications implements ShouldQueue
 {
     use Queueable;
 
@@ -25,8 +24,6 @@ class SendEmailNotifications
         /** @var NotificationService $notificationService */
         $notificationService = app(NotificationServiceInterface::class);
 
-        foreach ($notificationService->getPendingsByChannel(NotificationChannel::EMAIL) as $notification) {
-            $notificationService->elaborate($notification);
-        }
+        $notificationService->processPendingEmails();
     }
 }
