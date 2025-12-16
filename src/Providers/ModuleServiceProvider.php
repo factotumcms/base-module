@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
 use Wave8\Factotum\Base\Console\Commands\Install;
+use Wave8\Factotum\Base\Console\Commands\PruneModels;
 use Wave8\Factotum\Base\Console\Commands\PrunePasswordHistories;
 use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Observers\SettingObserver;
@@ -42,6 +43,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
             Install::class,
             DispatchGenerateImageConversions::class,
             PrunePasswordHistories::class,
+            PruneModels::class,
         ]);
     }
 
