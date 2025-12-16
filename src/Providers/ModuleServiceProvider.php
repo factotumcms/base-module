@@ -7,6 +7,8 @@ use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
 use Wave8\Factotum\Base\Console\Commands\Install;
 use Wave8\Factotum\Base\Console\Commands\PrunePasswordHistories;
+use Wave8\Factotum\Base\Models\Setting;
+use Wave8\Factotum\Base\Observers\SettingObserver;
 use Wave8\Factotum\Base\Observers\UserObserver;
 
 class ModuleServiceProvider extends LaravelServiceProvider
@@ -58,7 +60,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
 
     private function configureObservers(): void
     {
-        $authModel = config('auth.providers.users.model');
-        $authModel::observe(UserObserver::class);
+        config('auth.providers.users.model')::observe(UserObserver::class);
+        Setting::observe(SettingObserver::class);
     }
 }

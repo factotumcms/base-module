@@ -96,8 +96,6 @@ class SettingService implements SettingServiceInterface
 
         $setting->save();
 
-        Cache::forget($this::SETTINGS_CACHE_KEY);
-
         return $setting;
     }
 
@@ -106,13 +104,9 @@ class SettingService implements SettingServiceInterface
         return Setting::findOrFail($id);
     }
 
-    public function update(int $id, Data $data): Model
+    public function update(Setting $setting, Data $data): Model
     {
-        $setting = Setting::findOrFail($id);
-
         $setting->update($data->toArray());
-
-        Cache::forget($this::SETTINGS_CACHE_KEY);
 
         return $setting;
     }

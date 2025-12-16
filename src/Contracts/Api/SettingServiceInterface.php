@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
+use Wave8\Factotum\Base\Models\Setting;
 
 interface SettingServiceInterface
 {
@@ -19,7 +20,7 @@ interface SettingServiceInterface
 
     public function read(int $id): Model;
 
-    public function update(int $id, Data $data): Model;
+    public function update(Setting $setting, Data $data): Model;
 
     public function filter(): LengthAwarePaginator;
 }
