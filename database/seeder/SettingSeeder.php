@@ -132,5 +132,16 @@ class SettingSeeder extends Seeder
                 description: 'Language groups available to public users'
             )
         );
+
+        $this->settingService->create(
+            data: new CreateSettingDto(
+                isEditable: true,
+                dataType: SettingDataType::BOOLEAN,
+                group: SettingGroup::NOTIFICATIONS,
+                key: Setting::ENABLE_USER_VERIFY_EMAIL,
+                value: 'true',
+                description: 'Enable send user verification email to new users'
+            )
+        );
     }
 }

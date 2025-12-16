@@ -12,4 +12,5 @@ enum SettingGroup: string
     case AUTH = 'auth';
     case LOCALE = 'locale';
     case PAGINATION = 'pagination';
+    case NOTIFICATIONS = 'notifications';
 }

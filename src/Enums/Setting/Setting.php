@@ -19,4 +19,5 @@ enum Setting: string
     case LOCALE = 'locale';
     case AVAILABLE_LOCALES = 'available_locales';
     case PUBLIC_LANGUAGE_GROUPS = 'public_groups';
+    case ENABLE_USER_VERIFY_EMAIL = 'enable_user_verify_email';
 }
