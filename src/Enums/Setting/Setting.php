@@ -10,6 +10,7 @@ enum Setting: string
 
     case AUTH_TYPE = 'auth_type';
     case AUTH_BASIC_IDENTIFIER = 'auth_basic_identifier';
+    case AUTH_TOKEN_EXPIRATION_DAYS = 'auth_token_expiration_days';
     case USER_AVATAR_PRESET = 'user_avatar_preset';
     case THUMBNAIL_PRESET = 'thumbnail_preset';
     case RESIZE_QUALITY = 'resize_quality';
@@ -19,4 +20,5 @@ enum Setting: string
     case LOCALE = 'locale';
     case AVAILABLE_LOCALES = 'available_locales';
     case PUBLIC_LANGUAGE_GROUPS = 'public_groups';
+    case ENABLE_USER_VERIFY_EMAIL = 'enable_user_verify_email';
 }

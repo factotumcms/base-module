@@ -29,11 +29,15 @@ class UserPolicy
 
     public function delete(User $user): bool
     {
+        if ($user->email === config('factotum_base.admin_default.email')) {
+            return false;
+        }
+
         return $user->hasPermissionTo(UserPermission::DELETE_USERS);
     }
 
-    public function changePassword(User $authUser, User $user): bool
+    public function changePassword(User $user): bool
     {
-        return $authUser->hasPermissionTo(UserPermission::UPDATE_USERS);
+        return $user->hasPermissionTo(UserPermission::UPDATE_USERS);
     }
 }

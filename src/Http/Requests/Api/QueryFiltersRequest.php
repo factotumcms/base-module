@@ -25,8 +25,7 @@ class QueryFiltersRequest extends FormRequest
         return [
             'page' => ['sometimes', 'integer', 'min:1'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:30'],
-            'sort_by' => ['sometimes', 'string'],
-            'sort_order' => ['sometimes', 'in:asc,desc'],
+            'sort' => ['sometimes', 'string'],
             'search' => ['sometimes', 'array'],
         ];
     }

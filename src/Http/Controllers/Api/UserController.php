@@ -7,12 +7,13 @@ use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
+use Wave8\Factotum\Base\Enums\Setting\Setting;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserPasswordRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
-use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Resources\Api\SettingResource;
 use Wave8\Factotum\Base\Resources\Api\UserResource;
@@ -28,6 +29,8 @@ final readonly class UserController
     final public function __construct(
         /** @var $userservice UserService */
         private UserServiceInterface $userService,
+        /** @var $settingService SettingService */
+        private SettingServiceInterface $settingService,
     ) {
         $this->userResource = config('data_transfer.'.UserResource::class);
         $this->settingResource = config('data_transfer.'.SettingResource::class);
@@ -59,7 +62,7 @@ final readonly class UserController
     final public function show(User $user): ApiResponse
     {
         return ApiResponse::make(
-            data: $this->userResource::from($user),
+            data: $this->userResource::from($user->load('avatar')),
         );
     }
 
@@ -68,7 +71,7 @@ final readonly class UserController
         $updateUserDto = config('data_transfer.'.UpdateUserDto::class);
 
         $user = $this->userService->update(
-            id: $user->id,
+            user: $user,
             data: $updateUserDto::from($request)
         );
 
@@ -77,11 +80,20 @@ final readonly class UserController
         );
     }
 
-    final public function changePassword(User $user, UpdateUserPasswordRequest $request): ApiResponse
+    final public function changePassword(UpdateUserPasswordRequest $request): ApiResponse
     {
-        $this->userService->updatePassword($user, $request->password);
+        $user = $this->userService->updatePassword($request->password);
 
-        return ApiResponse::ok($user);
+        $tokenExpirationDays = $this->settingService->getValue(
+            key: Setting::AUTH_TOKEN_EXPIRATION_DAYS,
+            group: SettingGroup::AUTH,
+        );
+
+        return ApiResponse::ok($this->userResource::from($user)->additional([
+            'access_token' => $user->createToken(name: 'auth_token', expiresAt: now()
+                ->addDays($tokenExpirationDays))
+                ->plainTextToken,
+        ]));
     }
 
     final public function destroy(User $user): ApiResponse

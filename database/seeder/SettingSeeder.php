@@ -54,6 +54,16 @@ class SettingSeeder extends Seeder
         $this->settingService->create(
             data: new CreateSettingDto(
                 isEditable: false,
+                dataType: SettingDataType::INTEGER,
+                group: SettingGroup::AUTH,
+                key: Setting::AUTH_TOKEN_EXPIRATION_DAYS,
+                value: 5,
+            )
+        );
+
+        $this->settingService->create(
+            data: new CreateSettingDto(
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE,
@@ -128,7 +138,19 @@ class SettingSeeder extends Seeder
                 dataType: SettingDataType::JSON,
                 group: SettingGroup::LOCALE,
                 key: Setting::PUBLIC_LANGUAGE_GROUPS,
-                value: json_encode([])
+                value: json_encode([]),
+                description: 'Language groups available to public users'
+            )
+        );
+
+        $this->settingService->create(
+            data: new CreateSettingDto(
+                isEditable: true,
+                dataType: SettingDataType::BOOLEAN,
+                group: SettingGroup::NOTIFICATIONS,
+                key: Setting::ENABLE_USER_VERIFY_EMAIL,
+                value: 'true',
+                description: 'Enable send user verification email to new users'
             )
         );
     }

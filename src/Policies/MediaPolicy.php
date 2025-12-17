@@ -16,4 +16,9 @@ class MediaPolicy
     {
         return $user->hasPermissionTo(MediaPermission::UPLOAD_MEDIA);
     }
+
+    public function delete(User $user): bool
+    {
+        return $user->hasPermissionTo(MediaPermission::DELETE_MEDIA);
+    }
 }

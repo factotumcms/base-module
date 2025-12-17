@@ -23,10 +23,10 @@ class UpdateUserPasswordRequest extends FormRequest
      */
     public function rules(): array
     {
-        $user = $this->route('user');
-
         return [
-            'password' => ['required', 'string', new PasswordHistory($user->id)],
+            'password' => ['required', 'string', new PasswordHistory(
+                user: auth()->user()
+            )],
         ];
     }
 }

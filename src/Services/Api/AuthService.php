@@ -5,6 +5,7 @@ namespace Wave8\Factotum\Base\Services\Api;
 use Illuminate\Support\Facades\Auth;
 use Wave8\Factotum\Base\Contracts\Api\AuthServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
+use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Auth\RegisterUserDto;
 use Wave8\Factotum\Base\Enums\Setting\Setting as SettingType;
@@ -17,6 +18,8 @@ class AuthService implements AuthServiceInterface
     public function __construct(
         /** @var $settingService SettingService */
         private readonly SettingServiceInterface $settingService,
+        /** @var $userService UserService */
+        private readonly UserServiceInterface $userService,
     ) {}
 
     /**
@@ -47,10 +50,25 @@ class AuthService implements AuthServiceInterface
         );
     }
 
-    public function updateLastLogin(): void
+    public function logout(): void
+    {
+        Auth::user()->currentAccessToken()->delete();
+    }
+
+    public function verifyEmail(int $userId): bool
+    {
+        $user = $this->userService->read($userId);
+
+        $user->email_verified_at = now();
+
+        return $user->save();
+    }
+
+    private function updateLastLogin(): void
     {
         $user = Auth::user();
         $user->last_login_at = now();
+
         $user->save();
     }
 }

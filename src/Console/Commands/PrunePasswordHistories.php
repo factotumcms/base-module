@@ -32,7 +32,7 @@ class PrunePasswordHistories extends Command
         if ($keep = config('factotum_base.auth.password_prune_keep')) {
             foreach (User::all() as $user) {
                 $passwordHistories =
-                    $user->password_histories()->orderByDesc('created_at')->limit($keep)->offset($keep)->get();
+                    $user->passwordHistories()->orderByDesc('created_at')->limit($keep)->offset($keep)->get();
                 $c = 0;
 
                 foreach ($passwordHistories as $passwordHistory) {

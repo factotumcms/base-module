@@ -23,7 +23,7 @@ class ReadManyNotificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ids' => ['sometimes', 'required', 'array'],
+            'ids' => ['required', 'array'],
             'ids.*' => ['integer', 'exists:notifications,id'],
             'read' => ['required', 'boolean'],
         ];

@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
-use Wave8\Factotum\Base\Enums\Locale;
 use Wave8\Factotum\Base\Enums\Setting\Setting;
 use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Services\Api\SettingService;
@@ -23,17 +22,6 @@ class SetLocale
         /** @var SettingService $settingService */
         $settingService = app(SettingServiceInterface::class);
         $requestLanguages = $request->getLanguages();
-
-        //        if($request->user()) {
-        //            if($locale = $settingService->getUserSettingValue(
-        //                userId: $request->user()->id,
-        //                key: Setting::LOCALE,
-        //                group: SettingGroup::LOCALE
-        //            )){
-        //                app()->setLocale($locale);
-        //                return $next($request);
-        //            }
-        //        }
 
         $availableLocales = $settingService->getValue(
             key: Setting::AVAILABLE_LOCALES,

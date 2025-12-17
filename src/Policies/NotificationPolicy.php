@@ -2,11 +2,17 @@
 
 namespace Wave8\Factotum\Base\Policies;
 
+use Wave8\Factotum\Base\Enums\Permission\NotificationPermission;
 use Wave8\Factotum\Base\Models\Notification;
 use Wave8\Factotum\Base\Models\User;
 
 class NotificationPolicy
 {
+    public function read(User $user): bool
+    {
+        return $user->hasPermissionTo(NotificationPermission::VIEW_NOTIFICATIONS);
+    }
+
     public function view(User $user, Notification $notification): bool
     {
         return $notification->notifiable()->is($user);
@@ -19,10 +25,7 @@ class NotificationPolicy
 
     public function markManyAsRead(User $user): bool
     {
-        if (! request()->has('ids')) {
-            return true;
-        }
-
+        // Ensure all notification IDs belong to the auth user
         $ids = request()->ids;
 
         return $user->notifications()->whereIn('id', $ids)->count() === count($ids);

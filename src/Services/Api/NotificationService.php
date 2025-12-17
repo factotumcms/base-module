@@ -7,12 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Notification\CreateNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
+use Wave8\Factotum\Base\Models\Notification;
 
 class NotificationService implements NotificationServiceInterface
 {
-    public function __construct(public readonly Model $notification) {}
+    public function __construct(public readonly Notification $notification) {}
+
+    public function create(CreateNotificationDto $dto): Model
+    {
+        return $this->notification::create($dto->toArray());
+    }
 
     public function show(int $id): ?Model
     {
@@ -22,6 +30,7 @@ class NotificationService implements NotificationServiceInterface
     public function read(int $id, ReadNotificationDto|Data $data): Model
     {
         $notification = auth()->user()->notifications()->findOrFail($id);
+
         $notification->read_at = $data->read ? now() : null;
         $notification->save();
 
@@ -44,11 +53,14 @@ class NotificationService implements NotificationServiceInterface
         auth()->user()->notifications()->findOrFail($id)->delete();
     }
 
-    public function filter(): LengthAwarePaginator
+    public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator
     {
         $query = $this->notification->query()
             ->filterByRequest();
 
-        return $query->paginate();
+        return $query->paginate(
+            perPage: $paginationDto->perPage ?? 15,
+            page: $paginationDto->page ?? 1,
+        );
     }
 }

@@ -4,8 +4,10 @@ namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
 use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 use Wave8\Factotum\Base\Http\Requests\Api\Media\UploadMediaRequest;
+use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Models\Media;
 use Wave8\Factotum\Base\Resources\Api\MediaResource;
@@ -22,9 +24,11 @@ final readonly class MediaController
         $this->mediaResource = config('data_transfer.'.MediaResource::class);
     }
 
-    public function index(): ApiResponse
+    public function index(QueryFiltersRequest $request): ApiResponse
     {
-        $media = $this->mediaService->filter();
+        $media = $this->mediaService->filter(
+            paginationDto: QueryPaginationDto::from($request),
+        );
 
         return ApiResponse::make(
             data: $this->mediaResource::collect($media),
@@ -49,9 +53,15 @@ final readonly class MediaController
 
     public function show(Media $media)
     {
-        return response()->file(
-            $media->fullMediaPath(),
-            ['Content-Type' => $media->mime_type]
+        return ApiResponse::make(
+            data: $this->mediaResource::from($media),
         );
+    }
+
+    public function destroy(Media $media): ApiResponse
+    {
+        $this->mediaService->delete($media);
+
+        return ApiResponse::noContent();
     }
 }

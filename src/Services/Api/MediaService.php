@@ -19,6 +19,7 @@ use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\CreateMediaDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaCustomPropertiesDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
 use Wave8\Factotum\Base\Enums\Disk;
 use Wave8\Factotum\Base\Enums\Media\MediaAction;
 use Wave8\Factotum\Base\Enums\Media\MediaType;
@@ -55,17 +56,20 @@ class MediaService implements MediaServiceInterface
         return $media;
     }
 
-    public function delete(int $id): void
+    public function delete(Media $media): void
     {
-        // todo:: implement delete media logic
+        $media->delete();
     }
 
-    public function filter(): LengthAwarePaginator
+    public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator
     {
         $query = $this->media->query()
             ->filterByRequest();
 
-        return $query->paginate();
+        return $query->paginate(
+            perPage: $paginationDto->perPage ?? 15,
+            page: $paginationDto->page ?? 1,
+        );
     }
 
     /**

@@ -16,12 +16,13 @@ return new class extends Migration
             $table->renameColumn('name', 'first_name');
 
             $table->after('first_name', function (Blueprint $table) {
-                $table->string('last_name')->nullable();
+                $table->string('last_name');
                 $table->string('username')->unique();
             });
 
             $table->boolean('is_active')->after('password')->default(true);
             $table->softDeletes();
+            $table->timestamp('last_login_at')->nullable()->after('deleted_at');
         });
     }
 

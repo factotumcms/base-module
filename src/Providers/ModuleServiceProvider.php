@@ -6,7 +6,11 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Wave8\Factotum\Base\Console\Commands\DispatchGenerateImageConversions;
 use Wave8\Factotum\Base\Console\Commands\Install;
+use Wave8\Factotum\Base\Console\Commands\PruneModels;
 use Wave8\Factotum\Base\Console\Commands\PrunePasswordHistories;
+use Wave8\Factotum\Base\Models\Setting;
+use Wave8\Factotum\Base\Observers\SettingObserver;
+use Wave8\Factotum\Base\Observers\UserObserver;
 
 class ModuleServiceProvider extends LaravelServiceProvider
 {
@@ -30,6 +34,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
     public function boot(): void
     {
         $this->configurePublishing();
+        $this->configureObservers();
     }
 
     public function registerCommands(): void
@@ -38,6 +43,7 @@ class ModuleServiceProvider extends LaravelServiceProvider
             Install::class,
             DispatchGenerateImageConversions::class,
             PrunePasswordHistories::class,
+            PruneModels::class,
         ]);
     }
 
@@ -52,5 +58,11 @@ class ModuleServiceProvider extends LaravelServiceProvider
         ], 'factotum-base-provider');
 
         $this->loadTranslationsFrom(__DIR__.'/../../lang');
+    }
+
+    private function configureObservers(): void
+    {
+        config('auth.providers.users.model')::observe(UserObserver::class);
+        Setting::observe(SettingObserver::class);
     }
 }

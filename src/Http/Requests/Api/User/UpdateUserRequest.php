@@ -23,11 +23,10 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['nullable', 'email:strict,dns', 'unique:users,email'],
-            'username' => ['string', 'nullable', 'unique:users,username'],
-            'first_name' => ['string', 'nullable'],
-            'last_name' => ['string', 'nullable'],
-            'is_active' => ['boolean', 'nullable'],
+            'first_name' => ['sometimes', 'string'],
+            'last_name' => ['sometimes', 'string'],
+            'is_active' => ['sometimes', 'boolean'],
+            'avatar' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:5120'],
         ];
     }
 }

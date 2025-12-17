@@ -42,6 +42,6 @@ class UserQueryBuilder extends Builder
             return $filters;
         })();
 
-        return QueryBuilder::for(get_class($this->model))->allowedFilters($filters)->allowedSorts($this->sortable);
+        return QueryBuilder::for(get_class($this->model))->allowedFilters($filters)->allowedSorts($this->sortable)->with('avatar');
     }
 }

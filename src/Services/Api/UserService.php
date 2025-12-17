@@ -4,8 +4,13 @@ namespace Wave8\Factotum\Base\Services\Api;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
+use Wave8\Factotum\Base\Contracts\Api\MediaServiceInterface;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
+use Wave8\Factotum\Base\Enums\Media\MediaPreset;
 use Wave8\Factotum\Base\Models\User;
 
 class UserService implements UserServiceInterface
@@ -19,7 +24,7 @@ class UserService implements UserServiceInterface
         );
 
         if ($data->password) {
-            $user->password_histories()->create([
+            $user->passwordHistories()->create([
                 'password' => $user->password,
                 'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),
             ]);
@@ -33,28 +38,36 @@ class UserService implements UserServiceInterface
         return $this->user->findOrFail($id);
     }
 
-    public function update(int $id, Data $data): Model
+    public function update(User $user, Data $data): Model
     {
-        $user = $this->user::findOrFail($id);
+        $dataArray = $data->toArray();
+        unset($dataArray['avatar']);
+
+        if ($data->avatar) {
+            $this->updateAvatar($user, $data->avatar);
+        }
 
         $user->update(
-            attributes: $data->toArray()
+            attributes: $dataArray
         );
 
-        return $user;
+        return $user->load('avatar');
     }
 
-    public function updatePassword(User $user, string $password): User
+    public function updatePassword(string $password): User
     {
-        $user = $this->user::findOrFail($user->id);
+        $user = auth()->user();
 
         $user->password = $password;
         $user->save();
 
-        $user->password_histories()->create([
+        $user->passwordHistories()->create([
             'password' => $user->password,
             'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),
         ]);
+
+        // Refresh the token
+        $user->currentAccessToken()->delete();
 
         return $user;
     }
@@ -82,6 +95,27 @@ class UserService implements UserServiceInterface
         $user->settings()->sync([
             $settingId => ['value' => $data->value],
         ], false);
+
+        return $user;
+    }
+
+    public function getBy(string $column, string $value): Collection
+    {
+        return $this->user::where($column, $value)->get();
+    }
+
+    public function updateAvatar(User $user, UploadedFile $file): User
+    {
+        /** @var MediaService $mediaService */
+        $mediaService = app(MediaServiceInterface::class);
+
+        $media = $mediaService->store(new StoreFileDto(file: $file, presets: [
+            MediaPreset::USER_AVATAR,
+        ]));
+
+        $user->avatar()->associate($media);
+
+        $user->save();
 
         return $user;
     }

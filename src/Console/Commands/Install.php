@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -64,6 +65,7 @@ final class Install extends Command
             $this->publishMigrations();
 
             $this->publishModels();
+            $this->publishResources();
             $this->publishProviders();
 
             collect([
@@ -242,6 +244,13 @@ EOT);
         }
 
         $this->files->copy(__DIR__.'/../../../stubs/app/Models/User.php', app_path('Models/User.php'));
+    }
+
+    private function publishResources(): void
+    {
+        $destPath = resource_path('views/vendor/mail/html');
+        File::ensureDirectoryExists($destPath);
+        $this->files->copyDirectory(__DIR__.'/../../../stubs/resources/views/mail/html/', $destPath);
     }
 
     private function publishProviders(): void

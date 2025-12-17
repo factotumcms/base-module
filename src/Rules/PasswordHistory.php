@@ -9,8 +9,6 @@ use Wave8\Factotum\Base\Models\User;
 
 class PasswordHistory implements ValidationRule
 {
-    protected User $user;
-
     protected int $validateLatest;
 
     /**
@@ -18,16 +16,15 @@ class PasswordHistory implements ValidationRule
      *
      * @return void
      */
-    public function __construct(int $id)
+    public function __construct(private User $user)
     {
-        $this->user = User::findOrFail($id);
         $this->validateLatest = config('factotum_base.auth.password_validate_latest');
     }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $previousPasswords =
-            $this->user->password_histories()->orderByDesc('created_at')->limit($this->validateLatest)->get();
+            $this->user->passwordHistories()->orderByDesc('created_at')->limit($this->validateLatest)->get();
 
         foreach ($previousPasswords as $previousPassword) {
             if (Hash::check($value, $previousPassword->password)) {

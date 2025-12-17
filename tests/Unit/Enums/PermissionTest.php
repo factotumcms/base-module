@@ -13,6 +13,7 @@ describe('PermissionEnums', function () {
         expect(array_keys($values))->toBe([
             'upload_media',
             'read_media',
+            'delete_media',
         ]);
     });
 

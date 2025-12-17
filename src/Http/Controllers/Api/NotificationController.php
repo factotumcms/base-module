@@ -3,8 +3,12 @@
 namespace Wave8\Factotum\Base\Http\Controllers\Api;
 
 use Wave8\Factotum\Base\Contracts\Api\NotificationServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
+use Wave8\Factotum\Base\Http\Requests\Api\Notification\ReadManyNotificationRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\Notification\ReadNotificationRequest;
+use Wave8\Factotum\Base\Http\Requests\Api\QueryFiltersRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
 use Wave8\Factotum\Base\Models\Notification;
 use Wave8\Factotum\Base\Resources\Api\NotificationResource;
@@ -17,6 +21,18 @@ final readonly class NotificationController
         private NotificationServiceInterface $notificationService,
     ) {
         $this->notificationResource = config('data_transfer.'.NotificationResource::class);
+    }
+
+    public function index(QueryFiltersRequest $request): ApiResponse
+    {
+        $notifications = $this->notificationService
+            ->filter(
+                paginationDto: QueryPaginationDto::from($request),
+            );
+
+        return ApiResponse::make(
+            data: $this->notificationResource::collect($notifications)
+        );
     }
 
     public function show(Notification $notification): ApiResponse
@@ -33,6 +49,17 @@ final readonly class NotificationController
         $this->notificationService->read(
             id: $notification->id,
             data: $readNotificationDto::from($request)
+        );
+
+        return ApiResponse::noContent();
+    }
+
+    public function readMany(ReadManyNotificationRequest $request): ApiResponse
+    {
+        $readManyNotificationDto = config('data_transfer.'.ReadManyNotificationDto::class);
+
+        $this->notificationService->readMany(
+            data: $readManyNotificationDto::from($request)
         );
 
         return ApiResponse::noContent();

@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('scope');
+            $table->boolean('is_editable')->default(false);
             $table->string('data_type');
             $table->string('group');
             $table->string('key');
             $table->text('value');
+            $table->string('description', 255)->nullable();
             $table->timestamps();
 
-            $table->unique(['key', 'scope', 'group']);
+            $table->unique(['key', 'group']);
         });
 
         Schema::create('setting_user', function (Blueprint $table) {

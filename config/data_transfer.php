@@ -3,6 +3,7 @@
 use Wave8\Factotum\Base\Dtos\Api\Auth\LoginUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Auth\RegisterUserDto;
 use Wave8\Factotum\Base\Dtos\Api\Media\StoreFileDto;
+use Wave8\Factotum\Base\Dtos\Api\Notification\ReadManyNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Notification\ReadNotificationDto;
 use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Dtos\Api\Role\UpdateRoleDto;
@@ -26,6 +27,7 @@ return [
     UpdateRoleDto::class => UpdateRoleDto::class,
     StoreFileDto::class => StoreFileDto::class,
     ReadNotificationDto::class => ReadNotificationDto::class,
+    ReadManyNotificationDto::class => ReadManyNotificationDto::class,
     UpdateSettingDto::class => UpdateSettingDto::class,
 
     // Resource Bindings

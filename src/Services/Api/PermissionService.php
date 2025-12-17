@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
+use Wave8\Factotum\Base\Dtos\Api\QueryPaginationDto;
 use Wave8\Factotum\Base\Models\Permission;
 
 class PermissionService implements PermissionServiceInterface
@@ -43,11 +44,14 @@ class PermissionService implements PermissionServiceInterface
         $permission->delete();
     }
 
-    public function filter(): LengthAwarePaginator
+    public function filter(QueryPaginationDto $paginationDto): LengthAwarePaginator
     {
         $query = $this->permission->query()
             ->filterByRequest();
 
-        return $query->paginate();
+        return $query->paginate(
+            perPage: $paginationDto->perPage ?? 15,
+            page: $paginationDto->page ?? 1,
+        );
     }
 }

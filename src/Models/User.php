@@ -2,6 +2,7 @@
 
 namespace Wave8\Factotum\Base\Models;
 
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,7 @@ use Wave8\Factotum\Base\Contracts\NotifiableInterface;
 use Wave8\Factotum\Base\Policies\UserPolicy;
 
 #[UsePolicy(UserPolicy::class)]
-class User extends Authenticatable implements NotifiableInterface
+class User extends Authenticatable implements HasLocalePreference, NotifiableInterface
 {
     use HasApiTokens;
     use HasFactory;
@@ -28,11 +29,6 @@ class User extends Authenticatable implements NotifiableInterface
     use SoftDeletes;
 
     protected string $guard_name = 'web';
-
-    protected function getDefaultGuardName(): string
-    {
-        return $this->guard_name;
-    }
 
     /**
      * The attributes that are mass assignable.
@@ -47,11 +43,6 @@ class User extends Authenticatable implements NotifiableInterface
         'password',
         'is_active',
     ];
-
-    public function newEloquentBuilder($query): UserQueryBuilder
-    {
-        return new UserQueryBuilder($query);
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -77,6 +68,26 @@ class User extends Authenticatable implements NotifiableInterface
         ];
     }
 
+    protected function getDefaultGuardName(): string
+    {
+        return $this->guard_name;
+    }
+
+    public function newEloquentBuilder($query): UserQueryBuilder
+    {
+        return new UserQueryBuilder($query);
+    }
+
+    public function preferredLocale()
+    {
+        return $this->locale;
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')->latest();
+    }
+
     /**
      * Get the settings associated with the user.
      *
@@ -97,22 +108,15 @@ class User extends Authenticatable implements NotifiableInterface
         return $this->belongsTo(Media::class, 'avatar_id');
     }
 
-    public function password_histories(): HasMany
+    public function passwordHistories(): HasMany
     {
         return $this->hasMany(PasswordHistory::class);
     }
 
     public function isCurrentPasswordExpired(): bool
     {
-        if (
-            $this->last_login_at === null ||
-            $this->password_histories()->count() === 0 ||
-            ! hash_equals($this->password, $this->password_histories()->latest()->firstOrFail()->password)
-        ) {
-            return false;
-        }
+        $currentPassword = $this->passwordHistories()->latest()->first();
 
-        return $this->password_histories()->latest()
-            ->firstOrFail()->expires_at->lessThanOrEqualTo($this->last_login_at);
+        return ! hash_equals($currentPassword->password, $this->password) || $currentPassword->expires_at->isPast();
     }
 }

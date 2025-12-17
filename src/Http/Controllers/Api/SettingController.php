@@ -42,7 +42,7 @@ final readonly class SettingController
         $updateSettingDto = config('data_transfer.'.UpdateSettingDto::class);
 
         $updatedSetting = $this->settingService->update(
-            id: $setting->id,
+            setting: $setting,
             data: $updateSettingDto::from($request)
         );
 
