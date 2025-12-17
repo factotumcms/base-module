@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2025-12-17
+### Added
+- Email verification system for new users with configurable settings
+- User avatar support
+- Notification management endpoints (list, read single/multiple)
+- Session logout functionality
+- Email verification endpoint
+- Token expiration configuration
+- Comprehensive module documentation added
+### Refactor
+- Password expiry checks and improved authentication/token flow
+
 ## [1.6.0] - 2025-12-03
 ### Added
 - Added password history feeature
