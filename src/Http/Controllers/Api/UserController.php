@@ -7,12 +7,13 @@ use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Setting\UpdateSettingDto;
 use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Dtos\Api\User\UpdateUserDto;
+use Wave8\Factotum\Base\Enums\Setting\Setting;
+use Wave8\Factotum\Base\Enums\Setting\SettingGroup;
 use Wave8\Factotum\Base\Http\Requests\Api\Setting\UpdateSettingRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\CreateUserRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserPasswordRequest;
 use Wave8\Factotum\Base\Http\Requests\Api\User\UpdateUserRequest;
 use Wave8\Factotum\Base\Http\Responses\Api\ApiResponse;
-use Wave8\Factotum\Base\Models\Setting;
 use Wave8\Factotum\Base\Models\User;
 use Wave8\Factotum\Base\Resources\Api\SettingResource;
 use Wave8\Factotum\Base\Resources\Api\UserResource;
@@ -28,6 +29,8 @@ final readonly class UserController
     final public function __construct(
         /** @var $userservice UserService */
         private UserServiceInterface $userService,
+        /** @var $settingService SettingService */
+        private SettingServiceInterface $settingService,
     ) {
         $this->userResource = config('data_transfer.'.UserResource::class);
         $this->settingResource = config('data_transfer.'.SettingResource::class);
@@ -81,9 +84,14 @@ final readonly class UserController
     {
         $user = $this->userService->updatePassword($request->password);
 
+        $tokenExpirationDays = $this->settingService->getValue(
+            key: Setting::AUTH_TOKEN_EXPIRATION_DAYS,
+            group: SettingGroup::AUTH,
+        );
+
         return ApiResponse::ok($this->userResource::from($user)->additional([
             'access_token' => $user->createToken(name: 'auth_token', expiresAt: now()
-                ->addDays(5))
+                ->addDays($tokenExpirationDays))
                 ->plainTextToken,
         ]));
     }

@@ -40,12 +40,15 @@ class UserService implements UserServiceInterface
 
     public function update(User $user, Data $data): Model
     {
+        $dataArray = $data->toArray();
+        unset($dataArray['avatar']);
+
         if ($data->avatar) {
             $this->updateAvatar($user, $data->avatar);
         }
 
         $user->update(
-            attributes: $data->toArray()
+            attributes: $dataArray
         );
 
         return $user->load('avatar');

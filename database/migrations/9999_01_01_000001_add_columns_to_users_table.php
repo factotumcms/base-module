@@ -34,7 +34,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->renameColumn('first_name', 'name');
             $table->dropUnique(['username']);
-            $table->dropConstrainedForeignId('avatar_id');
 
             $table->dropColumn(['last_name', 'username', 'is_active']);
             $table->dropSoftDeletes();

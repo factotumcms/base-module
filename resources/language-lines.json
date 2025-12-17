@@ -69,7 +69,7 @@
         "locale": "en",
         "group": "auth",
         "key": "email_verification.cta",
-        "line": "Veriry Email Address"
+        "line": "Verify Email Address"
     },
     {
         "locale": "it",
