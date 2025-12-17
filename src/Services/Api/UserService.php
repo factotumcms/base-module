@@ -51,9 +51,9 @@ class UserService implements UserServiceInterface
         return $user->load('avatar');
     }
 
-    public function updatePassword(User $user, string $password): User
+    public function updatePassword(string $password): User
     {
-        $user = $this->user::findOrFail($user->id);
+        $user = auth()->user();
 
         $user->password = $password;
         $user->save();
@@ -62,6 +62,9 @@ class UserService implements UserServiceInterface
             'password' => $user->password,
             'expires_at' => now()->addDays(config('factotum_base.auth.password_expiration_days')),
         ]);
+
+        // Refresh the token
+        $user->currentAccessToken()->delete();
 
         return $user;
     }

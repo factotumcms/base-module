@@ -16,7 +16,7 @@ interface UserServiceInterface
 
     public function update(User $user, Data $data): Model;
 
-    public function updatePassword(User $user, string $password): User;
+    public function updatePassword(string $password): User;
 
     public function delete(int $id): void;
 

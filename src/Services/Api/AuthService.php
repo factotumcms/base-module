@@ -39,7 +39,6 @@ class AuthService implements AuthServiceInterface
         }
 
         $this->updateLastLogin();
-        $this->cleanUpOldTokens();
 
         return Auth::user();
     }
@@ -53,7 +52,7 @@ class AuthService implements AuthServiceInterface
 
     public function logout(): void
     {
-        $this->cleanUpOldTokens();
+        Auth::user()->currentAccessToken()->delete();
     }
 
     public function verifyEmail(int $userId): bool
@@ -71,10 +70,5 @@ class AuthService implements AuthServiceInterface
         $user->last_login_at = now();
 
         $user->save();
-    }
-
-    private function cleanUpOldTokens()
-    {
-        Auth::user()->tokens()->where('created_at', '<', now()->addSecond())->delete();
     }
 }

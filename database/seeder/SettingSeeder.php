@@ -54,6 +54,16 @@ class SettingSeeder extends Seeder
         $this->settingService->create(
             data: new CreateSettingDto(
                 isEditable: false,
+                dataType: SettingDataType::INTEGER,
+                group: SettingGroup::AUTH,
+                key: Setting::AUTH_TOKEN_EXPIRATION_DAYS,
+                value: 5,
+            )
+        );
+
+        $this->settingService->create(
+            data: new CreateSettingDto(
+                isEditable: false,
                 dataType: SettingDataType::STRING,
                 group: SettingGroup::LOCALE,
                 key: Setting::LOCALE,

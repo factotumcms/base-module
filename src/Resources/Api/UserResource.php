@@ -19,6 +19,6 @@ class UserResource extends Resource
         public \DateTime $createdAt,
         /** @var Collection<int, RoleResource>|null $roles */
         public ?Collection $roles,
-        public ?MediaResource $avatar = null,
+        public ?MediaResource $avatar = null
     ) {}
 }

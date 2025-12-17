@@ -77,11 +77,15 @@ final readonly class UserController
         );
     }
 
-    final public function changePassword(User $user, UpdateUserPasswordRequest $request): ApiResponse
+    final public function changePassword(UpdateUserPasswordRequest $request): ApiResponse
     {
-        $this->userService->updatePassword($user, $request->password);
+        $user = $this->userService->updatePassword($request->password);
 
-        return ApiResponse::ok($user);
+        return ApiResponse::ok($this->userResource::from($user)->additional([
+            'access_token' => $user->createToken(name: 'auth_token', expiresAt: now()
+                ->addDays(5))
+                ->plainTextToken,
+        ]));
     }
 
     final public function destroy(User $user): ApiResponse

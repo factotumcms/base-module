@@ -36,8 +36,8 @@ class UserPolicy
         return $user->hasPermissionTo(UserPermission::DELETE_USERS);
     }
 
-    public function changePassword(User $authUser, User $user): bool
+    public function changePassword(User $user): bool
     {
-        return $authUser->hasPermissionTo(UserPermission::UPDATE_USERS);
+        return $user->hasPermissionTo(UserPermission::UPDATE_USERS);
     }
 }
