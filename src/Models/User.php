@@ -28,6 +28,8 @@ class User extends Authenticatable implements HasLocalePreference, NotifiableInt
     use Notifiable;
     use SoftDeletes;
 
+    protected string $guard_name = 'web';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -64,6 +66,11 @@ class User extends Authenticatable implements HasLocalePreference, NotifiableInt
             'password' => 'hashed',
             'is_active' => 'boolean',
         ];
+    }
+
+    protected function getDefaultGuardName(): string
+    {
+        return $this->guard_name;
     }
 
     public function newEloquentBuilder($query): UserQueryBuilder

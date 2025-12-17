@@ -11,6 +11,7 @@ describe('SettingEnums', function () {
         expect(array_keys($values))->toBe([
             'auth_type',
             'auth_basic_identifier',
+            'auth_token_expiration_days',
             'user_avatar_preset',
             'thumbnail_preset',
             'resize_quality',
@@ -20,6 +21,7 @@ describe('SettingEnums', function () {
             'locale',
             'available_locales',
             'public_groups',
+            'enable_user_verify_email',
         ]);
     });
 
@@ -43,6 +45,7 @@ describe('SettingEnums', function () {
             'auth',
             'locale',
             'pagination',
+            'notifications',
         ]);
     });
 });
