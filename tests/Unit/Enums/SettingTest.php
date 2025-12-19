@@ -14,7 +14,6 @@ describe('SettingEnums', function () {
             'auth_token_expiration_days',
             'user_avatar_preset',
             'thumbnail_preset',
-            'resize_quality',
             'default_media_disk',
             'media_base_path',
             'media_conversions_path',

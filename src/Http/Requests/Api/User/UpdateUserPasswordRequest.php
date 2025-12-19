@@ -26,7 +26,7 @@ class UpdateUserPasswordRequest extends FormRequest
     {
         return [
             'password' => ['required', 'string',
-                new PasswordHistory(user: auth()->user()),
+                new PasswordHistory,
                 Password::min(8)
                     ->mixedCase()
                     ->letters()
