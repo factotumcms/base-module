@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\SettingServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Media\MediaPresetConfigDto;
 use Wave8\Factotum\Base\Dtos\Api\Setting\CreateSettingDto;
@@ -27,9 +26,6 @@ class SettingSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin default user
-        Log::info('Creating default system settings..');
-
         $this->settingService->create(
             data: new CreateSettingDto(
                 isEditable: false,

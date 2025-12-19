@@ -4,8 +4,8 @@ namespace Wave8\Factotum\Base\Http\Requests\Api\User;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Wave8\Factotum\Base\Rules\PasswordHistory;
 use Illuminate\Validation\Rules\Password;
+use Wave8\Factotum\Base\Rules\PasswordHistory;
 
 class UpdateUserPasswordRequest extends FormRequest
 {
@@ -32,7 +32,7 @@ class UpdateUserPasswordRequest extends FormRequest
                     ->letters()
                     ->numbers()
                     ->symbols()
-                    ->uncompromised()
+                    ->uncompromised(),
             ],
         ];
     }

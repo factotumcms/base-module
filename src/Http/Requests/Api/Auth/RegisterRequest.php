@@ -27,11 +27,11 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'email:strict,dns', 'unique:users,email'],
             'password' => ['required', 'string',
                 Password::min(8)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
             ],
             'password_confirmation' => ['required', 'string', 'min:6', 'same:password'],
             'username' => ['sometimes', 'required', 'string', 'unique:users,username'],

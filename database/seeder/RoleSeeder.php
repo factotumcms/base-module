@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\RoleServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Role\CreateRoleDto;
 use Wave8\Factotum\Base\Enums\Role;
@@ -19,9 +18,6 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin default user
-        Log::info('Creating default roles..');
-
         foreach (Role::getValues() as $role) {
             $this->roleService->create(
                 data: new CreateRoleDto(

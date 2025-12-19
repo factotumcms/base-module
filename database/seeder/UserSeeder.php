@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\UserServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\User\CreateUserDto;
 use Wave8\Factotum\Base\Enums\Role;
@@ -20,9 +19,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin default user
-        Log::info('Creating default admin user..');
-
         User::withoutEvents(function () {
             /** @var User $adminUser */
             $adminUser = $this->userService->create(
