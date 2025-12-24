@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\PermissionServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Permission\CreatePermissionDto;
 use Wave8\Factotum\Base\Enums\Permission\MediaPermission;
@@ -26,9 +25,6 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin default user
-        Log::info('Creating default permission..');
-
         $adminRole = Role::where('name', RoleEnum::ADMIN->value)->firstOrFail();
 
         $entities = [

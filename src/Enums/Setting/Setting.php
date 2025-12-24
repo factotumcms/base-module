@@ -13,7 +13,6 @@ enum Setting: string
     case AUTH_TOKEN_EXPIRATION_DAYS = 'auth_token_expiration_days';
     case USER_AVATAR_PRESET = 'user_avatar_preset';
     case THUMBNAIL_PRESET = 'thumbnail_preset';
-    case RESIZE_QUALITY = 'resize_quality';
     case DEFAULT_MEDIA_DISK = 'default_media_disk';
     case MEDIA_BASE_PATH = 'media_base_path';
     case MEDIA_CONVERSIONS_PATH = 'media_conversions_path';

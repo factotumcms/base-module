@@ -4,6 +4,7 @@ namespace Wave8\Factotum\Base\Http\Requests\Api\User;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 use Wave8\Factotum\Base\Rules\PasswordHistory;
 
 class UpdateUserPasswordRequest extends FormRequest
@@ -24,9 +25,15 @@ class UpdateUserPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => ['required', 'string', new PasswordHistory(
-                user: auth()->user()
-            )],
+            'password' => ['required', 'string',
+                new PasswordHistory,
+                Password::min(8)
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
         ];
     }
 }

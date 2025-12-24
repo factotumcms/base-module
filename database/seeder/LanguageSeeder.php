@@ -3,7 +3,6 @@
 namespace Wave8\Factotum\Base\Database\Seeder;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Wave8\Factotum\Base\Contracts\Api\LanguageServiceInterface;
 use Wave8\Factotum\Base\Dtos\Api\Language\RegisterLineDto;
 use Wave8\Factotum\Base\Enums\Locale;
@@ -19,8 +18,6 @@ class LanguageSeeder extends Seeder
      */
     public function run(): void
     {
-        Log::info('Creating default language lines..');
-
         $json = file_get_contents(__DIR__.'/../../resources/language-lines.json');
         $lines = json_decode($json, true);
 

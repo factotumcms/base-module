@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1] - 2025-12-24
+### Added
+- Added password validator
+- Added some tests
+### Refactor
+- Removed unused RESIZE_QUALITY setting
+- Removed certain debugging logs
+- Removed user dependency from password history rule
+
 ## [1.7.0] - 2025-12-17
 ### Added
 - Email verification system for new users with configurable settings
