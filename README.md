@@ -69,6 +69,10 @@ Some vendor config files, are published in an updated version during the install
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
+## Releases
+
+Please see [ROADMAP v2](./docs/ROADMAP-v2.md) for more information about the next releases.
+
 ## Contributing
 
 Feel free to open issues and submit pull requests.
