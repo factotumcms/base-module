@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
                     ->symbols()
                     ->uncompromised(),
             ],
-            'password_confirmation' => ['required', 'string', 'min:6', 'same:password'],
+            'password_confirmation' => ['required', 'string', 'min:8', 'same:password'],
             'username' => ['sometimes', 'required', 'string', 'unique:users,username'],
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
