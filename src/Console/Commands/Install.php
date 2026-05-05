@@ -268,7 +268,7 @@ EOT);
 
         ServiceProvider::addProviderToBootstrapFile('App\Providers\FactotumBaseServiceProvider');
 
-        $this->laravel->register('App\Providers\FactotumBaseServiceProvider');
+//        $this->laravel->register('App\Providers\FactotumBaseServiceProvider');
     }
 
     private function runMigrations(): bool
