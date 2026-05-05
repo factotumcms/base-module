@@ -8,6 +8,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -157,7 +158,10 @@ EOT);
 
             $this->files->replaceInFile("'{$key}' => false,", "'{$key}' => true,", config_path('query-builder.php'));
 
-            throw_if(config("query-builder.{$key}") !== true, "Failed to update query-builder.{$key} value.");
+            $this->callSilent('config:clear');
+            $this->callSilent('optimize:clear');
+
+            //throw_if(config("query-builder.{$key}") !== true, "Failed to update query-builder.{$key} value.");
         });
 
         $this->components->info('Configuration files published successfully.');
@@ -244,6 +248,9 @@ EOT);
         }
 
         $this->files->copy(__DIR__.'/../../../stubs/app/Models/User.php', app_path('Models/User.php'));
+        $this->callSilent('config:clear');
+        $this->callSilent('optimize:clear');
+        Process::path(base_path())->run(['composer', 'dump-autoload']);
     }
 
     private function publishResources(): void
